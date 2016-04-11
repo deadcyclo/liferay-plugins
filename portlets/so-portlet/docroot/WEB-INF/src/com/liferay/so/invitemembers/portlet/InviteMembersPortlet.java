@@ -87,11 +87,6 @@ public class InviteMembersPortlet extends MVCPortlet {
 						themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
 						keywords, start, end);
 
-		/*jsonObject.put(
-			"count",
-			InviteMembersUtil.getAvailableUsersCount(
-				themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
-				keywords));*/
 
 		JSONObject optionsJSONObject = JSONFactoryUtil.createJSONObject();
 
@@ -116,7 +111,8 @@ public class InviteMembersPortlet extends MVCPortlet {
 						MemberRequestLocalServiceUtil.hasPendingMemberRequest(
 								themeDisplay.getScopeGroupId(), user.getUserId()));
 				userJSONObject.put("userEmailAddress", user.getEmailAddress());
-				userJSONObject.put("userFullName", user.getFullName());
+				userJSONObject.put("userFullName", user.getFirstName() + " " + user.getLastName());
+				
 				userJSONObject.put("userId", user.getUserId());
 
 				jsonArray.put(userJSONObject);

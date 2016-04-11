@@ -154,7 +154,8 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 					}
 				},
 				source: url
-			}
+
+				}
 		);
 	}
 
@@ -170,6 +171,7 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 					<portlet:namespace />start: 0
 				}
 			},
+	                
 			resultTextLocator: function(response) {
 				var result = '';
 
@@ -185,7 +187,6 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 			source: createDataSource('<portlet:resourceURL id="getAvailableUsers" />')
 		}
 	);
-
 	var renderResults = function(responseData) {
 		var count = responseData.count;
 		var options = responseData.options;
@@ -205,7 +206,8 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 				A.Array.map(
 					results,
 					function(result) {
-						var userTemplate =
+                                        
+					var userTemplate =
 							'<div class="{cssClass}" data-userId="{userId}">' +
 								'<span class="name">{userFullName}</span>'+
 								'<span class="email">{userEmailAddress}</span>' +
