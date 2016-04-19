@@ -114,7 +114,7 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 		<div class="invite-actions">
 			<portlet:actionURL name="sendInvites" var="sentIvitesURL" />
 
-			<aui:form action="<%= sentIvitesURL %>" id="inviteform" method="post" name="inviteform">
+			<aui:form action="<%= sentIvitesURL %>" id="fm" method="post" name="fm">
 				<aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
 				<aui:input name="receiverUserIds" type="hidden" value="" />
 				<aui:input name="receiverEmailAddresses" type="hidden" value="" />
