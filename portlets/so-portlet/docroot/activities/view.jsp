@@ -28,6 +28,9 @@ portletURL.setParameter("tabs1", tabs1);
 %>
 
 <c:if test="<%= group.isUser() && layout.isPrivateLayout() %>">
+
+	<h2><liferay-ui:message key="activities-title"/></h2>
+
 	<liferay-ui:tabs
 		names="my-sites,me"
 		url="<%= portletURL.toString() %>"
