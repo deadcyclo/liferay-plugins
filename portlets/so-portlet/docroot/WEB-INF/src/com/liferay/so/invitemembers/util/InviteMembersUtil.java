@@ -45,7 +45,7 @@ public class InviteMembersUtil {
 		DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
 		Junction junction = RestrictionsFactoryUtil.disjunction();
 		junction.add(RestrictionsFactoryUtil.ilike("firstName", "%" + keywords + "%"));
-		junction.add(RestrictionsFactoryUtil.ilike("lastName", "%" + lastName + "%"));
+		junction.add(RestrictionsFactoryUtil.ilike("lastName", lastName + "%"));
 		query.add(junction);
 		
 		return UserLocalServiceUtil.dynamicQuery(query,start,end);
