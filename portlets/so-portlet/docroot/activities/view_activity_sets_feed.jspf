@@ -101,7 +101,7 @@ for (SocialActivitySet activitySet : results) {
 						</c:if>
 
 						<span class="action view-comments">
-							<a data-activitySetId="<%= activitySet.getActivitySetId() %>" href="javascript:;"><%= commentsCount > 0 ? commentsCount : StringPool.BLANK %> <liferay-ui:message key='<%= commentsCount > 1 ? "comments" : "comment" %>' /></a>
+							<a <%	if(!isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId()) && commentsCount < 1) {%>class="hide"<%}%> data-activitySetId="<%= activitySet.getActivitySetId() %>" href="javascript:;"><%= commentsCount > 0 ? commentsCount : StringPool.BLANK %> <liferay-ui:message key='<%= commentsCount > 1 ? "comments" : "comment" %>' /></a>
 						</span>
 
 						<span class="action hide toggle">
