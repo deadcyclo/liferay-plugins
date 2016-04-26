@@ -37,6 +37,14 @@
 					return true;
 				}
 			}
+			Role commentRole = RoleLocalServiceUtil.getRole(companyId, "Lese og kommentere");
+			usergrouproles =
+					UserGroupRoleLocalServiceUtil.getUserGroupRolesByGroupAndRole(groupId, commentRole.getRoleId());
+			for (UserGroupRole userGroupRole : usergrouproles) {
+				if (userGroupRole.getUserId() == user.getUserId()) {
+					return true;
+				}
+			}
 			return false;
 		}
 	%>
