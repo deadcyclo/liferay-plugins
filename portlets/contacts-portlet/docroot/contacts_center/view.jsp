@@ -277,6 +277,7 @@ portletURL.setWindowState(WindowState.NORMAL);
 													%>
 												<a title="<liferay-ui:message key="remove-member"/>" href="<%=rmUrl%>"><liferay-ui:message key="remove-member"/></a>
 											</div>
+											<% } }%>
 											<div class="lfr-actions-change-role">
 												<%
 													LiferayPortletURL chUrl = getPortletRenderUrl(request, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "changeRole");
@@ -284,7 +285,6 @@ portletURL.setWindowState(WindowState.NORMAL);
 												%>
 												<a title="<liferay-ui:message key="change-member-role"/>" href="<%=chUrl%>"><liferay-ui:message key="change-member-role"/></a>
 											</div>
-											<% } }%>
 											<div class="lfr-contact-title">
 												<c:if test="<%= Validator.isNotNull(user2.getJobTitle()) %>">
 													<%= HtmlUtil.escape(user2.getJobTitle()) %>
