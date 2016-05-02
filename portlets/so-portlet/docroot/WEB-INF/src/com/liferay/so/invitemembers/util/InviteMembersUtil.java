@@ -47,6 +47,7 @@ public class InviteMembersUtil {
 		junction.add(RestrictionsFactoryUtil.ilike("firstName", "%" + keywords + "%"));
 		junction.add(RestrictionsFactoryUtil.ilike("lastName", lastName + "%"));
 		query.add(junction);
+		query.add(PropertyFactoryUtil.forName("status").eq(WorkflowConstants.STATUS_APPROVED));
 		
 		return UserLocalServiceUtil.dynamicQuery(query,start,end);
 	}
@@ -55,19 +56,16 @@ public class InviteMembersUtil {
 			long companyId, long groupId, String keywords)
 		throws Exception {
 
-		LinkedHashMap usersParams = new LinkedHashMap();
+		String[] bits = keywords.split(" ");
+		String lastName = bits[bits.length-1];
+		DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
+		Junction junction = RestrictionsFactoryUtil.disjunction();
+		junction.add(RestrictionsFactoryUtil.ilike("firstName", "%" + keywords + "%"));
+		junction.add(RestrictionsFactoryUtil.ilike("lastName", lastName + "%"));
+		query.add(junction);
+		query.add(PropertyFactoryUtil.forName("status").eq(WorkflowConstants.STATUS_APPROVED));
 
-		usersParams.put(
-			"usersInvited",
-			new CustomSQLParam(
-				CustomSQLUtil.get(
-					"com.liferay.portal.service.persistence.UserFinder." +
-						"filterByUsersGroupsGroupId"),
-				groupId));
-
-		return UserLocalServiceUtil.searchCount(
-			companyId, keywords, WorkflowConstants.STATUS_APPROVED,
-			usersParams);
+		return (int)UserLocalServiceUtil.dynamicQueryCount(query);
 	}
 
 }
