@@ -154,7 +154,7 @@ AUI.add(
 
 				_updateCounter: function() {
 					var instance = this;
-					instance._memberCounter.setContent(instance._findMembersList.all('.invited').size());
+					instance._memberCounter.setContent(instance._invitedMembersList.all('.invited').size());
 				},
 				_syncFields: function(form) {
 					var instance = this;
