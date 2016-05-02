@@ -1066,11 +1066,11 @@ public class ContactsCenterPortlet extends MVCPortlet {
 			if (!isUsergroupMembership) {
 				LiferayPortletURL rmUrl = getPortletActionUrl(portletRequest, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "removeUser");
 				rmUrl.setParameter("userId", String.valueOf(user.getUserId()));
-				LiferayPortletURL chUrl = getPortletRenderUrl(portletRequest, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "changeRole");
-				chUrl.setParameter("userId", String.valueOf(user.getUserId()));
 				jsonObject.put("rmUrl", rmUrl.toString());
-				jsonObject.put("chUrl", chUrl.toString());
 			}
+			LiferayPortletURL chUrl = getPortletRenderUrl(portletRequest, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "changeRole");
+			chUrl.setParameter("userId", String.valueOf(user.getUserId()));
+			jsonObject.put("chUrl", chUrl.toString());
 		}
 
 		return jsonObject;
