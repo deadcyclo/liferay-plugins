@@ -84,9 +84,9 @@ portletURL.setWindowState(WindowState.NORMAL);
 	</c:when>
 	<c:otherwise>
 		<%
-			int memberCounter = UserLocalServiceUtil.getGroupUsersCount(themeDisplay.getSiteGroupId());
+			int memberCounter = UserLocalServiceUtil.getGroupUsersCount(themeDisplay.getSiteGroupId(), WorkflowConstants.STATUS_APPROVED);
 			for (UserGroup userGroup : UserGroupLocalServiceUtil.getGroupUserGroups(themeDisplay.getSiteGroupId())) {
-				memberCounter += UserLocalServiceUtil.getUserGroupUsersCount(userGroup.getUserGroupId());
+				memberCounter += UserLocalServiceUtil.getUserGroupUsersCount(userGroup.getUserGroupId(), WorkflowConstants.STATUS_APPROVED);
 			}
 		%>
 		<h5 title="<liferay-ui:message key="members" />"><liferay-ui:message key="members" /> (<%=memberCounter%>)</h5>
