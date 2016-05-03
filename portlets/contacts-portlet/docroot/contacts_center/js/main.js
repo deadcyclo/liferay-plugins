@@ -36,9 +36,6 @@ AUI.add(
 		var TPL_ENTRY_DATA =
 			'{lastNameAnchor}' +
 			'<div class="lfr-contact">' +
-				//'<div class="lfr-contact-checkbox">' +
-//					'<input type="checkbox" value="{entryId}" disabled="true" name="contact-ids-{entryId}" class="contact-ids" label="" />' +
-				//'</div>' +
 				'<div class="lfr-contact-grid-item" data-viewSummaryURL="{viewSummaryURL}" data-contactId="{entryId}">' +
 					'<div class="lfr-contact-thumb">' +
 						'<img alt="{fullName}" src="{portraitURL}" />' +
@@ -47,22 +44,19 @@ AUI.add(
 						'<div class="lfr-contact-name">' +
 							'<a href="{personLink}">{fullName}</a>' +
 						'</div>' +
+			            '<div class="lfr-contact-title">' +
+			                '{jobTitle}' +
+			            '</div>' +
+			            '<div class="lfr-contact-extra">' +
+			                '<a href="mailto:{emailAddress}">{emailAddress}</a>' +
+			            '</div>' +
 					    '<div class="lfr-role-meta">' +
 			                '<div class="lfr-group-owner">' +
 			                    '{owner}' +
 			            '</div>' +
-			            '{rmUrl}'+
 			            '{chUrl}'+
+			            '{rmUrl}'+
 					    '</div>' +
-			            '<div class="lfr-contact-title">' +
-			                '{jobTitle}' +
-			            '</div>' +
-						'<div class="lfr-contact-extra">' +
-							'<a href="mailto:{emailAddress}">{emailAddress}</a>' +
-						'</div>' +
-						/*'<div class="lfr-contact-vcard">' +
-							'<a href="{vcardUrl}" title="{vcardText}">{vcardText}</a>' +
-						'</div>' +*/
 					'</div>' +
 					'<div class="clear"></div>' +
 				'</div>' +
@@ -102,9 +96,6 @@ AUI.add(
 		var TPL_USER_DATA =
 			'{lastNameAnchor}' +
 			'<div class="lfr-contact">' +
-				//'<div class="lfr-contact-checkbox">' +
-//					'<input type="checkbox" value="{userId}" {disabled} {checked} name="contact-ids-{userId}" class="contact-ids" label="" />' +
-				//'</div>' +
 				'<div class="lfr-contact-grid-item" data-viewSummaryURL="{viewSummaryURL}" data-userId="{userId}">' +
 					'<div class="lfr-contact-thumb">' +
 						'<img alt="{fullName}" src="{portraitURL}" />' +
@@ -113,22 +104,19 @@ AUI.add(
 						'<div class="lfr-contact-name">' +
 							'<a href="{personLink}">{lastName} {firstName}</a>' +
 						'</div>' +
+						'<div class="lfr-contact-title">' +
+						    '{jobTitle}' +
+						'</div>' +
+						'<div class="lfr-contact-extra">' +
+						    '{emailAddress}' +
+						'</div>' +
 						'<div class="lfr-role-meta">' +
 						    '<div class="lfr-group-owner">' +
 						        '{owner}' +
 						    '</div>' +
+			                '{chUrl}'+
 						    '{rmUrl}'+
-						    '{chUrl}'+
 						'</div>' +
-			            '<div class="lfr-contact-title">' +
-			                '{jobTitle}' +
-			            '</div>' +
-						'<div class="lfr-contact-extra">' +
-							'{emailAddress}' +
-						'</div>' +
-						/*'<div class="lfr-contact-vcard">' +
-							'<a href="{vcardUrl}" title="{vcardText}">{vcardText}</a>' +
-						'</div>' +*/
 					'</div>' +
 					'<div class="clear"></div>' +
 				'</div>' +
@@ -844,7 +832,7 @@ AUI.add(
 													owner: (result.owner ? result.owner : ''),
 													vcardUrl: (vcardURL.toString()),
 													vcardText: (Liferay.Language.get('download-vcard')),
-													jobTitle: (result.jobTitle ? result.jobTitle : ''),
+													jobTitle: (result.jobTitle ? result.jobTitle : '&nbsp;'),
 													portraitURL: (result.portraitURL ? result.portraitURL : ''),
 													userId: result.userId,
 													viewSummaryURL: (result.viewSummaryURL ? result.viewSummaryURL : '')
@@ -865,7 +853,7 @@ AUI.add(
 													owner: (result.owner ? result.owner : ''),
 													vcardUrl: (vcardURL.toString()),
 													vcardText: (Liferay.Language.get('download-vcard')),
-													jobTitle: (result.jobTitle ? result.jobTitle : ''),
+													jobTitle: (result.jobTitle ? result.jobTitle : '&nbsp;'),
 													viewSummaryURL: (result.viewSummaryURL ? result.viewSummaryURL : '')
 												}
 											);
