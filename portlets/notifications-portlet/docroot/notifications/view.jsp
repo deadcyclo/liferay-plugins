@@ -28,32 +28,35 @@
 		boolean actionable = ParamUtil.getBoolean(request, "actionable");
 		%>
 
+		<h1><liferay-ui:message key="title-varslinger" /></h1>
+
 		<div class="clearfix user-notifications-container <%= actionable ? "actionable" : "non-actionable" %>">
-			<aui:row>
-				<aui:col cssClass="nav-bar user-notifications-sidebar" width="<%= 25 %>">
-					<div class="nav">
-						<a class="clearfix non-actionable <%= !actionable ? "selected" : "" %>" href="javascript:;">
-							<span class="title"><liferay-ui:message key="notifications" /></span>
+			<aui:row cssClass="hioa-fullwidth">
+				<aui:col cssClass="nav-bar user-notifications-sidebar" width="<%= 100 %>">
+					<ul class="nav nav-tabs">
+						<li class="tab <%= !actionable ? "active" : "" %>">
+							<a class="clearfix non-actionable <%= !actionable ? "selected" : "" %>" href="javascript:;">
+								<span class="title"><liferay-ui:message key="notifications" /></span>
 
-							<%
-							int unreadNonActionableUserNotificationsCount = NotificationsUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), false, false);
-							%>
+								<%
+									int unreadNonActionableUserNotificationsCount = NotificationsUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), false, false);
+								%>
 
-							<span class="count"><%= unreadNonActionableUserNotificationsCount %></span>
-						</a>
-					</div>
+								<span class="count">(<%= unreadNonActionableUserNotificationsCount %>)</span>
+							</a>
+						</li>
+						<li class="tab <%= actionable ? "active" : "" %>">
+							<a class="actionable clearfix <%= actionable ? "selected" : "" %>" href="javascript:;">
+								<span class="title"><liferay-ui:message key="requests" /></span>
 
-					<div class="nav">
-						<a class="actionable clearfix <%= actionable ? "selected" : "" %>" href="javascript:;">
-							<span class="title"><liferay-ui:message key="requests" /></span>
+								<%
+									int unreadActionableUserNotificationsCount = NotificationsUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), true, false);
+								%>
 
-							<%
-							int unreadActionableUserNotificationsCount = NotificationsUtil.getArchivedUserNotificationEventsCount(themeDisplay.getUserId(), true, false);
-							%>
-
-							<span class="count"><%= unreadActionableUserNotificationsCount %></span>
-						</a>
-					</div>
+								<span class="count">(<%= unreadActionableUserNotificationsCount %>)</span>
+							</a>
+						</li>
+					</ul>
 				</aui:col>
 			</aui:row>
 			<aui:row>

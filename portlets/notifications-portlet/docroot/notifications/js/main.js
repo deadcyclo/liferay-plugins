@@ -374,7 +374,7 @@ AUI.add(
 											var notificationsCountNode = notificationsContainer.one(instance._notificationsCount);
 
 											if (notificationsCountNode) {
-												notificationsCountNode.setHTML(newTotalUuserNotificationEventsCount);
+												notificationsCountNode.setHTML('('+newTotalUuserNotificationEventsCount+')');
 											}
 
 											var entries = [];
