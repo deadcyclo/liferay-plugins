@@ -47,14 +47,16 @@ AUI.add(
 						'<div class="lfr-contact-name">' +
 							'<a href="{personLink}">{fullName}</a>' +
 						'</div>' +
+					    '<div class="lfr-role-meta">' +
+			                '<div class="lfr-group-owner">' +
+			                    '{owner}' +
+			            '</div>' +
 			            '{rmUrl}'+
 			            '{chUrl}'+
+					    '</div>' +
 			            '<div class="lfr-contact-title">' +
 			                '{jobTitle}' +
 			            '</div>' +
-						'<div class="lfr-group-owner">' +
-							'{owner}' +
-						'</div>' +
 						'<div class="lfr-contact-extra">' +
 							'<a href="mailto:{emailAddress}">{emailAddress}</a>' +
 						'</div>' +
@@ -111,14 +113,16 @@ AUI.add(
 						'<div class="lfr-contact-name">' +
 							'<a href="{personLink}">{lastName} {firstName}</a>' +
 						'</div>' +
-			            '{rmUrl}'+
-			            '{chUrl}'+
+						'<div class="lfr-role-meta">' +
+						    '<div class="lfr-group-owner">' +
+						        '{owner}' +
+						    '</div>' +
+						    '{rmUrl}'+
+						    '{chUrl}'+
+						'</div>' +
 			            '<div class="lfr-contact-title">' +
 			                '{jobTitle}' +
 			            '</div>' +
-						'<div class="lfr-group-owner">' +
-							'{owner}' +
-						'</div>' +
 						'<div class="lfr-contact-extra">' +
 							'{emailAddress}' +
 						'</div>' +

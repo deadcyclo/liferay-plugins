@@ -1048,11 +1048,14 @@ public class ContactsCenterPortlet extends MVCPortlet {
 
 		jsonObject.put("viewSummaryURL", viewSummaryURL.toString());
 
-		Role theRole = RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), "Site Owner");
-		//jsonObject.put("owner", UserGroupRoleLocalServiceUtil.hasUserGroupRole(user.getUserId(), themeDisplay.getSiteGroupId(), theRole.getRoleId()));
 		List<UserGroupRole> ugr = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user.getUserId(), themeDisplay.getSiteGroupId());
 		if (ugr.size() > 0) {
-			jsonObject.put("owner",ugr.get(0).getRole().getTitle(themeDisplay.getLocale()));
+			jsonObject.put("owner", ugr.get(0).getRole().getTitle(themeDisplay.getLocale()));
+		} else {
+			List<Role> rl =  RoleLocalServiceUtil.getUserGroupGroupRoles(user.getUserId(), themeDisplay.getSiteGroupId());
+			if (rl.size() > 0) {
+				jsonObject.put("owner", rl.get(0).getTitle(themeDisplay.getLocale()));
+			}
 		}
 		jsonObject.put("personLink", "https://hioa.no/tilsatt/"+user.getScreenName());
 

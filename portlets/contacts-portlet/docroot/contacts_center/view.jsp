@@ -250,7 +250,6 @@ portletURL.setWindowState(WindowState.NORMAL);
 										<div class="lfr-contact-thumb">
 											<img alt="<%= HtmlUtil.escape(user2.getFullName()) %>" src="<%= user2.getPortraitURL(themeDisplay) %>" />
 										</div>
-
 										<div class="lfr-contact-info">
 											<div class="lfr-contact-name">
 												<a href="https://hioa.no/tilsatt/<%= HtmlUtil.escape(user2.getScreenName()) %>">
@@ -261,56 +260,58 @@ portletURL.setWindowState(WindowState.NORMAL);
 													<%= HtmlUtil.escape(user2.getFirstName()) %>
 												</a>
 											</div>
-											<% if (isOwner(user, themeDisplay) && !isOwner(user2, themeDisplay)) {
-												boolean isUsergroupMembership = false;
-												for (UserGroup userGroup : UserGroupLocalServiceUtil.getGroupUserGroups(themeDisplay.getSiteGroupId())) {
-													if (user2.getUserGroups().contains(userGroup)) {
-														isUsergroupMembership = true;
-													}
-												}
-												if (!isUsergroupMembership) {
-											%>
-											<div class="lfr-actions-remove">
+
+											<div class="lfr-role-meta">
+												<div class="lfr-group-owner">
 													<%
-														LiferayPortletURL rmUrl = getPortletActionUrl(request, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "removeUser");
-														rmUrl.setParameter("userId", String.valueOf(user2.getUserId()));
+														String own = "";
+														List<UserGroupRole> ugr = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user2.getUserId(), themeDisplay.getSiteGroupId());
+														if(ugr.size()>0) {
+															own = ugr.get(0).getRole().getTitle(themeDisplay.getLocale());
+														} else {
+															List<Role> rl =  RoleLocalServiceUtil.getUserGroupGroupRoles(user2.getUserId(), themeDisplay.getSiteGroupId());
+															if (rl.size()>0) {
+																own = rl.get(0).getTitle(themeDisplay.getLocale());
+															}
+														}
 													%>
-												<a title="<liferay-ui:message key="remove-member"/>" href="<%=rmUrl%>"><liferay-ui:message key="remove-member"/></a>
-											</div>
-											<% } }%>
-											<div class="lfr-actions-change-role">
-												<%
-													LiferayPortletURL chUrl = getPortletRenderUrl(request, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "changeRole");
-													chUrl.setParameter("userId", String.valueOf(user2.getUserId()));
+													<%=own%>
+												</div>
+												<% if (isOwner(user, themeDisplay) && !isOwner(user2, themeDisplay)) {
+													boolean isUsergroupMembership = false;
+													for (UserGroup userGroup : UserGroupLocalServiceUtil.getGroupUserGroups(themeDisplay.getSiteGroupId())) {
+														if (user2.getUserGroups().contains(userGroup)) {
+															isUsergroupMembership = true;
+														}
+													}
+													if (!isUsergroupMembership) {
 												%>
-												<a title="<liferay-ui:message key="change-member-role"/>" href="<%=chUrl%>"><liferay-ui:message key="change-member-role"/></a>
+												<div class="lfr-actions-remove">
+														<%
+															LiferayPortletURL rmUrl = getPortletActionUrl(request, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "removeUser");
+															rmUrl.setParameter("userId", String.valueOf(user2.getUserId()));
+														%>
+													<a title="<liferay-ui:message key="remove-member"/>" href="<%=rmUrl%>"><liferay-ui:message key="remove-member"/></a>
+												</div>
+												<% } %>
+												<div class="lfr-actions-change-role">
+													<%
+														LiferayPortletURL chUrl = getPortletRenderUrl(request, themeDisplay.getSiteGroupId(), "groupmembershipportlet_WAR_groupmembershipportlet", "changeRole");
+														chUrl.setParameter("userId", String.valueOf(user2.getUserId()));
+													%>
+													<a title="<liferay-ui:message key="change-member-role"/>" href="<%=chUrl%>"><liferay-ui:message key="change-member-role"/></a>
+												</div>
+												<% } %>
 											</div>
+
 											<div class="lfr-contact-title">
 												<c:if test="<%= Validator.isNotNull(user2.getJobTitle()) %>">
 													<%= HtmlUtil.escape(user2.getJobTitle()) %>
 												</c:if>
 											</div>
-											<div class="lfr-group-owner">
-												<%
-													String own = "";
-													List<UserGroupRole> ugr = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user2.getUserId(), themeDisplay.getSiteGroupId());
-													if(ugr.size()>0) {
-														own = ugr.get(0).getRole().getTitle(themeDisplay.getLocale());
-													}
-												%>
-												<%=own%>
-											</div>
 											<div class="lfr-contact-extra">
 												<a href="mailto:<%= HtmlUtil.escape(user2.getEmailAddress()) %>"><%= HtmlUtil.escape(user2.getEmailAddress()) %></a>
 											</div>
-											<%--
-											<div class="lfr-contact-vcard">
-												<portlet:resourceURL id="exportVCard" var="exportURL">
-													<portlet:param name="userId" value="<%= String.valueOf(user2.getUserId()) %>" />
-												</portlet:resourceURL>
-												<a href="<%=exportURL.toString()%>" title="<liferay-ui:message key="download-vcard" />"><liferay-ui:message key="download-vcard" /></a>
-											</div>
-											--%>
 										</div>
 
 										<div class="clear"><!-- --></div>
