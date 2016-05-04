@@ -72,6 +72,12 @@ else {
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setWindowState(WindowState.NORMAL);
+
+	LinkedHashMap<String, Object> pp = new LinkedHashMap<String, Object>();
+	pp.put("inherit", true);
+	pp.put("usersGroups", themeDisplay.getSiteGroupId());
+	int memcnt = UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), "",
+			WorkflowConstants.STATUS_APPROVED, pp);
 %>
 
 <c:choose>
@@ -89,7 +95,7 @@ portletURL.setWindowState(WindowState.NORMAL);
 				memberCounter += UserLocalServiceUtil.getUserGroupUsersCount(userGroup.getUserGroupId(), WorkflowConstants.STATUS_APPROVED);
 			}
 		%>
-		<h5 title="<liferay-ui:message key="members" />"><liferay-ui:message key="members" /> (<%=memberCounter%>)</h5>
+		<h5 title="<liferay-ui:message key="members" />"><liferay-ui:message key="members" /> (<%=memcnt%>)</h5>
 		<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
 			<aui:input name="<%= Constants.CMD %>" type="hidden" value="" />
 			<aui:input name="redirect" type="hidden" value="" />
