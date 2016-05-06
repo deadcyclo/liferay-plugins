@@ -176,12 +176,16 @@ portletURL.setWindowState(WindowState.NORMAL);
 					<%!
 						public boolean isOwner(User user, ThemeDisplay themeDisplay) throws SystemException, PortalException {
 							Role ownerRole = RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), RoleConstants.SITE_OWNER);
-							List<UserGroupRole> usergrouproles =
-									UserGroupRoleLocalServiceUtil.getUserGroupRolesByGroupAndRole(themeDisplay.getSiteGroupId(), ownerRole.getRoleId());
-							for (UserGroupRole userGroupRole : usergrouproles) {
-								if (userGroupRole.getUserId() == user.getUserId()) {
+
+							List<UserGroupRole> ugr = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user.getUserId(), themeDisplay.getSiteGroupId());
+							for (UserGroupRole userGroupRole : ugr) {
+								if (userGroupRole.getRole().equals(ownerRole)) {
 									return true;
 								}
+							}
+							List<Role> rl =  RoleLocalServiceUtil.getUserGroupGroupRoles(user.getUserId(), themeDisplay.getSiteGroupId());
+							if (rl.contains(ownerRole)) {
+								return true;
 							}
 							return false;
 						}

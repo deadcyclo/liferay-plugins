@@ -1,4 +1,6 @@
-<%--
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
+<%@ page import="java.util.ArrayList" %><%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -60,6 +62,18 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 
 		<%
 		List<Role> roles = RoleLocalServiceUtil.search(layout.getCompanyId(), null, null, new Integer[] {RoleConstants.TYPE_SITE}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new RoleNameComparator(false));
+
+			roles = new ArrayList<Role>(roles);
+
+			Collections.sort(roles, new Comparator<Role>() {
+				@Override
+				public int compare(Role role1, Role role2) {
+					return new CompareToBuilder().
+							append(GetterUtil.getLong(role1.getExpandoBridge().getAttribute("order"), 0),
+									GetterUtil.getLong(role2.getExpandoBridge().getAttribute("order"), 0)).
+							toComparison();
+				}
+			});
 
 		roles = UsersAdminUtil.filterGroupRoles(permissionChecker, group.getGroupId(), roles);
 		%>

@@ -91,6 +91,8 @@ page import="java.util.List" %>
 page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
 
+
+<%@page import="org.apache.commons.lang3.builder.CompareToBuilder" %>
 <portlet:defineObjects />
 
 <liferay-theme:defineObjects />
