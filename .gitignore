@@ -28,7 +28,6 @@ _sass_cache_*.css
 /*/*/test-results
 /*/*/tmp
 
-/*/*/docroot/WEB-INF/classes
 /*/*/docroot/WEB-INF/lib/portal-compat-shared.jar
 
 /baseline-reports
