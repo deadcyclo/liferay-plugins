@@ -413,7 +413,7 @@ public class ActivitiesPortlet extends MVCPortlet {
 		User user = UserLocalServiceUtil.fetchUser(userId);
 
 		if (user != null) {
-			jsonObject.put("userDisplayURL", user.getDisplayURL(themeDisplay));
+			jsonObject.put("userDisplayURL", "https://hioa.no/tilsatt/"+user.getScreenName());
 			jsonObject.put(
 				"userPortraitURL",
 				HtmlUtil.escape(user.getPortraitURL(themeDisplay)));

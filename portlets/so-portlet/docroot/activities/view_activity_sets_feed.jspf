@@ -42,18 +42,20 @@ for (SocialActivitySet activitySet : results) {
 		String userDisplayURL = StringPool.BLANK;
 		String userFullName = StringPool.BLANK;
 		String userPortraitURL = StringPool.BLANK;
+		String userName = StringPool.BLANK;
 
 		if (activitySetUser != null) {
 			userDisplayURL = activitySetUser.getDisplayURL(themeDisplay);
 			userFullName = activitySetUser.getFullName();
 			userPortraitURL = activitySetUser.getPortraitURL(themeDisplay);
+			userName = activitySetUser.getScreenName();
 		}
 		%>
 
 		<div class="user-portrait">
 			<span class="avatar">
-				<a href="<%= userDisplayURL %>">
-					<img alt="<%= HtmlUtil.escape(userFullName) %>" src="<%= userPortraitURL %>" />
+				<a href="https://hioa.no/tilsatt/<%=userName%>">
+					<img alt="<%= HtmlUtil.escape(userFullName) %>" src="<%=userPortraitURL%>" />
 				</a>
 			</span>
 		</div>
