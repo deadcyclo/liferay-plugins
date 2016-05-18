@@ -28,8 +28,8 @@ portletURL.setParameter("tabs1", tabs1);
 %>
 
 <c:if test="<%= group.isUser() && layout.isPrivateLayout() %>">
-	<div class="header-fixer">
-		<h2 class="hioa-accordion-header"><liferay-ui:message key="activities-title"/></h2>
+	<div class="header-fixer hioa-accordion-header">
+		<h2><liferay-ui:message key="activities-title"/></h2>
 	</div>
 	<div class="hioa-accordion-content">
 	<liferay-ui:tabs
@@ -43,7 +43,9 @@ portletURL.setParameter("tabs1", tabs1);
 
 <div class="loading-bar"></div>
 
-<c:if test="<%= group.isUser() && layout.isPrivateLayout() %>"></div></c:if>
+<c:if test="<%= group.isUser() && layout.isPrivateLayout() %>">
+	</div>
+</c:if>
 
 <aui:script use="aui-base,aui-io-request-deprecated,aui-parse-content,liferay-so-scroll">
 	var activities = A.one('#p_p_id<portlet:namespace />');
