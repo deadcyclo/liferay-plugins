@@ -29,9 +29,9 @@ portletURL.setParameter("tabs1", tabs1);
 
 <c:if test="<%= group.isUser() && layout.isPrivateLayout() %>">
 	<div class="header-fixer">
-		<h2 id="hioa-accordion-header"><liferay-ui:message key="activities-title"/></h2>
+		<h2 class="hioa-accordion-header"><liferay-ui:message key="activities-title"/></h2>
 	</div>
-	<div id="hioa-accordion-content">
+	<div class="hioa-accordion-content">
 	<liferay-ui:tabs
 		names="my-sites,me"
 		url="<%= portletURL.toString() %>"
