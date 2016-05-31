@@ -107,10 +107,10 @@ portletURL.setParameter("tabs1", tabs1);
 								loading = false;
 
 								if (!activities.one('.no-activities')) {
-									if (body.height() < win.height()) {
+									/*if (body.height() < win.height()) {
 										loadNewContent();
 									}
-									else if (win.width() < 768) {
+									else if (win.width() < 768) {*/
 										loading = true;
 
 										var manualLoaderTemplate =
@@ -119,7 +119,7 @@ portletURL.setParameter("tabs1", tabs1);
 											'</div>';
 
 										socialActivities.append(manualLoaderTemplate);
-									}
+									/*}*/
 								}
 							}
 						}
