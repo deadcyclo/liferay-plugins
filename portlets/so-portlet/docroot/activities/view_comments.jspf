@@ -39,7 +39,7 @@
 		}
 	%>
 
-	<%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId())) {%>
+	<%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId()) || PortalUtil.isOmniadmin(themeDisplay.getUserId())) {%>
 	<portlet:actionURL name="updateComment" var="updateCommentURL" />
 	<aui:form action="<%= updateCommentURL %>" method="post" name='<%= "fm" + activitySet.getActivitySetId() %>'>
 		<aui:input name="mvcPath" type="hidden" value="/activities/view.jsp" />

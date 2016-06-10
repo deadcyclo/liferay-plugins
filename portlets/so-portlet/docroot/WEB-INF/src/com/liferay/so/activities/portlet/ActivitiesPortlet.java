@@ -16,7 +16,7 @@
  */
 
 package com.liferay.so.activities.portlet;
-
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.compat.portal.kernel.util.Time;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.model.MicroblogsEntryConstants;
@@ -392,7 +392,7 @@ public class ActivitiesPortlet extends MVCPortlet {
 
 		jsonObject.put("body", HtmlUtil.escape(body));
 
-		if ((userId <= 0) || (userId != themeDisplay.getUserId())) {
+		if ((userId <= 0) || ((userId != themeDisplay.getUserId() && !PortalUtil.isOmniadmin(themeDisplay.getUserId()) ))) {
 			jsonObject.put("commentControlsClass", "hide");
 		}
 
