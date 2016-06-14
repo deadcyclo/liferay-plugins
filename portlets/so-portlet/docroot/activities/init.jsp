@@ -46,6 +46,7 @@ page import="com.liferay.so.activities.util.ActivitiesUtil" %>
 <%@page import="javax.portlet.WindowStateException" %>
 <%@page import="javax.portlet.PortletMode"%>
 <%@page import="javax.servlet.http.HttpServletRequest"%>
+<%@page import="com.liferay.portal.service.ServiceContext"%>
 
 
 <%

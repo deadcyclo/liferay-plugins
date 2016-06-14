@@ -19,25 +19,6 @@
 
 <div class="comments-container">
 	<div class="comments-list"></div>
-	<%!
-		public boolean isOwner(User user, long groupId, long companyId) throws SystemException, PortalException {
-			Role ownerRole = RoleLocalServiceUtil.getRole(companyId, RoleConstants.SITE_OWNER);
-			Role writeRole = RoleLocalServiceUtil.getRole(companyId, "Skrivetilgang Gruppe");
-			Role commentRole = RoleLocalServiceUtil.getRole(companyId, "Lese og kommentere");
-			List<UserGroupRole> ugr = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user.getUserId(), groupId);
-			for (UserGroupRole userGroupRole : ugr) {
-				if (userGroupRole.getRole().equals(ownerRole) || userGroupRole.getRole().equals(writeRole)
-						|| userGroupRole.getRole().equals(commentRole)) {
-					return true;
-				}
-			}
-			List<Role> rl =  RoleLocalServiceUtil.getUserGroupGroupRoles(user.getUserId(), groupId);
-			if (rl.contains(ownerRole) || rl.contains(writeRole) || rl.contains(commentRole)) {
-				return true;
-			}
-			return false;
-		}
-	%>
 
 	<%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId()) || PortalUtil.isOmniadmin(themeDisplay.getUserId())) {%>
 	<portlet:actionURL name="updateComment" var="updateCommentURL" />

@@ -19,6 +19,26 @@
 
 <%@ include file="/activities/init.jsp" %>
 
+<%!
+	public boolean isOwner(User user, long groupId, long companyId) throws SystemException, PortalException {
+		Role ownerRole = RoleLocalServiceUtil.getRole(companyId, RoleConstants.SITE_OWNER);
+		Role writeRole = RoleLocalServiceUtil.getRole(companyId, "Skrivetilgang Gruppe");
+		Role commentRole = RoleLocalServiceUtil.getRole(companyId, "Lese og kommentere");
+		List<UserGroupRole> ugr = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user.getUserId(), groupId);
+		for (UserGroupRole userGroupRole : ugr) {
+			if (userGroupRole.getRole().equals(ownerRole) || userGroupRole.getRole().equals(writeRole)
+					|| userGroupRole.getRole().equals(commentRole)) {
+				return true;
+			}
+		}
+		List<Role> rl =  RoleLocalServiceUtil.getUserGroupGroupRoles(user.getUserId(), groupId);
+		if (rl.contains(ownerRole) || rl.contains(writeRole) || rl.contains(commentRole)) {
+			return true;
+		}
+		return false;
+	}
+%>
+
 <%
 Group group = themeDisplay.getScopeGroup();
 
@@ -29,6 +49,8 @@ int total = 0;
 
 int start = ParamUtil.getInteger(request, "start");
 int end = start + _DELTA;
+
+	ServiceContext scontext = ServiceContextFactory.getInstance(request);
 
 while ((count < _DELTA) && ((results == null) || !results.isEmpty())) {
 	if (group.isUser()) {
@@ -60,9 +82,28 @@ while ((count < _DELTA) && ((results == null) || !results.isEmpty())) {
 		}
 	}
 	else {
+		if (count < 1 && start <1) {
+			results = SocialActivitySetLocalServiceUtil.getGroupActivitySets(group.getGroupId(), -1, -1);
+			List<SocialActivitySet> hioaresults = new ArrayList<SocialActivitySet>();
+			scontext.setAttribute("showPinned", true);
+			for (SocialActivitySet activitySet : results) {
+				SocialActivityFeedEntry activityFeedEntry = SocialActivityInterpreterLocalServiceUtil.interpret("SO", activitySet, scontext);
+				if (activityFeedEntry == null) {
+					continue;
+				}
+				if (activityFeedEntry.getPortletId().equals("socialactivitymessageportlet_WAR_socialactivitymessageportlet")) {
+					hioaresults.add(activitySet);
+				}
+			}
+			if (hioaresults.size() > 0) {
+			results = hioaresults;
+			%><%@ include file="/activities/view_activity_sets_feed.jspf" %><%
+			}
+		}
 		results = SocialActivitySetLocalServiceUtil.getGroupActivitySets(group.getGroupId(), start, end);
 		total = SocialActivitySetLocalServiceUtil.getGroupActivitySetsCount(group.getGroupId());
 	}
+	scontext = ServiceContextFactory.getInstance(request);
 %>
 
 	<%@ include file="/activities/view_activity_sets_feed.jspf" %>
