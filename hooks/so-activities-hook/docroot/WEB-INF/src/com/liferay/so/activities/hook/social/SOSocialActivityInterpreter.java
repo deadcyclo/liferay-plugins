@@ -373,7 +373,13 @@ public abstract class SOSocialActivityInterpreter
 		Object[] titleArguments = getTitleArguments(
 			null, activity, null, null, serviceContext);
 
-		sb.append(serviceContext.translate(titlePattern, titleArguments));
+		String title = serviceContext.translate(titlePattern, titleArguments);
+		Group group = GroupLocalServiceUtil.fetchGroup(
+				activity.getGroupId());
+
+		title = title.replaceAll("Main", group.getName());
+
+		sb.append(title);
 
 		sb.append("</div>");
 
@@ -402,7 +408,13 @@ public abstract class SOSocialActivityInterpreter
 		Object[] titleArguments = getTitleArguments(
 			null, activitySet, null, null, serviceContext);
 
-		sb.append(serviceContext.translate(titlePattern, titleArguments));
+		String title = serviceContext.translate(titlePattern, titleArguments);
+		Group group = GroupLocalServiceUtil.fetchGroup(
+				activitySet.getGroupId());
+
+		title = title.replaceAll("Main", group.getName());
+
+		sb.append(title);
 
 		sb.append("</div>");
 

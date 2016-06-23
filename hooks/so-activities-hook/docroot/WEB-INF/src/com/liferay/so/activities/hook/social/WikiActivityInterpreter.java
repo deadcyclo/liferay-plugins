@@ -64,7 +64,6 @@ public class WikiActivityInterpreter extends SOSocialActivityInterpreter {
 	@Override
 	public void updateActivitySet(long activityId)
 		throws PortalException, SystemException {
-
 		SocialActivity activity =
 			SocialActivityLocalServiceUtil.fetchSocialActivity(activityId);
 
@@ -264,7 +263,6 @@ public class WikiActivityInterpreter extends SOSocialActivityInterpreter {
 	protected String getBody(
 			SocialActivity activity, ServiceContext serviceContext)
 		throws Exception {
-
 		return getBody(
 			activity.getClassName(), activity.getClassPK(), serviceContext);
 	}
@@ -273,20 +271,22 @@ public class WikiActivityInterpreter extends SOSocialActivityInterpreter {
 	protected String getBody(
 			SocialActivitySet activitySet, ServiceContext serviceContext)
 		throws Exception {
-
 		if ((activitySet.getType() ==
 				SocialActivityKeyConstants.WIKI_ADD_COMMENT) ||
 			(activitySet.getType() ==
 				SocialActivityKeyConstants.WIKI_UPDATE_PAGE) ||
 			(activitySet.getType() ==
 				SocialActivityConstants.TYPE_ADD_COMMENT)) {
-
 			return getBody(
 				activitySet.getClassName(), activitySet.getClassPK(),
 				serviceContext);
 		}
+		String title = super.getBody(activitySet, serviceContext);
+		if ("nb".equals(serviceContext.getLocale().getLanguage())) {
+			title = title.replaceAll("FrontPage", "Forsiden");
+		}
 
-		return super.getBody(activitySet, serviceContext);
+		return title;
 	}
 
 	protected String getBody(
@@ -296,15 +296,11 @@ public class WikiActivityInterpreter extends SOSocialActivityInterpreter {
 		StringBundler sb = new StringBundler(5);
 
 		sb.append("<div class=\"activity-body\"><div class=\"title\">");
-		sb.append(getPageTitle(className, classPK, serviceContext));
-		sb.append("</div><div class=\"wiki-page-content\">");
-
-		AssetRenderer assetRenderer = getAssetRenderer(className, classPK);
-
-		sb.append(
-			StringUtil.shorten(
-				assetRenderer.getSummary(serviceContext.getLocale()), 200));
-
+		String title = getPageTitle(className, classPK, serviceContext);
+		if ("nb".equals(serviceContext.getLocale().getLanguage())) {
+			title = title.replaceAll("FrontPage", "Forsiden");
+		}
+		sb.append(title);
 		sb.append("</div></div>");
 
 		return sb.toString();

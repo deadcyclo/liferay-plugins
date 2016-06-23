@@ -27,13 +27,28 @@ for (SocialActivitySet activitySet : results) {
 		continue;
 	}
 
+	if ("com.liferay.portlet.documentlibrary.model.DLFileEntry".equals(activitySet.getClassName())
+			&& activitySet.getType() == 2 /* oppdaterte */) {
+		continue;
+	}
+
+	if ("com.liferay.portlet.wiki.model.WikiPage".equals(activitySet.getClassName())
+			&& (activitySet.getType() == 2 /* oppdaterte */ || activitySet.getType() == 10006 /* la til vedlegg */)) {
+		continue;
+	}
+
+	if ("com.liferay.portlet.bookmarks.model.BookmarksEntry".equals(activitySet.getClassName())) {
+		continue;
+	}
+
+
 	if (count >= _DELTA) {
 		break;
 	}
 
 	Portlet portlet = PortletLocalServiceUtil.getPortletById(activityFeedEntry.getPortletId());
 %>
-
+<%-- <%= activitySet.getType() %><br/><%= activitySet.getClassName() %><br/> Used for debuging when removing stuff --%>
 	<div class="activity-item clearfix <%= portlet.getCssClassWrapper() %>-activity" id="<portlet:namespace /><%= activitySet.getActivitySetId() %>">
 
 		<%
