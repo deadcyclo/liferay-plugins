@@ -83,6 +83,10 @@ while ((count < _DELTA) && ((results == null) || !results.isEmpty())) {
 	}
 	else {
 		if (count < 1 && start <1) {
+			int origcount = count;
+			int origstart = start;
+			int origtotal = total;
+			int origend = end;
 			results = SocialActivitySetLocalServiceUtil.getGroupActivitySets(group.getGroupId(), -1, -1);
 			List<SocialActivitySet> hioaresults = new ArrayList<SocialActivitySet>();
 			scontext.setAttribute("showPinned", true);
@@ -98,6 +102,10 @@ while ((count < _DELTA) && ((results == null) || !results.isEmpty())) {
 			if (hioaresults.size() > 0) {
 			results = hioaresults;
 			%><%@ include file="/activities/view_activity_sets_feed.jspf" %><%
+				count = origcount;
+				start = origstart;
+				total = origtotal;
+				end = origend;
 			}
 		}
 		results = SocialActivitySetLocalServiceUtil.getGroupActivitySets(group.getGroupId(), start, end);
