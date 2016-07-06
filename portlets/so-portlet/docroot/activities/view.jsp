@@ -151,6 +151,9 @@ portletURL.setParameter("tabs1", tabs1);
 		'click',
 		function(event) {
 			var manualLoader = socialActivities.one('.manual-loader');
+	        if (typeof _sz !== 'undefined' && _sz != null) {
+	            _sz.push(['event', 'stream', 'Load more']);
+	        }
 
 			manualLoader.remove(true);
 
