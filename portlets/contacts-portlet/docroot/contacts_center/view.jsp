@@ -525,7 +525,7 @@ portletURL.setWindowState(WindowState.NORMAL);
                             },
                             '.lfr-contact-grid-item'
                         );
-
+--%>
                         contactsResult.delegate(
                             'click',
                             function(event) {
@@ -558,73 +558,73 @@ portletURL.setWindowState(WindowState.NORMAL);
                             },
                             '.more-results a'
                         );
+			<%--
+                                    contactsResult.delegate(
+                                        'click',
+                                        function(event) {
+                                            var checkBox = event.target;
 
-                        contactsResult.delegate(
-                            'click',
-                            function(event) {
-                                var checkBox = event.target;
+                                            var userId = checkBox.val();
 
-                                var userId = checkBox.val();
+                                            if (checkBox.get('checked')) {
+                                                A.io.request(
+                                                    '<portlet:resourceURL id="getContact"><portlet:param name="portletResource" value="<%= portletResource %>" /></portlet:resourceURL>',
+                                                    {
+                                                        after: {
+                                                            failure: function(event, id, obj) {
+                                                                contactsCenter.showMessage(false, responseData.message);
+                                                            },
+                                                            success: function(event, id, obj) {
+                                                                var responseData = this.get('responseData');
 
-                                if (checkBox.get('checked')) {
-                                    A.io.request(
-                                        '<portlet:resourceURL id="getContact"><portlet:param name="portletResource" value="<%= portletResource %>" /></portlet:resourceURL>',
-                                        {
-                                            after: {
-                                                failure: function(event, id, obj) {
-                                                    contactsCenter.showMessage(false, responseData.message);
-                                                },
-                                                success: function(event, id, obj) {
-                                                    var responseData = this.get('responseData');
-
-                                                    if (responseData.success) {
-                                                        contactsCenter.addContactResult(responseData);
+                                                                if (responseData.success) {
+                                                                    contactsCenter.addContactResult(responseData);
+                                                                }
+                                                            }
+                                                        },
+                                                        data: {
+                                                            <portlet:namespace />userId: userId
+                                                        },
+                                                        dataType: 'json'
                                                     }
-                                                }
-                                            },
-                                            data: {
-                                                <portlet:namespace />userId: userId
-                                            },
-                                            dataType: 'json'
-                                        }
-                                    );
-                                }
-                                else {
-                                    contactsCenter.deleteContactResult(userId);
-                                }
-                            },
-                            '.contact-ids'
-                        );
-                        A.one('.contacts-container-content').delegate(
-                            'click',
-                            function(event) {
-                                var instance = this;
-
-                                var node = event.currentTarget;
-
-                                var userId = instance.one('input').val();
-
-                                var ioRequest = A.io.request(
-                                    node.getAttribute('data-viewSummaryURL'),
-                                    {
-                                        after: {
-                                            failure: function(event, id, obj) {
-                                                contactsCenter.showMessage(false);
-                                            },
-                                            success: function(event, id, obj) {
-                                                contactsCenter.renderContent(this.get('responseData'));
+                                                );
+                                            }
+                                            else {
+                                                contactsCenter.deleteContactResult(userId);
                                             }
                                         },
-                                        data: {
-                                            <portlet:namespace />showDetailView: true,
-                                            <portlet:namespace />userId: userId
-                                        }
-                                    }
-                                );
-                            },
-                            '.lfr-contact-grid-item'
-                        );
-                        --%>
+                                        '.contact-ids'
+                                    );
+                                    A.one('.contacts-container-content').delegate(
+                                        'click',
+                                        function(event) {
+                                            var instance = this;
+
+                                            var node = event.currentTarget;
+
+                                            var userId = instance.one('input').val();
+
+                                            var ioRequest = A.io.request(
+                                                node.getAttribute('data-viewSummaryURL'),
+                                                {
+                                                    after: {
+                                                        failure: function(event, id, obj) {
+                                                            contactsCenter.showMessage(false);
+                                                        },
+                                                        success: function(event, id, obj) {
+                                                            contactsCenter.renderContent(this.get('responseData'));
+                                                        }
+                                                    },
+                                                    data: {
+                                                        <portlet:namespace />showDetailView: true,
+                                                        <portlet:namespace />userId: userId
+                                                    }
+                                                }
+                                            );
+                                        },
+                                        '.lfr-contact-grid-item'
+                                    );
+                                    --%>
 
 			<c:if test="<%= !userPublicPage %>">
 				var contactsCenterHome = A.one('.contacts-portlet .contacts-center-home');
