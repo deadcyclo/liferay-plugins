@@ -194,7 +194,16 @@ portletURL.setParameter("tabs1", tabs1);
 									A.Array.each(
 										responseData.comments,
 										function(item, index) {
-											Liferay.SO.Activities.addNewComment(commentsList, item);
+	                                        Liferay.Service(
+	                                        	'/socialactivitymessage-portlet.hioasocialactivity/add-cards',
+	                                        	{
+	                                        	    body: item.body
+	                                        	},
+	                                        	    function(obj) {
+	                                                item.body = obj;
+	                                                Liferay.SO.Activities.addNewComment(commentsList, item);
+	                                        	}
+	                                        );
 										}
 									);
 
@@ -341,14 +350,22 @@ portletURL.setParameter("tabs1", tabs1);
 										var responseData = this.get('responseData');
 
 										if (responseData.success) {
-											message.html(responseData.body);
 
-											var postDate = commentEntry.one('.comment-info .post-date');
+											Liferay.Service(
+											    '/socialactivitymessage-portlet.hioasocialactivity/add-cards',
+											    {
+											        body: responseData.body
+											    },
+											    function(obj) {
+	                                                message.html(obj);
+	                                                var postDate = commentEntry.one('.comment-info .post-date');
 
-											postDate.html(responseData.modifiedDate);
+	                                                postDate.html(responseData.modifiedDate);
 
-											editForm.toggle();
-											message.toggle();
+	                                                editForm.toggle();
+	                                                message.toggle();
+											    }
+											);
 										}
 									}
 								},

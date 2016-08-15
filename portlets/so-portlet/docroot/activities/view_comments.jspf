@@ -79,8 +79,16 @@
 									var commentsList = commentsContainer.one('.comments-list');
 
 									commentsList.removeClass('hide');
-
-									Liferay.SO.Activities.addNewComment(commentsList, responseData);
+									Liferay.Service(
+									    '/socialactivitymessage-portlet.hioasocialactivity/add-cards',
+									    {
+									        body: responseData.body
+									    },
+									    function(obj) {
+	                                        responseData.body = obj
+									        Liferay.SO.Activities.addNewComment(commentsList, responseData);
+									    }
+									);
 
 									var viewComments = activityFooter.one('.view-comments a');
 
