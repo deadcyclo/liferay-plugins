@@ -194,6 +194,7 @@ portletURL.setParameter("tabs1", tabs1);
 									A.Array.each(
 										responseData.comments,
 										function(item, index) {
+	                                        item.original = item.body;
 	                                        Liferay.Service(
 	                                        	'/socialactivitymessage-portlet.hioasocialactivity/add-cards',
 	                                        	{
@@ -301,6 +302,7 @@ portletURL.setParameter("tabs1", tabs1);
 			var commentEntry = currentTarget.ancestor('.comment-entry');
 
 			var message = commentEntry.one('.comment-body .message');
+	        var originalmessage = commentEntry.one('.comment-body .original-message');
 
 			message.toggle();
 
@@ -324,6 +326,11 @@ portletURL.setParameter("tabs1", tabs1);
 				if (userPortrait) {
 					userPortrait.remove();
 				}
+
+	            var bod = editForm.one('#<portlet:namespace />body');
+	            if (bod) {
+	                bod.addClass('in-use');
+	            }
 
 				var cmdInput = editForm.one('#<portlet:namespace /><%= Constants.CMD %>');
 
@@ -350,7 +357,7 @@ portletURL.setParameter("tabs1", tabs1);
 										var responseData = this.get('responseData');
 
 										if (responseData.success) {
-
+	                                        originalmessage.html(responseData.body);
 											Liferay.Service(
 											    '/socialactivitymessage-portlet.hioasocialactivity/add-cards',
 											    {
@@ -379,7 +386,7 @@ portletURL.setParameter("tabs1", tabs1);
 				);
 			}
 
-			var messageHtml = message.html();
+			var messageHtml = originalmessage.html();
 
 			var bodyInput = editForm.one('#<portlet:namespace />body');
 

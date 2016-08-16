@@ -31,15 +31,19 @@
 		<aui:input name="mbMessageIdOrMicroblogsEntryId" type="hidden" value="" />
 
 		<div>
-			<div class="user-portrait">
+			<div class="span10">
+				<div class="user-portrait">
 				<span class="avatar">
 					<a href="https://hioa.no/tilsatt/<%=user.getScreenName()%>">
 						<img alt="<%= HtmlUtil.escape(user.getFullName()) %>" src="<%=user.getPortraitURL(themeDisplay)%>" />
 					</a>
 				</span>
+				</div>
+				<aui:input type="textarea" cssClass="comment-form" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
 			</div>
-
-			<aui:input cssClass="comment-form" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
+			<div class="span2">
+				<aui:input type="submit" cssClass="btn btn-primary" name="post" value='<%= LanguageUtil.get(pageContext, "post") %>'/>
+			</div>
 
 			<aui:input name="submit" type="hidden" value="post" />
 		</div>
@@ -50,6 +54,13 @@
 <%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId())) {%>
 <aui:script use="aui-base">
 	var form = A.one('#<portlet:namespace />fm<%= activitySet.getActivitySetId() %>');
+
+	var bod = form.one('#<portlet:namespace />body');
+	if (bod) {
+	    bod.on('click', function (event) {
+	        event.target.addClass('in-use');
+	    });
+	}
 
 	if (form) {
 		form.on(
@@ -79,6 +90,7 @@
 									var commentsList = commentsContainer.one('.comments-list');
 
 									commentsList.removeClass('hide');
+	                                responseData.original = responseData.body;
 									Liferay.Service(
 									    '/socialactivitymessage-portlet.hioasocialactivity/add-cards',
 									    {
