@@ -62,6 +62,10 @@ import javax.mail.internet.InternetAddress;
 public class MemberRequestLocalServiceImpl
 	extends MemberRequestLocalServiceBaseImpl {
 
+	public List<MemberRequest> getRequests(long groupId) throws PortalException, SystemException {
+		return memberRequestPersistence.findByGroup(groupId);
+	}
+
 	public MemberRequest addMemberRequest(
 			long userId, long groupId, long receiverUserId,
 			String receiverEmailAddress, long invitedRoleId, long invitedTeamId,

@@ -275,6 +275,13 @@ public class MemberRequestLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static java.util.List<com.liferay.so.model.MemberRequest> getRequests(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().getRequests(groupId);
+	}
+
 	public static com.liferay.so.model.MemberRequest addMemberRequest(
 		long userId, long groupId, long receiverUserId,
 		java.lang.String receiverEmailAddress, long invitedRoleId,

@@ -83,6 +83,9 @@
 			<finder-column name="receiverUserId" />
 			<finder-column name="status" />
 		</finder>
+		<finder name="Group" return-type="Collection">
+			<finder-column name="groupId"/>
+		</finder>
 
 		<!-- References -->
 

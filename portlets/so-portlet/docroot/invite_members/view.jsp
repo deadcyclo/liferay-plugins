@@ -39,7 +39,7 @@
 
 
 
-		<liferay-ui:panel-container accordion="true" extended="false">
+		<liferay-ui:panel-container accordion="true" extended="false" cssClass="member-invite">
 		<liferay-ui:panel title="invite-members-to-this-site" defaultState="<%=theState%>">
 		<liferay-util:include page="/invite_members/view_invite.jsp" servletContext="<%= application %>" />
 
@@ -53,6 +53,80 @@
 									);
 			});
 		</aui:script>
+		</liferay-ui:panel>
+			<div class="clearfix"></div>
+		</liferay-ui:panel-container>
+
+		<liferay-ui:panel-container accordion="true" extended="false" cssClass="previous-invites">
+		<liferay-ui:panel title="previous-invites" defaultState="<%=theState%>">
+			<table class="table table-bordered table-hover table-striped">
+				<thead class="table-columns">
+				<tr>
+					<th class="table-first-header">
+						<liferay-ui:message key="name-of-invitee" />
+					</th>
+					<th>
+						<liferay-ui:message key="name-of-inviter" />
+					</th>
+					<th>
+						<liferay-ui:message key="invite-role" />
+					</th>
+					<th>
+						<liferay-ui:message key="invite-date" />
+					</th>
+					<th>
+						<liferay-ui:message key="invite-status" />
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				<%
+					for (MemberRequest req : MemberRequestLocalServiceUtil.getRequests(group.getGroupId())) {
+				%>
+				<tr>
+					<td class="table-cell first">
+						<%
+							long uid = req.getReceiverUserId();
+							User rec = UserLocalServiceUtil.getUser(uid);
+						%>
+						<%=rec.getFullName()%><br>
+					</td>
+					<td class="table-cell">
+						<%=req.getUserName()%><br>
+					</td>
+					<td class="table-cell">
+						<%
+							long rid = req.getInvitedRoleId();
+							Role rer = RoleLocalServiceUtil.getRole(rid);
+						%>
+						<%=rer.getTitle(themeDisplay.getLocale())%><br>
+					</td>
+					<td class="table-cell">
+						<%=dateFormatDate.format(req.getCreateDate())%><br>
+					</td>
+					<td class="table-cell">
+						<span class="taglib-workflow-status">
+							<span class="workflow-status">
+								<c:choose>
+									<c:when test="<%=req.getStatus()==1%>">
+										<strong class="label workflow-status-approved label-success workflow-value"><liferay-ui:message key="invite-status-accepted" /></strong>
+									</c:when>
+									<c:when test="<%=req.getStatus()==2%>">
+										<strong class="label workflow-status-approved label-important workflow-value"><liferay-ui:message key="invite-status-ignored" /></strong>
+									</c:when>
+									<c:otherwise>
+										<strong class="label workflow-status-approved label-warning workflow-value"><liferay-ui:message key="invite-status-pending" /></strong>
+									</c:otherwise>
+								</c:choose>
+							</span>
+						</span>
+					</td>
+				</tr>
+				<%
+					}
+				%>
+				</tbody>
+			</table>
 		</liferay-ui:panel>
 			<div class="clearfix"></div>
 		</liferay-ui:panel-container>

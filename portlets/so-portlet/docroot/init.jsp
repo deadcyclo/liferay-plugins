@@ -78,6 +78,8 @@ page import="com.liferay.so.sites.util.SitesUtil" %><%@
 page import="com.liferay.so.util.GroupConstants" %><%@
 page import="com.liferay.so.util.PortletKeys" %><%@
 page import="com.liferay.so.util.RoleConstants" %>
+<%@ page import="com.liferay.so.model.MemberRequest" %>
+<%@ page import="com.liferay.so.service.MemberRequestLocalServiceUtil" %>
 
 <%@ page import="java.text.DateFormat" %><%@
 page import="java.text.Format" %>
