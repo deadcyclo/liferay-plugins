@@ -17,6 +17,12 @@
  */
 --%>
 
+<%
+	PortletURL membersURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+	membersURL.setParameter("p_p_resource_id", "members");
+	membersURL.setParameter("siteid", String.valueOf(activitySet.getGroupId()));
+%>
+
 <div class="comments-container">
 	<div class="comments-list"></div>
 
@@ -40,6 +46,7 @@
 				</span>
 				</div>
 				<aui:input type="textarea" cssClass="comment-form" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
+				<aui:input type="text" cssClass="hide comment-alerts" label="" name="alerts" placeholder='<%= LanguageUtil.get(pageContext, "alerts-placeholder") %>'/>
 			</div>
 			<div class="span2">
 				<aui:input type="submit" cssClass="btn btn-primary" name="post" value='<%= LanguageUtil.get(pageContext, "post") %>'/>
@@ -54,6 +61,34 @@
 <%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId())) {%>
 <aui:script use="aui-base">
 	var form = A.one('#<portlet:namespace />fm<%= activitySet.getActivitySetId() %>');
+	A.io.request('<%=membersURL%>', {
+	dataType: 'json',
+	cache: true,
+	autoLoad: true,
+	on: {
+	success: function () {
+	var members = this.get('responseData');
+	members.menuItemTemplate = function (item) {
+	return '<div class="user-portrait">' +
+	'<span class="avatar">' +
+	'<img alt="'+item.original.key+'" src="'+item.original.portrait + '">' +
+	'</span>' +
+	'</div>' +
+	item.string.split('#')[0] +
+	'<div class="job-title">'+item.original.title+'</div>';
+	};
+	members.lookup = function(person) {
+	return person.key + '#' + person.value;
+	};
+	var tribute = new Tribute(members);
+	tribute.attach(form.one('#<portlet:namespace/>body').getDOMNode());
+	tribute.attach(form.one('#<portlet:namespace/>alerts').getDOMNode());
+	},
+	error: function() {
+	console.log('Error loading @mentions members')
+	}
+	}
+	});
 
 	var bod = form.one('#<portlet:namespace />body');
 	if (bod) {
@@ -61,13 +96,24 @@
 	        event.target.addClass('in-use');
 	    });
 	}
+	var sp2 = form.one('.span2');
+	if (sp2 && bod) {
+	bod.on('click', function (event) {
+	sp2.addClass('in-use');
+	});
+	}
+	var al = form.one('#<portlet:namespace />alerts');
+	if (al && bod) {
+	bod.on('click', function (event) {
+	al.removeClass('hide');
+	});
+	}
 
 	if (form) {
 		form.on(
 			'submit',
 			function(event) {
 				event.halt();
-
 				var currentTarget = event.currentTarget;
 
 				var activityFooter = currentTarget.ancestor('.activity-footer');
@@ -85,7 +131,6 @@
 						after: {
 							success: function(event, id, obj) {
 								var responseData = this.get('responseData');
-
 								if (responseData.success) {
 									var commentsList = commentsContainer.one('.comments-list');
 
@@ -99,6 +144,32 @@
 									    function(obj) {
 	                                        responseData.body = obj
 									        Liferay.SO.Activities.addNewComment(commentsList, responseData);
+	<%
+		PortletURL notificationURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+		notificationURL.setParameter("p_p_resource_id", "sendNotifications");
+		notificationURL.setParameter("type", "create");
+	%>
+	var activity = currentTarget.ancestor('.activity-item');
+	var activity_id = activity.get('id').split(/_/).pop();
+
+	var notUri = '<%=notificationURL%>&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_showSingle='+activity_id+'&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_messageId='+responseData.mbMessageIdOrMicroblogsEntryId;
+	var al = form.one('#<portlet:namespace />alerts');
+	if (al) {
+	notUri = notUri + "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_alerts="+encodeURIComponent(al.get('value'));
+	}
+
+	A.io.request(notUri, {
+	dataType: 'json',
+	cache: true,
+	autoLoad: true,
+	on: {
+	success: function () {
+	},
+	error: function() {
+	console.log('Error sending notifications')
+	}
+	}
+	});
 									    }
 									);
 
@@ -120,6 +191,19 @@
 									var textInput = commentsContainer.one('.comment-form');
 
 									textInput.attr('value', '');
+
+	var bod = form.one('#<portlet:namespace />body');
+	if (bod) {
+	bod.removeClass('in-use');
+	}
+	var sp2 = form.one('.span2');
+	if (sp2) {
+	sp2.removeClass('in-use');
+	}
+	var al = form.one('#<portlet:namespace />alerts');
+	if (al) {
+	al.addClass('hide');
+	}
 								}
 							}
 						},

@@ -50,7 +50,6 @@ for (SocialActivitySet activitySet : results) {
 %>
 <%-- <%= activitySet.getType() %><br/><%= activitySet.getClassName() %><br/> Used for debuging when removing stuff --%>
 	<div class="activity-item clearfix <%= portlet.getCssClassWrapper() %>-activity" id="<portlet:namespace /><%= activitySet.getActivitySetId() %>">
-
 		<%
 		User activitySetUser = UserLocalServiceUtil.fetchUser(activitySet.getUserId());
 
@@ -136,7 +135,7 @@ for (SocialActivitySet activitySet : results) {
 		</div>
 	</div>
 
-	<aui:script use="aui-base">
+	<aui:script use="aui-base, node-event-simulate">
 		var entry = A.one('#<portlet:namespace /><%= activitySet.getActivitySetId() %>');
 
 		var subentry = entry.one('.activity-subentry');
@@ -157,6 +156,9 @@ for (SocialActivitySet activitySet : results) {
 				bodyContainer.setStyle('height', 'auto');
 			}
 		}
+		<%if (single > 0) {%>
+		entry.one('.view-comments a').simulate("click");
+		<%}%>
 	</aui:script>
 
 <%

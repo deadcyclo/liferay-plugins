@@ -47,7 +47,8 @@ page import="com.liferay.so.activities.util.ActivitiesUtil" %>
 <%@page import="javax.portlet.PortletMode"%>
 <%@page import="javax.servlet.http.HttpServletRequest"%>
 <%@page import="com.liferay.portal.service.ServiceContext"%>
-
+<%@page import="com.liferay.portlet.PortletURLFactoryUtil"%>
+<%@page import="javax.portlet.PortletRequest"%>
 
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1", "my-sites");

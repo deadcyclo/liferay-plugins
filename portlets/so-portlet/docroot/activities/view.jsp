@@ -24,6 +24,8 @@ Group group = themeDisplay.getScopeGroup();
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
+long single = ParamUtil.getLong(request, "showSingle");
+
 portletURL.setParameter("tabs1", tabs1);
 %>
 
@@ -38,7 +40,6 @@ portletURL.setParameter("tabs1", tabs1);
 		value="<%= tabs1 %>"
 	/>
 </c:if>
-
 <div class="social-activities"></div>
 
 <div class="loading-bar"></div>
@@ -85,7 +86,9 @@ portletURL.setParameter("tabs1", tabs1);
 							<portlet:param name="mvcPath" value="/activities/view_activities.jsp" />
 						</c:otherwise>
 					</c:choose>
-
+					<%if (single > 0) { %>
+					<portlet:param name="showSingle" value="<%= String.valueOf(single) %>" />
+					<% } %>
 					<portlet:param name="tabs1" value="<%= tabs1 %>" />
 				</portlet:renderURL>
 
@@ -117,8 +120,9 @@ portletURL.setParameter("tabs1", tabs1);
 											'<div class="manual-loader">' +
 												'<button href="javascript:;"><liferay-ui:message key="load-more-activities" /></button>' +
 											'</div>';
-
+	<%if (single < 1) { %>
 										socialActivities.append(manualLoaderTemplate);
+	<% } %>
 									/*}*/
 								}
 							}
@@ -332,6 +336,11 @@ portletURL.setParameter("tabs1", tabs1);
 	                bod.addClass('in-use');
 	            }
 
+	var al = editForm.one('#<portlet:namespace />alerts');
+	if (al) {
+	al.removeClass('hide');
+	}
+
 				var cmdInput = editForm.one('#<portlet:namespace /><%= Constants.CMD %>');
 
 				cmdInput.val('<%= Constants.EDIT %>');
@@ -366,11 +375,39 @@ portletURL.setParameter("tabs1", tabs1);
 											    function(obj) {
 	                                                message.html(obj);
 	                                                var postDate = commentEntry.one('.comment-info .post-date');
-
 	                                                postDate.html(responseData.modifiedDate);
+		                                            editForm.toggle();
+		                                            message.toggle();
+	<%
+		PortletURL notificationURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+		notificationURL.setParameter("p_p_resource_id", "sendNotifications");
+		notificationURL.setParameter("type", "update");
+	%>
+	var activity = currentTarget.ancestor('.activity-item');
+	var activity_id = activity.get('id').split(/_/).pop();
 
-	                                                editForm.toggle();
-	                                                message.toggle();
+	var notUri = '<%=notificationURL%>&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_showSingle='+activity_id+'&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_messageId='+mbMessageIdOrMicroblogsEntryId;
+	var al = editForm.one('#<portlet:namespace />alerts');
+	if (al) {
+	notUri = notUri + "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_alerts="+encodeURIComponent(al.get('value'));
+	}
+
+	A.io.request(notUri, {
+	dataType: 'json',
+	cache: true,
+	autoLoad: true,
+	on: {
+	success: function () {
+	var al = editForm.one('#<portlet:namespace />alerts');
+	if (al) {
+	al.set('value', '');
+	}
+	},
+	error: function() {
+	console.log('Error sending notifications')
+	}
+	}
+	});
 											    }
 											);
 										}
@@ -386,11 +423,43 @@ portletURL.setParameter("tabs1", tabs1);
 				);
 			}
 
-			var messageHtml = originalmessage.html();
+	<%
+		PortletURL membersURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+		membersURL.setParameter("p_p_resource_id", "members");
+	%>
 
-			var bodyInput = editForm.one('#<portlet:namespace />body');
+	A.io.request('<%=membersURL%>', {
+	dataType: 'json',
+	cache: true,
+	autoLoad: true,
+	on: {
+	success: function () {
+	var members = this.get('responseData');
+	members.menuItemTemplate = function (item) {
+	return '<div class="user-portrait">' +
+	'<span class="avatar">' +
+	'<img alt="'+item.original.key+'" src="'+item.original.portrait + '">' +
+	'</span>' +
+	'</div>' +
+	item.string.split('#')[0] +
+	'<div class="job-title">'+item.original.title+'</div>';
+	};
+	members.lookup = function(person) {
+	return person.key + '#' + person.value;
+	};
+	var tribute = new Tribute(members);
+	var messageHtml = originalmessage.html();
 
-			bodyInput.val(messageHtml);
+	var bodyInput = editForm.one('#<portlet:namespace />body');
+
+	bodyInput.val(messageHtml);
+	tribute.attach(bodyInput.getDOMNode());
+	},
+	error: function() {
+	console.log('Error loading @mentions members')
+	}
+	}
+	});
 		},
 		'.comment-entry .edit-comment a'
 	);
