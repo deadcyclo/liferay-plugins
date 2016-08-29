@@ -28,7 +28,7 @@
 
 	<%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId()) || PortalUtil.isOmniadmin(themeDisplay.getUserId())) {%>
 	<portlet:actionURL name="updateComment" var="updateCommentURL" />
-	<aui:form action="<%= updateCommentURL %>" method="post" name='<%= "fm" + activitySet.getActivitySetId() %>'>
+	<aui:form action="<%= updateCommentURL %>" method="post" name='<%= "fm" + activitySet.getActivitySetId() %>' autocomplete="off">
 		<aui:input name="mvcPath" type="hidden" value="/activities/view.jsp" />
 		<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(currentURL) %>" />
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.ADD %>" />
