@@ -340,6 +340,10 @@ portletURL.setParameter("tabs1", tabs1);
 	if (al) {
 	al.removeClass('hide');
 	}
+	var sp2 = editForm.one('.span2');
+	if (sp2) {
+	sp2.addClass('in-use');
+	}
 
 				var cmdInput = editForm.one('#<portlet:namespace /><%= Constants.CMD %>');
 
@@ -451,9 +455,11 @@ portletURL.setParameter("tabs1", tabs1);
 	var messageHtml = originalmessage.html();
 
 	var bodyInput = editForm.one('#<portlet:namespace />body');
+	var alertInput = editForm.one('#<portlet:namespace />alerts');
 
 	bodyInput.val(messageHtml);
 	tribute.attach(bodyInput.getDOMNode());
+	tribute.attach(alertInput.getDOMNode());
 	},
 	error: function() {
 	console.log('Error loading @mentions members')
