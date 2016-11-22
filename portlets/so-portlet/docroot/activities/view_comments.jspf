@@ -45,8 +45,11 @@
 					</a>
 				</span>
 				</div>
-				<aui:input type="textarea" cssClass="comment-form" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
-				<aui:input type="text" cssClass="hide comment-alerts" label="" name="alerts" placeholder='<%= LanguageUtil.get(pageContext, "alerts-placeholder") %>'/>
+				<div id="<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>" class="comment-form" data-placeholder="<%= LanguageUtil.get(pageContext, "leave-a-comment") %>"></div>
+				<aui:input type="hidden" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
+				<div class="comment-cards" id="<portlet:namespace />cards<%=activitySet.getActivitySetId()%>"></div>
+				<div class="hide comment-alerts" id="<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>" data-placeholder="<%= LanguageUtil.get(pageContext, "alerts-placeholder") %>"></div>
+				<aui:input type="hidden" label="" name="alerts" placeholder='<%= LanguageUtil.get(pageContext, "alerts-placeholder") %>'/>
 			</div>
 			<div class="span2">
 				<aui:input type="submit" cssClass="btn btn-primary" name="post" value='<%= LanguageUtil.get(pageContext, "post") %>'/>
@@ -59,58 +62,150 @@
 </div>
 
 <%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId())) {%>
+
 <aui:script use="aui-base">
-	var form = A.one('#<portlet:namespace />fm<%= activitySet.getActivitySetId() %>');
-	A.io.request('<%=membersURL%>', {
+Liferay['<portlet:namespace />-wysiwyg-skip<%=activitySet.getActivitySetId()%>'] = [];
+function getServiceSync() {
+	var xhr = null;
+	var args = parent.Liferay.Service.parseInvokeArgs(arguments);
+
+	var syncIOConfig = {
+		sync: true,
+		on: {
+			success: function(event, id, obj){
+				xhr = obj;
+			}
+		}
+	};
+
+	args[1] = parent.AUI().merge(args[1], syncIOConfig);
+
+	parent.Liferay.Service.invoke.apply(Liferay.Service, args);
+
+	if(xhr){
+		return eval('(' + xhr.responseText + ')');
+	}
+};
+var updateCommentCards = function (editor) {
+	var data = editor.getData();
+	Liferay.Service(
+			'/socialactivitymessage-portlet.hioasocialactivity/add-direct-cards',
+			{
+				body: data,
+				ignore: JSON.stringify(Liferay['<portlet:namespace />-wysiwyg-skip<%=activitySet.getActivitySetId()%>'])
+			},
+			function(obj) {
+				A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').setHTML(obj);
+				A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').all('.remove-all').each(function (node) {
+					node.on('click', function (event) {
+						var card = event.currentTarget.ancestor('.card-rich');
+						var url = card.one('.url a');
+						Liferay['<portlet:namespace />-wysiwyg-skip<%=activitySet.getActivitySetId()%>'].push(url.getAttribute('href'));
+						card.remove(true);
+						card.destroy();
+						updateCommentCards(editor, true);
+					});
+				});
+			}
+	);
+};
+
+var handleCommentLinkInsert = function (event) {
+	if ('autolinkAdd' === event.name || 'linkEdit' === event.data.constructor.key) {
+		updateCommentCards(event.editor);
+	}
+};
+var form = A.one('#<portlet:namespace />fm<%= activitySet.getActivitySetId() %>');
+selections = [{
+	name: 'link',
+	buttons: ['linkEdit'],
+	test: AlloyEditor.SelectionTest.link
+} , {
+	name: 'text',
+	buttons: ['removeFormat', 'bold', 'italic', 'underline', 'link'],
+	test: AlloyEditor.SelectionTest.text
+}];
+var toolbars = {
+	styles: {
+		selections: selections,
+		tabIndex: 1
+	},
+	add: {
+		buttons: ['link'],
+		tabIndex: 2
+	}
+};
+noselections = [{
+	name: 'text',
+	buttons: [],
+	test: AlloyEditor.SelectionTest.text
+}];
+var noToolbars = {
+	styles: {
+		selections: noselections,
+		tabIndex: 1
+	}
+};
+var editor = AlloyEditor.editable('<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>', {
+	toolbars: toolbars
+});
+var alertEditor = AlloyEditor.editable('<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>', {
+	toolbars: noToolbars
+});
+editor.get('nativeEditor').on('autolinkAdd', function (event) { handleCommentLinkInsert(event); });
+editor.get('nativeEditor').on('actionPerformed', function (event) { handleCommentLinkInsert(event); });
+// TODO: Smileys
+A.io.request('<%=membersURL%>', {
 	dataType: 'json',
 	cache: true,
 	autoLoad: true,
 	on: {
-	success: function () {
-	var members = this.get('responseData');
-	members.menuItemTemplate = function (item) {
-	return '<div class="user-portrait">' +
-	'<span class="avatar">' +
-	'<img alt="'+item.original.key+'" src="'+item.original.portrait + '">' +
-	'</span>' +
-	'</div>' +
-	item.string.split('#')[0] +
-	'<div class="job-title">'+item.original.title+'</div>';
-	};
-	members.lookup = function(person) {
-	return person.key + '#' + person.value;
-	};
-	var tribute = new Tribute(members);
-	tribute.attach(form.one('#<portlet:namespace/>body').getDOMNode());
-	tribute.attach(form.one('#<portlet:namespace/>alerts').getDOMNode());
-	},
-	error: function() {
-	console.log('Error loading @mentions members')
+		success: function () {
+			var members = this.get('responseData');
+			members.menuItemTemplate = function (item) {
+				return '<div class="user-portrait">' +
+						'<span class="avatar">' +
+						'<img alt="'+item.original.key+'" src="'+item.original.portrait + '">' +
+						'</span>' +
+						'</div>' +
+						item.string.split('#')[0] +
+						'<div class="job-title">'+item.original.title+'</div>';
+			};
+			members.selectTemplate = function (item) {
+				return getServiceSync(
+						'/socialactivitymessage-portlet.hioasocialactivity/get-mention',
+						{
+							username: item.original.value
+						}
+				);
+			};
+			members.lookup = function(person) {
+				return person.key + '#' + person.value;
+			};
+			var tribute = new Tribute(members);
+			tribute.attach(form.one('#<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>').getDOMNode());
+			tribute.attach(form.one('#<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>').getDOMNode());
+		},
+		error: function() {
+			console.log('Error loading @mentions members')
+		}
 	}
-	}
-	});
+});
 
-	var bod = form.one('#<portlet:namespace />body');
-	if (bod) {
-	    bod.on('click', function (event) {
-	        event.target.addClass('in-use');
-	    });
+var sp2 = form.one('.span2');
+var al = form.one('#<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>');
+editor.get('nativeEditor').on('focus', function() {
+	editor.get('srcNode').classList.add('in-use');
+	if (sp2) {
+		sp2.addClass('in-use');
 	}
-	var sp2 = form.one('.span2');
-	if (sp2 && bod) {
-	bod.on('click', function (event) {
-	sp2.addClass('in-use');
-	});
+	if (al) {
+		al.removeClass('hide');
 	}
-	var al = form.one('#<portlet:namespace />alerts');
-	if (al && bod) {
-	bod.on('click', function (event) {
-	al.removeClass('hide');
-	});
-	}
+});
 
-	if (form) {
-		form.on(
+if (form) {
+	form.on(
 			'submit',
 			function(event) {
 				event.halt();
@@ -125,96 +220,97 @@
 
 				cmdNode.val('<%= Constants.ADD %>');
 
+				var data = editor.get('nativeEditor').getData();
+	            var alertsdata = alertEditor.get('nativeEditor').getData();
+				var cards = A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').getHTML();
+				form.one('#<portlet:namespace />body').set('value', data.replace(/<p>\s<\/p>/g, "") + cards);
+	            form.one('#<portlet:namespace />alerts').set('value', alertsdata);
+
 				A.io.request(
-					form.attr('action'),
-					{
-						after: {
-							success: function(event, id, obj) {
-								var responseData = this.get('responseData');
-								if (responseData.success) {
-									var commentsList = commentsContainer.one('.comments-list');
+						form.attr('action'),
+						{
+							after: {
+								success: function(event, id, obj) {
+									var responseData = this.get('responseData');
+									if (responseData.success) {
+										var commentsList = commentsContainer.one('.comments-list');
+										commentsList.removeClass('hide');
+										responseData.original = responseData.body;
+										Liferay.SO.Activities.addNewComment(commentsList, responseData);
+										<%
+											PortletURL notificationURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+											notificationURL.setParameter("p_p_resource_id", "sendNotifications");
+											notificationURL.setParameter("type", "create");
+										%>
+										var activity = currentTarget.ancestor('.activity-item');
+										var activity_id = activity.get('id').split(/_/).pop();
 
-									commentsList.removeClass('hide');
-	                                responseData.original = responseData.body;
-									Liferay.Service(
-									    '/socialactivitymessage-portlet.hioasocialactivity/add-cards',
-									    {
-									        body: responseData.body
-									    },
-									    function(obj) {
-	                                        responseData.body = obj
-									        Liferay.SO.Activities.addNewComment(commentsList, responseData);
-	<%
-		PortletURL notificationURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
-		notificationURL.setParameter("p_p_resource_id", "sendNotifications");
-		notificationURL.setParameter("type", "create");
-	%>
-	var activity = currentTarget.ancestor('.activity-item');
-	var activity_id = activity.get('id').split(/_/).pop();
+										var notUri = '<%=notificationURL%>&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_showSingle='+activity_id+'&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_messageId='+responseData.mbMessageIdOrMicroblogsEntryId;
+										var al = form.one('#<portlet:namespace />alerts');
+										if (al) {
+											notUri = notUri + "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_alerts="+encodeURIComponent(al.get('value'));
+										}
 
-	var notUri = '<%=notificationURL%>&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_showSingle='+activity_id+'&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_messageId='+responseData.mbMessageIdOrMicroblogsEntryId;
-	var al = form.one('#<portlet:namespace />alerts');
+										A.io.request(notUri, {
+											dataType: 'json',
+											cache: true,
+											autoLoad: true,
+											on: {
+												success: function () {
+												},
+												error: function() {
+													console.log('Error sending notifications')
+												}
+											}
+										});
+
+										var viewComments = activityFooter.one('.view-comments a');
+
+										var viewCommentsHtml = viewComments.get('innerHTML');
+
+										var messagesCount = parseInt(viewCommentsHtml) + 1;
+
+										if (isNaN(messagesCount)) {
+											messagesCount = 1;
+										}
+
+										viewComments.html(
+												messagesCount +
+												(messagesCount > 1 ? ' <%= UnicodeLanguageUtil.get(pageContext, "comments") %>' : ' <%= UnicodeLanguageUtil.get(pageContext, "comment") %>')
+										);
+
+	                                    editor.get('nativeEditor').setData('');
+	                                    editor.get('srcNode').classList.remove('in-use');
+										var sp2 = form.one('.span2');
+										if (sp2) {
+											sp2.removeClass('in-use');
+										}
+	                                    var al = form.one('#<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>');
+										if (al) {
+											al.addClass('hide');
+										}
+	                                    A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').setHTML(obj);
+	editor.get('nativeEditor').on('focus', function() {
+	editor.get('srcNode').classList.add('in-use');
+	if (sp2) {
+	sp2.addClass('in-use');
+	}
 	if (al) {
-	notUri = notUri + "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_alerts="+encodeURIComponent(al.get('value'));
-	}
-
-	A.io.request(notUri, {
-	dataType: 'json',
-	cache: true,
-	autoLoad: true,
-	on: {
-	success: function () {
-	},
-	error: function() {
-	console.log('Error sending notifications')
-	}
+	al.removeClass('hide');
 	}
 	});
-									    }
-									);
-
-									var viewComments = activityFooter.one('.view-comments a');
-
-									var viewCommentsHtml = viewComments.get('innerHTML');
-
-									var messagesCount = parseInt(viewCommentsHtml) + 1;
-
-									if (isNaN(messagesCount)) {
-										messagesCount = 1;
 									}
-
-									viewComments.html(
-										messagesCount +
-										(messagesCount > 1 ? ' <%= UnicodeLanguageUtil.get(pageContext, "comments") %>' : ' <%= UnicodeLanguageUtil.get(pageContext, "comment") %>')
-									);
-
-									var textInput = commentsContainer.one('.comment-form');
-
-									textInput.attr('value', '');
-
-	var bod = form.one('#<portlet:namespace />body');
-	if (bod) {
-	bod.removeClass('in-use');
-	}
-	var sp2 = form.one('.span2');
-	if (sp2) {
-	sp2.removeClass('in-use');
-	}
-	var al = form.one('#<portlet:namespace />alerts');
-	if (al) {
-	al.addClass('hide');
-	}
 								}
+							},
+							dataType: 'json',
+							form: {
+								id: form
 							}
-						},
-						dataType: 'json',
-						form: {
-							id: form
 						}
-					}
 				);
 			}
-		);
-	}
+	);
+}
 </aui:script>
+
 <%}%>

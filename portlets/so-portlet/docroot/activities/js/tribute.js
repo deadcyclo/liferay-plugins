@@ -407,6 +407,13 @@ var TributeEvents = function () {
         value: function keyup(instance, event) {
             var _this = this;
 
+            if (instance.commandEvent) {
+                /* We don't want the editor to be doing anything if tribute has already consumed the command */
+                event.preventDefault();
+                event.stopPropagation();
+                event.stopImmediatePropagation();
+            }
+
             if (instance.inputEvent) {
                 instance.inputEvent = false;
             }
@@ -500,11 +507,12 @@ var TributeEvents = function () {
                 enter: function enter(e, el) {
                     // choose selection
                     if (_this2.tribute.isActive) {
+                        /* We don't want the editor to be doing anything if tribute has already consumed the command */
                         e.preventDefault();
-                        setTimeout(function () {
-                            _this2.tribute.selectItemAtIndex(_this2.tribute.menuSelected);
-                            _this2.tribute.hideMenu();
-                        }, 0);
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        _this2.tribute.selectItemAtIndex(_this2.tribute.menuSelected);
+                        _this2.tribute.hideMenu();
                     }
                 },
                 escape: function escape(e, el) {
@@ -520,7 +528,11 @@ var TributeEvents = function () {
                 up: function up(e, el) {
                     // navigate up ul
                     if (_this2.tribute.isActive) {
+                        /* We don't want the editor to be doing anything if tribute has already consumed the command */
                         e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+
                         var count = _this2.tribute.current.filteredItems.length,
                             selected = _this2.tribute.menuSelected;
 
@@ -533,7 +545,10 @@ var TributeEvents = function () {
                 down: function down(e, el) {
                     // navigate down ul
                     if (_this2.tribute.isActive) {
+                        /* We don't want the editor to be doing anything if tribute has already consumed the command */
                         e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
                         var count = _this2.tribute.current.filteredItems.length - 1,
                             selected = _this2.tribute.menuSelected;
 
