@@ -127,6 +127,11 @@ for (SocialActivitySet activitySet : results) {
 								<span><liferay-ui:message key="view-more" /></span>
 							</a>
 						</span>
+
+						<div class="likes-holder">
+							<div class="likes">x and </div>
+							<div class="like"><a href="javascript:;">LIKEME</a></div>
+						</div>
 					</div>
 
 					<%@ include file="/activities/view_comments.jspf" %>
@@ -135,7 +140,23 @@ for (SocialActivitySet activitySet : results) {
 		</div>
 	</div>
 
-	<aui:script use="aui-base, node-event-simulate">
+	<aui:script use="aui-base, node-event-simulate, handlebars">
+		A.Handlebars.registerHelper("sub", function(number) {
+			return number-1;
+		});
+
+		/* TODO: Also needed on the individual loads */
+		/* TODO: Also on comments */
+
+		/* TODO: Translations */
+		var TPL_LIKES_NONE = "";
+		var TPL_LIKES_SINGLE = "";
+		/* TODO: Popup with all names */
+		var TPL_LIKES_MANY = '<a target="_blank" href="https://hioa.no/tilsatt/{{random.userName}}">{{random.userFullName}}</a> and {{sub count}} others like this';
+		var template_none = A.Handlebars.compile(TPL_LIKES_NONE);
+		var template_single = A.Handlebars.compile(TPL_LIKES_SINGLE);
+		var template_many = A.Handlebars.compile(TPL_LIKES_MANY);
+
 		var entry = A.one('#<portlet:namespace /><%= activitySet.getActivitySetId() %>');
 
 		var subentry = entry.one('.activity-subentry');
@@ -159,6 +180,64 @@ for (SocialActivitySet activitySet : results) {
 		<%if (single > 0) {%>
 		entry.one('.view-comments a').simulate("click");
 		<%}%>
+
+		<%
+			PortletURL likeURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+			likeURL.setParameter("p_p_resource_id", "like");
+			likeURL.setParameter("type", "1");
+			likeURL.setParameter("contentId", String.valueOf(activitySet.getActivitySetId()));
+
+			PortletURL getLikesURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+			getLikesURL.setParameter("p_p_resource_id", "getLikes");
+			getLikesURL.setParameter("type", "1");
+			getLikesURL.setParameter("contentId", String.valueOf(activitySet.getActivitySetId()));
+		%>
+
+		var likeLink = entry.one('.likes-holder .like a');
+
+		handleResponse = function (responseData) {
+			var likeContent = entry.one('.likes-holder .likes');
+			if (responseData.count == 0) {
+				likeContent.setHTML(template_none(responseData));
+			} else if (responseData.count == 1) {
+				likeContent.setHTML(template_single(responseData));
+			} else {
+				likeContent.setHTML(template_many(responseData));
+			}
+			console.log(responseData);
+		};
+
+		/* TODO: doesn't work? */
+
+		A.io.request('<%=getLikesURL%>', {
+			dataType: 'json',
+			cache: false,
+			autoLoad: true,
+			on: {
+				success: function (obj) {
+					var responseData = this.get('responseData');
+				},
+				error: function() {
+					console.log('Error getting likes');
+				}
+			}
+		});
+
+		likeLink.on('click', function(event) {
+		    A.io.request('<%=likeURL%>', {
+		        dataType: 'json',
+		        cache: false,
+		        autoLoad: true,
+		        on: {
+		            success: function (obj) {
+		                var responseData = this.get('responseData');
+		            },
+		            error: function() {
+		                 console.log('Error getting likes');
+		            }
+		        }
+		    });
+		});
 	</aui:script>
 
 <%

@@ -197,7 +197,8 @@
  * stay on the same level in the hierarchy.
  */
 .ae-placeholder:not(:focus):before {
-  content: attr(data-placeholder); }
+  content: attr(data-placeholder);
+  position: absolute; }
 
 .ae-twitter-link {
   padding: 0 5px; }
@@ -217,7 +218,7 @@
   border: 0; }
 
 .ae-ui IE10-PLUS::-ms-reveal, .ae-ui [class^=ae-toolbar] {
-  height: 28px;
+  height: auto;
   box-sizing: content-box; }
 
 .ae-ui .ae-toolbar, .ae-ui [class^=ae-toolbar-] {
@@ -257,6 +258,10 @@
   .ae-ui .ae-toolbar-add .ae-button {
     height: 28px;
     width: 26px; }
+
+.ae-ui .ae-toolbar-styles {
+  box-sizing: border-box;
+  max-width: 100%; }
 
 .ae-ui .ae-arrow-box:after {
   content: '';
@@ -561,6 +566,7 @@
 /** ARROW-BOX **/
 /** BUTTON-BRIDGE **/
 /** DROPDOWN-LISTBOX HEADER **/
+/** DROPDOWN-LIST **/
 /** TOOLBAR **/
 .ae-editable ::-moz-selection {
   background: #e6f1fa !important;
@@ -656,6 +662,8 @@
     font-style: italic; }
   .ae-ui .ae-dropdown .ae-listbox .ae-toolbar-element:hover, .ae-ui [class^=ae-dropdown-] .ae-listbox .ae-toolbar-element:hover {
     background-color: #fcfcfc; }
+  .ae-ui .ae-dropdown .ae-listbox .ae-toolbar-element.active, .ae-ui [class^=ae-dropdown-] .ae-listbox .ae-toolbar-element.active {
+    color: #cfd1cf; }
 
 .ae-ui .ae-toolbar, .ae-ui [class^=ae-toolbar-] {
   background-color: #cfd1cf;
