@@ -33,6 +33,8 @@
 <script src="<%=request.getContextPath()%>/activities/js/alloy-editor/alloy-editor-all.js"></script>
 <script src="<%=request.getContextPath()%>/activities/js/tribute.js"></script>
 
+<div class="likes-modal" id="aui_popup_content" ></div>
+
 <c:if test="<%= group.isUser() && layout.isPrivateLayout() %>">
 	<div class="header-fixer hioa-accordion-header">
 		<h2><liferay-ui:message key="activities-title"/></h2>
@@ -213,6 +215,16 @@
 
 					uri = Liferay.Util.addParams('<portlet:namespace />activitySetId=' + currentTarget.getAttribute('data-activitySetId'), uri) || uri;
 
+					<%
+						PortletURL likeURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+						likeURL.setParameter("p_p_resource_id", "like");
+						likeURL.setParameter("type", "2");
+
+						PortletURL getLikesURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+						getLikesURL.setParameter("p_p_resource_id", "getLikes");
+						getLikesURL.setParameter("type", "2");
+					%>
+
 					A.io.request(
 							uri,
 							{
@@ -226,7 +238,10 @@
 													responseData.comments,
 													function(item, index) {
 														item.original = item.body;
-														Liferay.SO.Activities.addNewComment(commentsList, item);
+		                                                likesUrl = '<%=likeURL.toString()%>'+ "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_contentId="+encodeURIComponent(item.mbMessageIdOrMicroblogsEntryId);
+		                                                likesUrl += "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_activityId="+encodeURIComponent(currentTarget.getAttribute('data-activitySetId'));
+		                                                getLikesUrl = '<%=getLikesURL.toString()%>'+ "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_contentId="+encodeURIComponent(item.mbMessageIdOrMicroblogsEntryId);
+														Liferay.SO.Activities.addNewComment(commentsList, item, likesUrl, getLikesUrl);
 													}
 											);
 

@@ -129,8 +129,8 @@ for (SocialActivitySet activitySet : results) {
 						</span>
 
 						<div class="likes-holder">
-							<div class="likes">x and </div>
-							<div class="like"><a href="javascript:;">LIKEME</a></div>
+							<div class="likes"></div>
+							<div class="like"><a href="javascript:;"><span class="icon icon-thumbs-up"></span></a></div>
 						</div>
 					</div>
 
@@ -139,23 +139,24 @@ for (SocialActivitySet activitySet : results) {
 			</div>
 		</div>
 	</div>
+</div>
 
-	<aui:script use="aui-base, node-event-simulate, handlebars">
+	<aui:script use="aui-base, node-event-simulate, handlebars, aui-dialog, aui-overlay-manager">
 		A.Handlebars.registerHelper("sub", function(number) {
 			return number-1;
 		});
+		A.Handlebars.registerHelper("json", function(input) {
+		    return JSON.stringify(input);
+		});
 
-		/* TODO: Also needed on the individual loads */
-		/* TODO: Also on comments */
-
-		/* TODO: Translations */
-		var TPL_LIKES_NONE = "";
-		var TPL_LIKES_SINGLE = "";
-		/* TODO: Popup with all names */
-		var TPL_LIKES_MANY = '<a target="_blank" href="https://hioa.no/tilsatt/{{random.userName}}">{{random.userFullName}}</a> and {{sub count}} others like this';
+		var TPL_LIKES_NONE = '<liferay-ui:message key="be-the-first"/>';
+		var TPL_LIKES_SINGLE = '<a target="_blank" href="https://hioa.no/tilsatt/{{likes.0.userName}}">{{likes.0.userFullName}}</a> <liferay-ui:message key="likes-this"/>';
+		var TPL_LIKES_MANY = '<a target="_blank" href="https://hioa.no/tilsatt/{{random.userName}}">{{random.userFullName}}</a> <liferay-ui:message key="and"/> <a href="#" class="other-likes" data-likes="{{json likes}}">{{sub count}} <liferay-ui:message key="others"/></a> <liferay-ui:message key="like-this"/>';
+		var TPL_LIKES = '<div class="all-likes">{{#each this}}<div class="mention-card"><div class="user-portrait"><span class="avatar"><img alt="{{userFullName}}" src="{{portrait}}"></span></div>{{userFullName}}<div class="job-title">{{title}}</div><a target="_blank" href="https://hioa.no/tilsatt/{{userName}}"><span class="link-spanner"></span></a></a></div>{{/each}}</div>';
 		var template_none = A.Handlebars.compile(TPL_LIKES_NONE);
 		var template_single = A.Handlebars.compile(TPL_LIKES_SINGLE);
 		var template_many = A.Handlebars.compile(TPL_LIKES_MANY);
+		var template_likes = A.Handlebars.compile(TPL_LIKES);
 
 		var entry = A.one('#<portlet:namespace /><%= activitySet.getActivitySetId() %>');
 
@@ -195,7 +196,7 @@ for (SocialActivitySet activitySet : results) {
 
 		var likeLink = entry.one('.likes-holder .like a');
 
-		handleResponse = function (responseData) {
+		handleResponse = function (responseData, entry) {
 			var likeContent = entry.one('.likes-holder .likes');
 			if (responseData.count == 0) {
 				likeContent.setHTML(template_none(responseData));
@@ -203,11 +204,22 @@ for (SocialActivitySet activitySet : results) {
 				likeContent.setHTML(template_single(responseData));
 			} else {
 				likeContent.setHTML(template_many(responseData));
+		        likeContent.one('.other-likes').on('click', function(event) {
+					event.preventDefault();
+					event.stopPropagation();
+					event.stopImmediatePropagation();
+		            var likes = JSON.parse(event.currentTarget.getAttribute('data-likes'));
+		            new A.Modal({
+						centered: true,
+						modal: false,
+						bodyContent: template_likes(likes),
+		                zIndex: 1000,
+		                render: '#aui_popup_content',
+					}).render();
+		            return false;
+		        });
 			}
-			console.log(responseData);
 		};
-
-		/* TODO: doesn't work? */
 
 		A.io.request('<%=getLikesURL%>', {
 			dataType: 'json',
@@ -216,6 +228,7 @@ for (SocialActivitySet activitySet : results) {
 			on: {
 				success: function (obj) {
 					var responseData = this.get('responseData');
+		            handleResponse(responseData, entry);
 				},
 				error: function() {
 					console.log('Error getting likes');
@@ -231,6 +244,7 @@ for (SocialActivitySet activitySet : results) {
 		        on: {
 		            success: function (obj) {
 		                var responseData = this.get('responseData');
+		                handleResponse(responseData, entry);
 		            },
 		            error: function() {
 		                 console.log('Error getting likes');

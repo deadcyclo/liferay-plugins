@@ -236,7 +236,21 @@ if (form) {
 										var commentsList = commentsContainer.one('.comments-list');
 										commentsList.removeClass('hide');
 										responseData.original = responseData.body;
-										Liferay.SO.Activities.addNewComment(commentsList, responseData);
+										<%
+											PortletURL likeURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+											likeURL.setParameter("p_p_resource_id", "like");
+											likeURL.setParameter("type", "2");
+
+											PortletURL getLikesURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+											getLikesURL.setParameter("p_p_resource_id", "getLikes");
+											getLikesURL.setParameter("type", "2");
+										%>
+
+										likesUrl = '<%=likeURL.toString()%>'+ "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_contentId="+encodeURIComponent(responseData.mbMessageIdOrMicroblogsEntryId);
+										likesUrl += "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_activityId="+encodeURIComponent(<%=activitySet.getActivitySetId()%>);
+										getLikesUrl = '<%=getLikesURL.toString()%>'+ "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_contentId="+encodeURIComponent(responseData.mbMessageIdOrMicroblogsEntryId);
+
+										Liferay.SO.Activities.addNewComment(commentsList, responseData, likesUrl, getLikesUrl);
 										<%
 											PortletURL notificationURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
 											notificationURL.setParameter("p_p_resource_id", "sendNotifications");
