@@ -45,7 +45,9 @@
 					</a>
 				</span>
 				</div>
-				<div id="<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>" class="comment-form" data-placeholder="<%= LanguageUtil.get(pageContext, "leave-a-comment") %>"></div>
+				<div class="comment-input-wrapper">
+					<div id="<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>" class="comment-form wdt-emoji-bundle-enabled" data-placeholder="<%= LanguageUtil.get(pageContext, "leave-a-comment") %>"></div>
+				</div>
 				<aui:input type="hidden" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
 				<div class="comment-cards" id="<portlet:namespace />cards<%=activitySet.getActivitySetId()%>"></div>
 				<div class="hide comment-alerts" id="<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>" data-placeholder="<%= LanguageUtil.get(pageContext, "alerts-placeholder") %>"></div>
@@ -154,7 +156,6 @@ var alertEditor = AlloyEditor.editable('<portlet:namespace />commentalert<%=acti
 });
 editor.get('nativeEditor').on('autolinkAdd', function (event) { handleCommentLinkInsert(event); });
 editor.get('nativeEditor').on('actionPerformed', function (event) { handleCommentLinkInsert(event); });
-// TODO: Smileys
 A.io.request('<%=membersURL%>', {
 	dataType: 'json',
 	cache: true,
@@ -203,6 +204,59 @@ editor.get('nativeEditor').on('focus', function() {
 		al.removeClass('hide');
 	}
 });
+
+	var pasteHtml = function(html, startPos, endPos) {
+		var range = void 0,
+		sel = void 0;
+		sel = window.getSelection();
+		range = document.createRange();
+		range.setStart(sel.anchorNode, startPos);
+		range.setEnd(sel.anchorNode, endPos);
+		range.deleteContents();
+
+		var el = document.createElement('div');
+		el.innerHTML = html;
+		var frag = document.createDocumentFragment(),
+		node = void 0,
+		lastNode = void 0;
+		while (node = el.firstChild) {
+		   lastNode = frag.appendChild(node);
+		}
+		range.insertNode(frag);
+
+		// Preserve the selection
+		if (lastNode) {
+			range = range.cloneRange();
+			range.setStartAfter(lastNode);
+			range.collapse(true);
+			sel.removeAllRanges();
+			sel.addRange(range);
+		}
+	};
+
+	editor.get('nativeEditor').on('contentDom', function () {
+		editor.get('nativeEditor').document.on("input", function(event) {
+			var content = window.getSelection().anchorNode.nodeValue;
+			if (content !== null) {
+				var found = content.match(/:([a-zA-Z-_]+):/);
+				if (found !== null) {
+					var cnt = found[0];
+					var start = found.index;
+					var end = found.index + cnt.length;
+					pasteHtml(wdtEmojiBundle.render(cnt), start, end);
+				}
+			}
+		});
+	});
+
+	wdtEmojiBundle.defaults.emojiSheets = {
+	'apple': '<%=request.getContextPath()%>/activities/img/sheet_apple_64.png',
+	'google': '<%=request.getContextPath()%>/activities/img/sheet_google_64.png',
+	'twitter': '<%=request.getContextPath()%>/activities/img/sheet_twitter_64.png',
+	'emojione': '<%=request.getContextPath()%>/activities/img/sheet_emojione_64.png'
+	};
+
+	wdtEmojiBundle.init('.wdt-emoji-bundle-enabled');
 
 if (form) {
 	form.on(

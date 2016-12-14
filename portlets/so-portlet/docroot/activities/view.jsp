@@ -32,8 +32,44 @@
 <link href="<%=request.getContextPath()%>/activities/js/alloy-editor/assets/alloy-editor-ocean-min.css" rel="stylesheet">
 <script src="<%=request.getContextPath()%>/activities/js/alloy-editor/alloy-editor-all.js"></script>
 <script src="<%=request.getContextPath()%>/activities/js/tribute.js"></script>
+<link href="<%=request.getContextPath()%>/activities/js/wdt-emoji-bundle/wdt-emoji-bundle.css" rel="stylesheet">
+<script src="<%=request.getContextPath()%>/activities/js/wdt-emoji-bundle/emoji.min.js"></script>
+<script src="<%=request.getContextPath()%>/activities/js/wdt-emoji-bundle/wdt-emoji-bundle.js"></script>
 
 <div class="likes-modal" id="aui_popup_content" ></div>
+
+<div class="wdt-emoji-popup">
+	<a href="#" class="wdt-emoji-popup-mobile-closer"> &times; </a>
+	<div class="wdt-emoji-menu-content">
+		<div id="wdt-emoji-menu-header">
+			<a class="wdt-emoji-tab active" data-group-name="People"></a>
+			<a class="wdt-emoji-tab" data-group-name="Nature"></a>
+			<a class="wdt-emoji-tab" data-group-name="Foods"></a>
+			<a class="wdt-emoji-tab" data-group-name="Activity"></a>
+			<a class="wdt-emoji-tab" data-group-name="Places"></a>
+			<a class="wdt-emoji-tab" data-group-name="Objects"></a>
+			<a class="wdt-emoji-tab" data-group-name="Symbols"></a>
+			<a class="wdt-emoji-tab" data-group-name="Flags"></a>
+		</div>
+		<div class="wdt-emoji-scroll-wrapper">
+			<div id="wdt-emoji-menu-items">
+				<input id="wdt-emoji-search" type="text" placeholder="Search">
+				<h3 id="wdt-emoji-search-result-title">Search Results</h3>
+				<div class="wdt-emoji-sections"></div>
+				<div id="wdt-emoji-no-result">No emoji found</div>
+			</div>
+		</div>
+		<div id="wdt-emoji-footer">
+			<div id="wdt-emoji-preview">
+				<span id="wdt-emoji-preview-img"></span>
+				<div id="wdt-emoji-preview-text">
+					<p><span id="wdt-emoji-preview-name"></span></p>
+					<p><span id="wdt-emoji-preview-aliases"></span></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 <c:if test="<%= group.isUser() && layout.isPrivateLayout() %>">
 	<div class="header-fixer hioa-accordion-header">
@@ -468,16 +504,30 @@
 					editor.get('nativeEditor').on('autolinkAdd', function (event) { handleCommentEditLinkInsert(event); });
 					editor.get('nativeEditor').on('actionPerformed', function (event) { handleCommentEditLinkInsert(event); });
 
-		var al = editForm.one('#<portlet:namespace />commentalert'+mbMessageIdOrMicroblogsEntryId);
-		editor.get('nativeEditor').on('focus', function() {
-		editor.get('srcNode').classList.add('in-use');
-		if (al) {
-		al.removeClass('hide');
-		}
-		});
+					var al = editForm.one('#<portlet:namespace />commentalert'+mbMessageIdOrMicroblogsEntryId);
+						editor.get('nativeEditor').on('focus', function() {
+						editor.get('srcNode').classList.add('in-use');
+						if (al) {
+						    al.removeClass('hide');
+						}
+					});
 
-					// TODO: Smileys
-					editForm.on(
+
+		var oldinput = editForm.one('.wdt-emoji-picker-ready');
+		if (oldinput !== null) {
+		    oldinput.removeClass('wdt-emoji-picker-ready');
+		}
+
+		var oldpicker = editForm.one('.wdt-emoji-picker');
+		if (oldpicker !== null) {
+			oldpicker.remove(true);
+			oldpicker.destroy();
+		}
+
+		wdtEmojiBundle.init('.wdt-emoji-bundle-enabled');
+
+
+		editForm.on(
 							'submit',
 							function(event) {
 								event.halt();
