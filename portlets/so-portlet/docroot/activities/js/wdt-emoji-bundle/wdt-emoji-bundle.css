@@ -1,0 +1,517 @@
+.wdt-emoji-popup,
+.wdt-emoji-popup * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* hide unavailable fonts @todo - check fallbacks */
+body[data-wdt-emoji-bundle='google'] .wdt-emoji[data-has-img-google='false'],
+body[data-wdt-emoji-bundle='emojione'] .wdt-emoji[data-has-img-emojione='false'],
+body[data-wdt-emoji-bundle='google'] .wdt-emoji[data-has-img-google='false'],
+body[data-wdt-emoji-bundle='apple'] .wdt-emoji[data-has-img-apple='false'] {
+  display: none;
+}
+
+/* picker styles */
+.wdt-emoji-picker {
+  position: absolute;
+  right: 5px;
+  bottom: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.wdt-emoji-picker:hover {
+  cursor: pointer;
+}
+
+.wdt-emoji-picker-parent {
+  position: relative;
+}
+
+.wdt-emoji-picker div.emoji-outer.emoji-sizer {
+  width: 18px;
+  height: 18px;
+
+  pointer-events: none;
+}
+
+/* bundle popup styles */
+.wdt-emoji-popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  visibility: hidden;
+
+  width: 357px;
+  max-width: 100%;
+  height: 357px;
+  max-height: 100%;
+
+  transition: opacity 50ms ease, bottom 1s ease-out;
+
+  opacity: 0;
+  background-color: #fff;
+}
+
+.wdt-emoji-popup.open {
+  visibility: visible;
+
+  opacity: 1;
+}
+
+.wdt-emoji-menu-content {
+  background: #fff;
+  border: 1px solid #dedede;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+#wdt-emoji-menu-header {
+  padding: 4px 0 0 7px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
+  background: #f7f7f7;
+}
+
+.wdt-emoji-tab {
+  display: inline-block;
+
+  width: 28px;
+  margin-right: 2.5px;
+  padding: 4px;
+
+  transition: border-color 150ms ease-out;
+  text-align: center;
+
+  color: #9e9ea6;
+  border-bottom: 3px solid transparent;
+}
+
+.wdt-emoji-tab:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.wdt-emoji-tab.active {
+  padding-top: 3px;
+
+  color: #9e9ea6;
+  border-bottom: 3px solid #e7543d;
+}
+
+#wdt-emoji-search,
+#wdt-emoji-search:focus {
+  font-size: 15px;
+  line-height: 20px;
+
+  width: 95%;
+  max-width: 100%;
+  height: 28px;
+  margin: .5rem 9px .6rem;
+  padding: 15px 2rem;
+
+  transition: border-color 150ms ease-out;
+
+  color: #444;
+  border: 1px solid #c5c5c5;
+  border-radius: 3px;
+  outline: none;
+}
+
+#wdt-emoji-search:focus {
+  border-color: #a0a0a0;
+}
+
+.wdt-emoji-popup h3 {
+  font-size: 15px !important;
+  border-bottom: none;
+  font-weight: 700;
+  line-height: 15px;
+
+  position: relative;
+
+  margin: 0;
+  padding: 8px;
+
+  color: #555;
+  background: rgba(255, 255, 255, .95);
+}
+
+.wdt-emoji-popup h3.sticky {
+  position: absolute;
+  z-index: 1000;
+
+  width: 330px;
+}
+
+.wdt-emoji-scroll-wrapper {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  height: 257px;
+  padding-bottom: 30px;
+}
+
+.wdt-emoji-sections {
+  padding: 0 5px;
+}
+
+.wdt-emoji {
+  line-height: 1rem;
+
+  position: relative;
+
+  display: inline-block;
+
+  margin-right: 2.5px !important;
+  margin-bottom: 1px;
+  padding: 6px;
+
+  -webkit-transition: background 500ms ease-out;
+  -moz-transition: background 500ms ease-out;
+  -ms-transition: background 500ms ease-out;
+  -o-transition: background 500ms ease-out;
+  transition: background 500ms ease-out;
+  text-align: center;
+
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.wdt-emoji.not-matched {
+  display: none;
+}
+
+.wdt-emoji:hover {
+  cursor: pointer;
+}
+
+.wdt-emoji.gray:hover {
+  background-color: rgba(175, 175, 175, .32);
+}
+
+.wdt-emoji.green:hover {
+  background-color: #b7e887;
+}
+
+.wdt-emoji.pink:hover {
+  background-color: #f3c1fd;
+}
+
+.wdt-emoji.yellow:hover {
+  background-color: #f9ef67;
+}
+
+.wdt-emoji.blue:hover {
+  background-color: #b5e0fe;
+}
+
+.wdt-emoji-tab .emoji-outer {
+  width: 18px;
+  height: 18px;
+}
+
+div.emoji {
+  display: -moz-inline-box;
+  display: inline-block;
+
+  width: 1em;
+  height: 1em;
+
+  vertical-align: baseline;
+  text-indent: -9999px;
+
+  background-repeat: no-repeat;
+  background-position: 50%, 50%;
+  background-size: 1em;
+  background-size: contain;
+
+  -moz-box-orient: vertical;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+}
+
+div.emoji-sizer {
+  width: 1em;
+  height: 1em;
+}
+
+div.emoji-outer {
+  display: -moz-inline-box;
+  display: inline-block;
+
+  width: 22px;
+  height: 22px;
+  margin-top: -2px;
+
+  vertical-align: middle;
+
+  *display: inline;
+}
+
+div.emoji-inner {
+  display: -moz-inline-box;
+  display: inline-block;
+
+  width: 100%;
+  height: 100%;
+
+  vertical-align: baseline;
+  text-indent: -9999px;
+
+  *vertical-align: auto;
+  *zoom: 1;
+}
+
+img.emoji {
+  width: 1em;
+  height: 1em;
+}
+
+#wdt-emoji-footer {
+  width: 100%;
+  padding-bottom: .4rem;
+
+  border-top: 1px solid rgba(0, 0, 0, .15);
+  background: #f7f7f7;
+}
+
+#wdt-emoji-no-result {
+  font-size: 10px;
+  font-weight: 400;
+
+  clear: both;
+
+  padding: 20px;
+
+  text-align: center;
+
+  color: #bababa;
+}
+
+#wdt-emoji-preview {
+  padding: .3rem 0 0 .7rem;
+
+  -webkit-transition: opacity .1s ease-in .1s;
+  -moz-transition: opacity .1s ease-in .1s;
+  transition: opacity .1s ease-in .1s;
+
+  opacity: 0;
+}
+
+#wdt-emoji-preview-img {
+  font-size: 2rem;
+  line-height: 2rem;
+
+  float: left;
+
+  width: 46px;
+  height: 54px;
+  padding: .6rem .5rem 0 .1rem;
+
+  vertical-align: middle;
+}
+
+#wdt-emoji-preview-bundle {
+  font-size: 17px;
+  font-weight: bold;
+
+  position: absolute;
+  bottom: 19px;
+  left: 14px;
+
+  -webkit-transition: opacity .1s ease-in .1s;
+  -moz-transition: opacity .1s ease-in .1s;
+  transition: opacity .1s ease-in .1s;
+
+  opacity: 1;
+  color: #989ba0;
+}
+
+#wdt-emoji-search-result-title,
+#wdt-emoji-no-result {
+  display: none;
+}
+
+#wdt-emoji-search-result-title.wdt-show,
+#wdt-emoji-no-result.wdt-show {
+  display: block;
+
+  margin: 0 5px;
+}
+
+.wdt-inline {
+  display: inline;
+}
+
+.wdt-search-on {
+  display: none;
+}
+
+.wdt-emoji-popup.preview-mode #wdt-emoji-preview-bundle {
+  opacity: 0;
+}
+
+.wdt-emoji-popup.preview-mode #wdt-emoji-preview {
+  opacity: 1;
+}
+
+#wdt-emoji-preview-img div.emoji-outer.emoji-sizer {
+  position: relative;
+  top: 3px;
+  left: 4px;
+
+  width: 40px;
+  height: 40px;
+}
+
+#wdt-emoji-preview-text {
+  font-size: 13px;
+
+  position: relative;
+  left: 10px !important;
+
+  color: #777;
+}
+
+#wdt-emoji-preview-text p {
+  margin-bottom: 0;
+}
+
+#wdt-emoji-preview-name {
+  font-weight: bold;
+  font-size: 14px;
+  position: relative;
+  left: 3px;
+  color: #444;
+  line-height:14px;
+}
+
+#wdt-emoji-preview-aliases {
+  font-size: 14px;
+  line-height:14px;
+}
+
+.wdt-emoji-popup-mobile-closer {
+  font-size: 25px !important;
+  font-weight: bold;
+  line-height: 35px;
+
+  position: absolute;
+  top: -35px;
+  left: 50%;
+
+  visibility: hidden;
+
+  width: 40px;
+  height: 35px;
+
+  transform: translateX(-50%);
+  text-align: center;
+
+  opacity: 0;
+  color: #444;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-bottom-color: #e7543d;
+  border-radius: 50% 50% 0 0;
+  background-color: rgba(255, 255, 255, .8);
+}
+
+/* iPhone 2G-4S-5-5S in portrait */
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 480px)
+and (orientation: portrait) {
+  .wdt-emoji-picker {
+    display: none;
+  }
+
+  .wdt-emoji-tab {
+    width: 24px;
+  }
+
+  .wdt-emoji {
+    margin-right: 0 !important;
+  }
+
+  #wdt-emoji-footer {
+    display: none;
+  }
+
+  .wdt-emoji-scroll-wrapper {
+    height: 170px;
+  }
+
+  .wdt-emoji-popup {
+    height: 206px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+  }
+
+  #wdt-emoji-search {
+    display: none;
+  }
+
+  .wdt-emoji-popup-mobile-closer {
+    visibility: visible;
+
+    opacity: 1;
+  }
+
+  .wdt-emoji-popup h3.sticky {
+    width: 300px;
+  }
+}
+
+/* iPhone 6 in portrait */
+@media only screen
+and (min-device-width: 375px)
+and (max-device-width: 667px)
+and (orientation: portrait) {
+  .wdt-emoji {
+    margin-right: -1px !important;
+  }
+
+  .wdt-emoji-tab {
+    width: 30px;
+  }
+
+  .wdt-emoji-popup h3.sticky {
+    width: 359px;
+  }
+}
+
+
+.wdt-emoji-picker.active > div.wdt-emoji-picker-button-open {
+  opacity: 0;
+  transform: rotate(45deg);
+}
+.wdt-emoji-picker.active > div.wdt-emoji-picker-button-close {
+  opacity: 1;
+}
+.wdt-emoji-picker > div.wdt-emoji-picker-button-open {
+  background-position: 0 -24px;
+  opacity: 1;
+}
+.wdt-emoji-picker > div.wdt-emoji-picker-button-close {
+  background-position: 0 0;
+  opacity: 0;
+}
+.wdt-emoji-picker > div {
+  background-image: url("data:image/png;base64,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") !important;
+}
+.wdt-emoji-picker > div {
+  display: block;
+  height: 24px;
+  position: absolute;
+  transition: all 0.4s ease-in-out 0s;
+  width: 24px;
+}
