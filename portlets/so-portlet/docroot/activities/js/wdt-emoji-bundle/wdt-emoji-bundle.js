@@ -93,7 +93,6 @@
         if (el.getAttribute('contenteditable')) {
           el.dataset.rangeIndex = i;
           wdtEmojiBundle.addRangeStore(el);
-          console.log(el.getAttribute('id'))
         }
 
         self.addPicker(self.elements[i]);
