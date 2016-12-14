@@ -33,5 +33,11 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'link:advanced';
 	config.autoParagraph = false;
 	config.enterMode = CKEDITOR.ENTER_BR;
-	//CKEDITOR.dtd.p.div = 1;
+	CKEDITOR.dtd.div = {
+		'#': 1,
+		div: 1,
+		span: 1,
+		a: 1,
+		img: 1
+	};
 };
