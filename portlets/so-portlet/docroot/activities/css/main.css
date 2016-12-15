@@ -284,7 +284,6 @@ $default-border-color: #E7E7E7;
 
 	.comments-container, .microblogs-portlet-activity .activity-body {
 		.user-portrait {
-			height: 32px;
 			left: 0;
 			position: relative;
 			top: 0;

@@ -396,9 +396,13 @@
 
 					editForm.one('.comment-form').attr(
 							{
-								id: '<portlet:namespace />commentinput' + mbMessageIdOrMicroblogsEntryId
+								id: '<portlet:namespace />commentinput' + mbMessageIdOrMicroblogsEntryId,
+		                        'data-placeholder': ''
 							}
 					);
+
+		            editForm.one('.comment-form').removeAttribute('data-tribute');
+		            editForm.one('.comment-form').addClass('commentedit');
 
 					editForm.one('.comment-cards').attr(
 							{
@@ -411,6 +415,8 @@
 								id: '<portlet:namespace />commentalert' + mbMessageIdOrMicroblogsEntryId
 							}
 					);
+
+		           editForm.one('.comment-alerts').removeAttribute('data-tribute');
 
 					var userPortrait = editForm.one('.user-portrait');
 
@@ -501,6 +507,44 @@
 					var alertEditor = AlloyEditor.editable('<portlet:namespace />commentalert'+mbMessageIdOrMicroblogsEntryId, {
 						toolbars: noToolbars
 					});
+
+					editor.get('nativeEditor').on('key', function (e) {
+						if (e.data.keyCode === 13) {
+							if (Liferay['comment-tribute-'+mbMessageIdOrMicroblogsEntryId] && Liferay['comment-tribute-'+mbMessageIdOrMicroblogsEntryId].isActive) {
+							    e.cancel();
+							}
+						}
+					});
+
+					alertEditor.get('nativeEditor').on('instanceReady', function (ev) {
+						ev.editor.setKeystroke(13, null);
+						ev.editor.setKeystroke(CKEDITOR.SHIFT + 13, null);
+					});
+
+		            /* Hack to allow preventDefault on ckeditors wonky event implementation that doesn't provide charCode */
+					A.one('#<portlet:namespace />commentalert'+mbMessageIdOrMicroblogsEntryId).on('keypress', function(e) {
+						var content = window.getSelection().anchorNode.nodeValue;
+						if (content !== null && !/^\s*$/.test(content)) {
+							if (e.charCode == 64 || e.charCode == 8 || e.charCode > 222) {
+								return;
+							}
+							if (e.charCode > 64 && e.charCode < 91) {
+								return;
+							}
+							if (e.charCode > 96 && e.charCode < 123) {
+								return;
+							}
+							if (e.charCode > 127) {
+								return;
+							}
+							e.preventDefault();
+						} else {
+							if (e.charCode !== 64 && e.charCode !== 8) {
+								e.preventDefault();
+							}
+						}
+					});
+
 					editor.get('nativeEditor').on('autolinkAdd', function (event) { handleCommentEditLinkInsert(event); });
 					editor.get('nativeEditor').on('actionPerformed', function (event) { handleCommentEditLinkInsert(event); });
 
@@ -525,7 +569,6 @@
 		}
 
 		wdtEmojiBundle.init('.wdt-emoji-bundle-enabled');
-
 
 		editForm.on(
 							'submit',
@@ -627,6 +670,8 @@
 								return person.key + '#' + person.value;
 							};
 							var tribute = new Tribute(members);
+		                    Liferay['comment-tribute-'+mbMessageIdOrMicroblogsEntryId] = tribute;
+
 							var messageHtml = originalmessage.html();
 							var bodyInput = editForm.one('#<portlet:namespace />commentinput' + mbMessageIdOrMicroblogsEntryId);
 							var alertInput = editForm.one('#<portlet:namespace />commentalert' + mbMessageIdOrMicroblogsEntryId);
