@@ -47,3 +47,19 @@ _sass_cache_*.css
 
 /tools/*/*/*/lib
 /tools/node*
+
+\#*\#
+*.iml
+.idea
+.metadata/
+.settings/
+target/
+.classpath
+*.log
+bin/
+target/
+war/
+nap/service
+nap/model
+.project
+atlassian-ide-plugin.xml
