@@ -138,6 +138,11 @@ public class ApplePushNotificationsSender implements PushNotificationsSender {
 	protected String buildPayload(JSONObject payloadJSONObject) {
 		PayloadBuilder builder = PayloadBuilder.newPayload();
 
+		if (payloadJSONObject.has(PushNotificationsConstants.KEY_BADGE)) {
+			builder.badge(
+				payloadJSONObject.getInt(PushNotificationsConstants.KEY_BADGE));
+		}
+
 		String body = payloadJSONObject.getString(
 			PushNotificationsConstants.KEY_BODY);
 
@@ -167,6 +172,13 @@ public class ApplePushNotificationsSender implements PushNotificationsSender {
 			builder.localizedArguments(localizedArguments);
 		}
 
+		boolean silent = payloadJSONObject.getBoolean(
+			PushNotificationsConstants.KEY_SILENT);
+
+		if (silent) {
+			builder.instantDeliveryOrSilentNotification();
+		}
+
 		String sound = payloadJSONObject.getString(
 			PushNotificationsConstants.KEY_SOUND);
 
@@ -174,10 +186,12 @@ public class ApplePushNotificationsSender implements PushNotificationsSender {
 			builder.sound(sound);
 		}
 
+		payloadJSONObject.remove(PushNotificationsConstants.KEY_BADGE);
 		payloadJSONObject.remove(PushNotificationsConstants.KEY_BODY);
 		payloadJSONObject.remove(PushNotificationsConstants.KEY_BODY_LOCALIZED);
 		payloadJSONObject.remove(
 			PushNotificationsConstants.KEY_BODY_LOCALIZED_ARGUMENTS);
+		payloadJSONObject.remove(PushNotificationsConstants.KEY_SILENT);
 		payloadJSONObject.remove(PushNotificationsConstants.KEY_SOUND);
 
 		builder.customField(

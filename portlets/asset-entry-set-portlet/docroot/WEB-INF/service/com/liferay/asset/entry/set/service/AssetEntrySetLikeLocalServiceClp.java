@@ -128,9 +128,13 @@ public class AssetEntrySetLikeLocalServiceClp
 
 		_methodParameterTypes19 = new String[] { "long", "long", "long" };
 
-		_methodName20 = "getAssetEntrySetLikes";
+		_methodName20 = "getAssetEntrySetLikeCount";
 
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes20 = new String[] { "long" };
+
+		_methodName21 = "getAssetEntrySetLikes";
+
+		_methodParameterTypes21 = new String[] {
 				"long", "long", "long", "int", "int"
 			};
 	}
@@ -731,14 +735,42 @@ public class AssetEntrySetLikeLocalServiceClp
 	}
 
 	@Override
+	public int getAssetEntrySetLikeCount(long assetEntrySetId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] { assetEntrySetId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
 	public java.util.List<com.liferay.asset.entry.set.model.AssetEntrySetLike> getAssetEntrySetLikes(
 		long assetEntrySetId, long classNameId, long classPK, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] {
 						assetEntrySetId,
 						
@@ -811,4 +843,6 @@ public class AssetEntrySetLikeLocalServiceClp
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
 }

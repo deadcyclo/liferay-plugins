@@ -20,6 +20,9 @@ package com.liferay.sync.util;
 public class PortletPropsKeys
 	extends com.liferay.sync.shared.util.PortletPropsKeys {
 
+	public static final String SYNC_CLIENT_AUTHENTICATION_RETRY_INTERVAL =
+		"sync.client.authentication.retry.interval";
+
 	public static final String SYNC_CLIENT_BATCH_FILE_MAX_SIZE =
 		"sync.client.batch.file.max.size";
 
@@ -34,6 +37,12 @@ public class PortletPropsKeys
 
 	public static final String SYNC_FILE_DIFF_CACHE_EXPIRATION_TIME =
 		"sync.file.diff.cache.expiration.time";
+
+	public static final String SYNC_LAN_CERTIFICATE = "sync.lan.certificate";
+
+	public static final String SYNC_LAN_KEY = "sync.lan.key";
+
+	public static final String SYNC_LAN_SERVER_UUID = "sync.lan.server.uuid";
 
 	public static final String SYNC_MAC_PACKAGE_FOLDER_EXTENSIONS =
 		"sync.mac.package.folder.extensions";

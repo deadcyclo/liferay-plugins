@@ -34,6 +34,8 @@ import com.liferay.portal.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil;
@@ -203,6 +205,14 @@ public class KBArticleStagedModelDataHandler
 			parentResourcePrimKey = MapUtil.getLong(
 				kbFolderResourcePrimKeys, kbArticle.getParentResourcePrimKey(),
 				KBFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+		}
+
+		String urlTitle = kbArticle.getUrlTitle();
+
+		if (Validator.isNotNull(urlTitle) &&
+			!urlTitle.startsWith(StringPool.SLASH)) {
+
+			kbArticle.setUrlTitle(StringPool.SLASH + urlTitle);
 		}
 
 		String[] sections = AdminUtil.unescapeSections(kbArticle.getSections());

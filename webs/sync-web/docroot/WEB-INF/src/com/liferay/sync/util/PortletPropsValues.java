@@ -26,12 +26,28 @@ public class PortletPropsValues {
 		GetterUtil.getBoolean(
 			PortletProps.get(PortletPropsKeys.SYNC_ALLOW_USER_PERSONAL_SITES));
 
+	public static final int SYNC_CLIENT_AUTHENTICATION_RETRY_INTERVAL =
+		GetterUtil.getInteger(
+			PortletProps.get(
+				PortletPropsKeys.SYNC_CLIENT_AUTHENTICATION_RETRY_INTERVAL));
+
 	public static final int SYNC_CLIENT_BATCH_FILE_MAX_SIZE =
 		GetterUtil.getInteger(
 			PortletProps.get(PortletPropsKeys.SYNC_CLIENT_BATCH_FILE_MAX_SIZE));
 
+	public static final boolean SYNC_CLIENT_FORCE_SECURITY_MODE =
+		GetterUtil.getBoolean(
+			PortletProps.get(PortletPropsKeys.SYNC_CLIENT_FORCE_SECURITY_MODE));
+
 	public static final int SYNC_CLIENT_MAX_CONNECTIONS = GetterUtil.getInteger(
 		PortletProps.get(PortletPropsKeys.SYNC_CLIENT_MAX_CONNECTIONS));
+
+	public static final int SYNC_CLIENT_MAX_DOWNLOAD_RATE =
+		GetterUtil.getInteger(
+			PortletProps.get(PortletPropsKeys.SYNC_CLIENT_MAX_DOWNLOAD_RATE));
+
+	public static final int SYNC_CLIENT_MAX_UPLOAD_RATE = GetterUtil.getInteger(
+		PortletProps.get(PortletPropsKeys.SYNC_CLIENT_MAX_UPLOAD_RATE));
 
 	public static final int SYNC_CLIENT_MIN_BUILD_ANDROID =
 		GetterUtil.getInteger(
@@ -65,6 +81,9 @@ public class PortletPropsValues {
 		GetterUtil.getLong(
 			PortletProps.get(
 				PortletPropsKeys.SYNC_FILE_DIFF_CACHE_EXPIRATION_TIME));
+
+	public static final boolean SYNC_LAN_ENABLED = GetterUtil.getBoolean(
+		PortletProps.get(PortletPropsKeys.SYNC_LAN_ENABLED));
 
 	public static final String[] SYNC_MAC_PACKAGE_FOLDER_EXTENSIONS =
 		GetterUtil.getStringValues(

@@ -298,6 +298,12 @@ public class AssetEntrySetLikeLocalServiceWrapper
 	}
 
 	@Override
+	public int getAssetEntrySetLikeCount(long assetEntrySetId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _assetEntrySetLikeLocalService.getAssetEntrySetLikeCount(assetEntrySetId);
+	}
+
+	@Override
 	public java.util.List<com.liferay.asset.entry.set.model.AssetEntrySetLike> getAssetEntrySetLikes(
 		long assetEntrySetId, long classNameId, long classPK, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {

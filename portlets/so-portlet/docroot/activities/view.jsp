@@ -102,10 +102,10 @@
 	var win = A.getWin();
 
 	win.plug(
-			Liferay.SO.Scroll,
-			{
-				edgeProximity: 0.4
-			}
+		Liferay.SO.Scroll,
+		{
+			edgeProximity: 1 - (activities.height() / win.height())
+		}
 	);
 
 	var loading = false;

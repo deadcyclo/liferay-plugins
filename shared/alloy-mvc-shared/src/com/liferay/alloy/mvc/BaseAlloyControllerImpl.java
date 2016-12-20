@@ -15,8 +15,8 @@
 package com.liferay.alloy.mvc;
 
 import com.liferay.alloy.mvc.jsonwebservice.AlloyMockUtil;
+import com.liferay.compat.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.bean.ConstantsBeanFactoryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -63,6 +63,7 @@ import com.liferay.portal.kernel.util.ServiceBeanMethodInvocationFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.AttachedModel;
@@ -70,11 +71,15 @@ import com.liferay.portal.model.AuditedModel;
 import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.GroupedModel;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.ModelHintsUtil;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.PortletURLFactoryUtil;
 
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -96,6 +101,7 @@ import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
 import javax.portlet.MimeResponse;
 import javax.portlet.PortletContext;
+import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletRequestDispatcher;
 import javax.portlet.PortletResponse;
@@ -104,6 +110,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
+import javax.portlet.WindowState;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -121,6 +128,87 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 
 	public static final String VIEW_PATH =
 		BaseAlloyControllerImpl.class.getName() + "#VIEW_PATH";
+
+	public static void setAuditedModel(
+			BaseModel<?> baseModel, Company company, User user)
+		throws Exception {
+
+		if (!(baseModel instanceof AuditedModel) || (company == null) ||
+			(user == null)) {
+
+			return;
+		}
+
+		AuditedModel auditedModel = (AuditedModel)baseModel;
+
+		if (baseModel.isNew()) {
+			auditedModel.setCompanyId(company.getCompanyId());
+			auditedModel.setUserId(user.getUserId());
+			auditedModel.setUserName(user.getFullName());
+			auditedModel.setCreateDate(new Date());
+			auditedModel.setModifiedDate(auditedModel.getCreateDate());
+		}
+		else {
+			auditedModel.setModifiedDate(new Date());
+		}
+	}
+
+	public static void setAuditedModel(
+			BaseModel<?> baseModel, HttpServletRequest request)
+		throws Exception {
+
+		if (!(baseModel instanceof AuditedModel) || (request == null)) {
+			return;
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		setAuditedModel(
+			baseModel, themeDisplay.getCompany(), themeDisplay.getUser());
+	}
+
+	public static void setAuditedModel(BaseModel<?> baseModel, User user)
+		throws Exception {
+
+		if (!(baseModel instanceof AuditedModel) || (user == null)) {
+			return;
+		}
+
+		long companyId = CompanyLocalServiceUtil.getCompanyIdByUserId(
+			user.getUserId());
+
+		setAuditedModel(
+			baseModel, CompanyLocalServiceUtil.getCompany(companyId), user);
+	}
+
+	public static void setLocalizedProperties(
+			BaseModel<?> baseModel, HttpServletRequest request, Locale locale)
+		throws Exception {
+
+		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
+
+		for (String propertyName : modelAttributes.keySet()) {
+			boolean localized = ModelHintsUtil.isLocalized(
+				baseModel.getModelClassName(), propertyName);
+
+			if (!localized) {
+				continue;
+			}
+
+			Class<?> baseModelClass = baseModel.getModelClass();
+
+			String setMethodName =
+				"set" + TextFormatter.format(propertyName, TextFormatter.G);
+
+			Method setMethod = baseModelClass.getMethod(
+				setMethodName, new Class<?>[] {String.class, Locale.class});
+
+			String value = ParamUtil.getString(request, propertyName);
+
+			setMethod.invoke(baseModel, value, locale);
+		}
+	}
 
 	@Override
 	public void afterPropertiesSet() {
@@ -164,7 +252,7 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		}
 
 		if ((alloyNotificationEventHelper != null) &&
-			!viewPath.equals(_VIEW_PATH_ERROR)) {
+			!viewPath.equals(VIEW_PATH_ERROR)) {
 
 			alloyNotificationEventHelper.addUserNotificationEvents(
 				request, controllerPath, actionPath,
@@ -281,6 +369,8 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 
 		BeanPropertiesUtil.setProperties(baseModel, request);
 
+		setLocalizedProperties(baseModel);
+
 		updateModelIgnoreRequest(baseModel, properties);
 	}
 
@@ -335,7 +425,7 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		sb.append(portlet.getFriendlyURLMapping());
 		sb.append("/views/");
 
-		if (viewPath.equals(_VIEW_PATH_ERROR)) {
+		if (viewPath.equals(VIEW_PATH_ERROR)) {
 			sb.append("error.jsp");
 
 			return sb.toString();
@@ -447,17 +537,30 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 			}
 		}
 		catch (Exception e) {
-			log.error(e, e);
-
+			Object[] arguments = null;
 			String message = "an-unexpected-system-error-occurred";
 
 			Throwable rootCause = getRootCause(e);
 
 			if (rootCause instanceof AlloyException) {
+				AlloyException ae = (AlloyException)rootCause;
+
+				if (ae.log) {
+					log.error(rootCause, rootCause);
+				}
+
+				if (ArrayUtil.isNotEmpty(ae.arguments)) {
+					arguments = ae.arguments;
+				}
+
 				message = rootCause.getMessage();
 			}
+			else {
+				log.error(e, e);
+			}
 
-			renderError(HttpServletResponse.SC_BAD_REQUEST, e, message);
+			renderError(
+				HttpServletResponse.SC_BAD_REQUEST, e, message, arguments);
 		}
 		finally {
 			if (isRespondingTo()) {
@@ -507,6 +610,70 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		}
 
 		return sb.toString();
+	}
+
+	protected PortletURL getPortletURL(
+			String controller, String action, PortletMode portletMode,
+			String lifecycle)
+		throws Exception {
+
+		return getPortletURL(
+			controller, action, portletMode, lifecycle,
+			portletRequest.getWindowState(), null);
+	}
+
+	protected PortletURL getPortletURL(
+			String controller, String action, PortletMode portletMode,
+			String lifecycle, Object... parameters)
+		throws Exception {
+
+		return getPortletURL(
+			controller, action, portletMode, lifecycle,
+			portletRequest.getWindowState(), parameters);
+	}
+
+	protected PortletURL getPortletURL(
+			String controller, String action, PortletMode portletMode,
+			String lifecycle, WindowState windowState)
+		throws Exception {
+
+		return getPortletURL(
+			controller, action, portletMode, lifecycle, windowState, null);
+	}
+
+	protected PortletURL getPortletURL(
+			String controller, String action, PortletMode portletMode,
+			String lifecycle, WindowState windowState, Object... parameters)
+		throws Exception {
+
+		Layout layout = themeDisplay.getLayout();
+
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			request, portlet.getPortletId(), layout.getPlid(), lifecycle);
+
+		portletURL.setParameter("action", action);
+		portletURL.setParameter("controller", controller);
+
+		portletURL.setPortletMode(portletMode);
+		portletURL.setWindowState(windowState);
+
+		if (parameters == null) {
+			return portletURL;
+		}
+
+		if ((parameters.length % 2) != 0) {
+			throw new IllegalArgumentException(
+				"Parameters length is not an even number");
+		}
+
+		for (int i = 0; i < parameters.length; i += 2) {
+			String parameterName = String.valueOf(parameters[i]);
+			String parameterValue = String.valueOf(parameters[i + 1]);
+
+			portletURL.setParameter(parameterName, parameterValue);
+		}
+
+		return portletURL;
 	}
 
 	protected Throwable getRootCause(Throwable throwable) {
@@ -569,7 +736,8 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 	protected boolean hasPermission() {
 		if (permissioned &&
 			!AlloyPermission.contains(
-				themeDisplay, controllerPath, actionPath)) {
+				themeDisplay, portlet.getRootPortletId(), controllerPath,
+				actionPath)) {
 
 			return false;
 		}
@@ -961,7 +1129,7 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		portletRequest.setAttribute("pattern", pattern);
 		portletRequest.setAttribute("status", status);
 
-		render(_VIEW_PATH_ERROR);
+		render(VIEW_PATH_ERROR);
 	}
 
 	protected void renderError(int status, String pattern, Object... arguments)
@@ -1222,22 +1390,7 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 	}
 
 	protected void setAuditedModel(BaseModel<?> baseModel) throws Exception {
-		if (!(baseModel instanceof AuditedModel)) {
-			return;
-		}
-
-		AuditedModel auditedModel = (AuditedModel)baseModel;
-
-		if (baseModel.isNew()) {
-			auditedModel.setCompanyId(company.getCompanyId());
-			auditedModel.setUserId(user.getUserId());
-			auditedModel.setUserName(user.getFullName());
-			auditedModel.setCreateDate(new Date());
-			auditedModel.setModifiedDate(auditedModel.getCreateDate());
-		}
-		else {
-			auditedModel.setModifiedDate(new Date());
-		}
+		setAuditedModel(baseModel, company, user);
 	}
 
 	protected void setGroupedModel(BaseModel<?> baseModel) throws Exception {
@@ -1248,6 +1401,18 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		GroupedModel groupedModel = (GroupedModel)baseModel;
 
 		groupedModel.setGroupId(themeDisplay.getScopeGroupId());
+	}
+
+	protected void setLocalizedProperties(BaseModel<?> baseModel)
+		throws Exception {
+
+		setLocalizedProperties(baseModel, request, request.getLocale());
+	}
+
+	protected void setLocalizedProperties(BaseModel<?> baseModel, Locale locale)
+		throws Exception {
+
+		setLocalizedProperties(baseModel, request, locale);
 	}
 
 	protected void setOpenerSuccessMessage() {
@@ -1385,6 +1550,8 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 	protected static final String CALLED_PROCESS_ACTION =
 		BaseAlloyControllerImpl.class.getName() + "#CALLED_PROCESS_ACTION";
 
+	protected static final String VIEW_PATH_ERROR = "VIEW_PATH_ERROR";
+
 	protected static Log log = LogFactoryUtil.getLog(
 		BaseAlloyControllerImpl.class);
 
@@ -1432,7 +1599,5 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 	protected ThemeDisplay themeDisplay;
 	protected User user;
 	protected String viewPath;
-
-	private static final String _VIEW_PATH_ERROR = "VIEW_PATH_ERROR";
 
 }

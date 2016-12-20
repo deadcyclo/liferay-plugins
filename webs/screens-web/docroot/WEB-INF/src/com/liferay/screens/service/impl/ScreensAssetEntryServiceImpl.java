@@ -23,14 +23,23 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.util.ClassResolverUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.kernel.util.PortalClassInvoker;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.PortletItem;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.service.persistence.LayoutUtil;
@@ -39,13 +48,19 @@ import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.service.persistence.AssetEntryQuery;
 import com.liferay.portlet.assetpublisher.util.AssetPublisherUtil;
+import com.liferay.portlet.blogs.model.BlogsEntry;
+import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
+import com.liferay.portlet.dynamicdatalists.model.DDLRecord;
+import com.liferay.portlet.dynamicdatamapping.NoSuchStructureException;
+import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.journal.NoSuchArticleException;
 import com.liferay.portlet.journal.model.JournalArticle;
 import com.liferay.portlet.journal.model.JournalArticleResource;
 import com.liferay.portlet.journal.service.JournalArticleResourceLocalServiceUtil;
 import com.liferay.screens.service.base.ScreensAssetEntryServiceBaseImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,8 +77,10 @@ public class ScreensAssetEntryServiceImpl
 			AssetEntryQuery assetEntryQuery, Locale locale)
 		throws PortalException, SystemException {
 
-		List<AssetEntry> assetEntries = assetEntryLocalService.getEntries(
+		List<AssetEntry> assetEntries = assetEntryService.getEntries(
 			assetEntryQuery);
+
+		assetEntries = filterAssetEntries(assetEntries);
 
 		return toJSONArray(assetEntries, locale);
 	}
@@ -115,6 +132,8 @@ public class ScreensAssetEntryServiceImpl
 					AssetPublisherUtil.getAssetEntries(
 						portletPreferences, layout, groupId, max, false);
 
+				assetEntries = filterAssetEntries(assetEntries);
+
 				return toJSONArray(assetEntries, locale);
 			}
 			else {
@@ -129,10 +148,12 @@ public class ScreensAssetEntryServiceImpl
 				List<AssetEntry> assetEntries =
 					AssetPublisherUtil.getAssetEntries(
 						null, portletPreferences, permissionChecker,
-						new long[] { groupId },
+						new long[] {groupId},
 						portletPreferences.getValues(
 							"assetEntryXml", new String[0]),
 						false, false);
+
+				assetEntries = filterAssetEntries(assetEntries);
 
 				return toJSONArray(assetEntries, locale);
 			}
@@ -148,23 +169,83 @@ public class ScreensAssetEntryServiceImpl
 		}
 	}
 
-	protected JSONObject getAssetObjectJSONObject(AssetEntry assetEntry)
+	protected boolean containsPermission(
+			PermissionChecker permissionChecker, AssetEntry assetEntry,
+			String actionId)
+		throws PortalException {
+
+		try {
+			return (Boolean)PortalClassInvoker.invoke(
+				false, _containsPermissionMethodKey, permissionChecker,
+				assetEntry, actionId);
+		}
+		catch (PortalException pe) {
+			throw pe;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		return false;
+	}
+
+	protected List<AssetEntry> filterAssetEntries(List<AssetEntry> assetEntries)
+		throws PortalException {
+
+		List<AssetEntry> filteredAssetEntries = new ArrayList<AssetEntry>(
+			assetEntries.size());
+
+		for (AssetEntry assetEntry : assetEntries) {
+			if (containsPermission(
+					getPermissionChecker(), assetEntry, ActionKeys.VIEW)) {
+
+				filteredAssetEntries.add(assetEntry);
+			}
+		}
+
+		return filteredAssetEntries;
+	}
+
+	protected JSONObject getAssetObjectJSONObject(
+			AssetEntry assetEntry, Locale locale)
 		throws PortalException, SystemException {
 
 		String className = assetEntry.getClassName();
 
-		if (className.equals(
-				"com.liferay.portlet.documentlibrary.model.DLFileEntry")) {
-
+		if (className.equals(BlogsEntry.class.getName())) {
+			return getBlogsEntryJSONObject(assetEntry);
+		}
+		else if (className.equals(DDLRecord.class.getName())) {
+			return screensDDLRecordService.getDDLRecord(
+				assetEntry.getClassPK(), locale);
+		}
+		else if (className.equals(DLFileEntry.class.getName())) {
 			return getFileEntryJSONObject(assetEntry);
 		}
-		else if (className.equals(
-					"com.liferay.portlet.journal.model.JournalArticle")) {
-
+		else if (className.equals(JournalArticle.class.getName())) {
 			return getJournalArticleJSONObject(assetEntry);
+		}
+		else if (className.equals(User.class.getName())) {
+			return getUserJSONObject(assetEntry);
 		}
 
 		return JSONFactoryUtil.createJSONObject();
+	}
+
+	protected JSONObject getBlogsEntryJSONObject(AssetEntry assetEntry)
+		throws PortalException, SystemException {
+
+		BlogsEntry blogsEntry = blogsEntryService.getEntry(
+			assetEntry.getClassPK());
+
+		JSONObject blogsEntryJSONObject = JSONFactoryUtil.createJSONObject();
+
+		blogsEntryJSONObject.put(
+			"blogsEntry",
+			JSONFactoryUtil.createJSONObject(
+				JSONFactoryUtil.looseSerialize(blogsEntry)));
+
+		return blogsEntryJSONObject;
 	}
 
 	protected JSONObject getFileEntryJSONObject(AssetEntry assetEntry)
@@ -173,10 +254,12 @@ public class ScreensAssetEntryServiceImpl
 		FileEntry fileEntry = DLAppServiceUtil.getFileEntry(
 			assetEntry.getClassPK());
 
-		JSONObject fileEntryJSONObject =
-			JSONFactoryUtil.createJSONObject(
-				JSONFactoryUtil.looseSerialize(fileEntry));
+		JSONObject fileEntryJSONObject = JSONFactoryUtil.createJSONObject();
 
+		fileEntryJSONObject.put(
+			"fileEntry",
+			JSONFactoryUtil.createJSONObject(
+				JSONFactoryUtil.looseSerialize(fileEntry)));
 		fileEntryJSONObject.put("url", getFileEntryPreviewURL(fileEntry));
 
 		return fileEntryJSONObject;
@@ -204,7 +287,7 @@ public class ScreensAssetEntryServiceImpl
 		JournalArticle journalArticle = null;
 
 		try {
-			journalArticle = journalArticleLocalService.getArticle(
+			journalArticle = journalArticleService.getArticle(
 				assetEntry.getClassPK());
 		}
 		catch (NoSuchArticleException nsae) {
@@ -212,18 +295,58 @@ public class ScreensAssetEntryServiceImpl
 				JournalArticleResourceLocalServiceUtil.getArticleResource(
 					assetEntry.getClassPK());
 
-			journalArticle = journalArticleLocalService.getLatestArticle(
+			journalArticle = journalArticleService.getLatestArticle(
 				journalArticleResource.getGroupId(),
-				journalArticleResource.getArticleId());
+				journalArticleResource.getArticleId(),
+				WorkflowConstants.STATUS_APPROVED);
 		}
 
 		JSONObject journalArticleJSONObject =
-			JSONFactoryUtil.createJSONObject(
-				JSONFactoryUtil.looseSerialize(journalArticle));
+			JSONFactoryUtil.createJSONObject();
 
-		journalArticleJSONObject.remove("content");
+		ClassName journalArticleClassName = classNameLocalService.getClassName(
+			JournalArticle.class.getName());
+
+		try {
+			DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+				journalArticle.getGroupId(),
+				journalArticleClassName.getClassNameId(),
+				journalArticle.getStructureId(), true);
+
+			journalArticleJSONObject.put(
+				"DDMStructure",
+				JSONFactoryUtil.createJSONObject(
+					JSONFactoryUtil.looseSerialize(ddmStructure)));
+		}
+		catch (NoSuchStructureException nsse) {
+			_log.error(nsse, nsse);
+		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONFactoryUtil.looseSerialize(journalArticle));
+
+		journalArticleJSONObject.put("modelAttributes", jsonObject);
+		journalArticleJSONObject.put(
+			"modelValues", jsonObject.getString("content"));
+
+		jsonObject.remove("content");
 
 		return journalArticleJSONObject;
+	}
+
+	protected JSONObject getUserJSONObject(AssetEntry assetEntry)
+		throws PortalException, SystemException {
+
+		User user = userService.getUserById(assetEntry.getClassPK());
+
+		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
+
+		userJSONObject.put(
+			"user",
+			JSONFactoryUtil.createJSONObject(
+				JSONFactoryUtil.looseSerialize(user)));
+
+		return userJSONObject;
 	}
 
 	protected JSONArray toJSONArray(
@@ -236,8 +359,11 @@ public class ScreensAssetEntryServiceImpl
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 				JSONFactoryUtil.looseSerialize(assetEntry));
 
+			jsonObject.put("className", assetEntry.getClassName());
 			jsonObject.put("description", assetEntry.getDescription(locale));
-			jsonObject.put("object", getAssetObjectJSONObject(assetEntry));
+			jsonObject.put("locale", String.valueOf(locale));
+			jsonObject.put(
+				"object", getAssetObjectJSONObject(assetEntry, locale));
 			jsonObject.put("summary", assetEntry.getSummary(locale));
 			jsonObject.put("title", assetEntry.getTitle(locale));
 
@@ -246,5 +372,16 @@ public class ScreensAssetEntryServiceImpl
 
 		return jsonArray;
 	}
+
+	private static final MethodKey _containsPermissionMethodKey =
+		new MethodKey(
+			ClassResolverUtil.resolveByPortalClassLoader(
+				"com.liferay.portlet.asset.service.permission." +
+					"AssetEntryPermission"),
+			"contains", PermissionChecker.class, AssetEntry.class,
+			String.class);
+
+	private static Log _log = LogFactoryUtil.getLog(
+		ScreensAssetEntryServiceImpl.class);
 
 }

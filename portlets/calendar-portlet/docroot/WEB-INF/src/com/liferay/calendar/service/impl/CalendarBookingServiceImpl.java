@@ -732,7 +732,8 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 
 				if (!CalendarPermission.contains(
 						getPermissionChecker(), calendarBooking.getCalendarId(),
-						actionId)) {
+						actionId) ||
+					isPendingInWorkflow(calendarBooking)) {
 
 					itr.remove();
 				}
@@ -743,6 +744,20 @@ public class CalendarBookingServiceImpl extends CalendarBookingServiceBaseImpl {
 		}
 
 		return calendarBookings;
+	}
+
+	protected boolean isPendingInWorkflow(CalendarBooking calendarBooking)
+		throws PortalException, SystemException {
+
+		if (calendarBooking.isPending() &&
+			!CalendarPermission.contains(
+				getPermissionChecker(), calendarBooking.getCalendarId(),
+				ActionKeys.MANAGE_BOOKINGS)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@BeanReference(type = CalendarBookingApprovalWorkflow.class)

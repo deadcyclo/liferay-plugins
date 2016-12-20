@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -56,7 +57,9 @@ import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileVersionLocalServiceUtil;
 import com.liferay.sync.SyncSiteUnavailableException;
 import com.liferay.sync.model.SyncDLFileVersionDiff;
+import com.liferay.sync.model.SyncDevice;
 import com.liferay.sync.service.SyncDLFileVersionDiffLocalServiceUtil;
+import com.liferay.sync.service.SyncDeviceLocalServiceUtil;
 import com.liferay.sync.util.PortletPropsValues;
 import com.liferay.sync.util.SyncUtil;
 
@@ -94,6 +97,19 @@ public class DownloadServlet extends HttpServlet {
 			}
 
 			User user = PortalUtil.getUser(request);
+
+			String syncUuid = request.getHeader("Sync-UUID");
+
+			if (syncUuid != null) {
+				SyncDevice syncDevice =
+					SyncDeviceLocalServiceUtil.
+						fetchSyncDeviceByUuidAndCompanyId(
+							syncUuid, user.getCompanyId());
+
+				if (syncDevice != null) {
+					syncDevice.checkStatus();
+				}
+			}
 
 			PermissionChecker permissionChecker =
 				PermissionCheckerFactoryUtil.create(user);
@@ -140,7 +156,7 @@ public class DownloadServlet extends HttpServlet {
 			}
 			else {
 				long groupId = GetterUtil.getLong(pathArray[0]);
-				String uuid = pathArray[1];
+				String fileUuid = pathArray[1];
 
 				Group group = GroupLocalServiceUtil.fetchGroup(groupId);
 
@@ -158,11 +174,11 @@ public class DownloadServlet extends HttpServlet {
 
 				if (patch) {
 					sendPatch(
-						request, response, user.getUserId(), groupId, uuid);
+						request, response, user.getUserId(), groupId, fileUuid);
 				}
 				else {
 					sendFile(
-						request, response, user.getUserId(), groupId, uuid);
+						request, response, user.getUserId(), groupId, fileUuid);
 				}
 			}
 		}
@@ -188,14 +204,20 @@ public class DownloadServlet extends HttpServlet {
 			repositoryId, folderId);
 
 		for (FileEntry fileEntry : fileEntries) {
-			InputStream inputStream =
-				DLFileEntryLocalServiceUtil.getFileAsStream(
+			InputStream inputStream = null;
+
+			try {
+				inputStream = DLFileEntryLocalServiceUtil.getFileAsStream(
 					userId, fileEntry.getFileEntryId(), fileEntry.getVersion(),
 					false);
 
-			String filePath = folderPath + fileEntry.getTitle();
+				String filePath = folderPath + fileEntry.getTitle();
 
-			zipWriter.addEntry(filePath, inputStream);
+				zipWriter.addEntry(filePath, inputStream);
+			}
+			finally {
+				StreamUtil.cleanUp(inputStream);
+			}
 		}
 
 		List<Folder> childFolders = DLAppServiceUtil.getFolders(
@@ -396,13 +418,13 @@ public class DownloadServlet extends HttpServlet {
 		if (request.getHeader(HttpHeaders.RANGE) != null) {
 			sendFileWithRangeHeader(
 				request, response, downloadServletInputStream.getFileName(),
-				downloadServletInputStream.getInputStream(),
+				downloadServletInputStream,
 				downloadServletInputStream.getSize(),
 				downloadServletInputStream.getMimeType());
 		}
 		else {
 			ServletResponseUtil.write(
-				response, downloadServletInputStream.getInputStream(),
+				response, downloadServletInputStream,
 				downloadServletInputStream.getSize());
 		}
 	}
@@ -493,7 +515,7 @@ public class DownloadServlet extends HttpServlet {
 				userId, groupId, uuid, sourceVersionId, targetVersionId);
 
 		ServletResponseUtil.write(
-			response, downloadServletInputStream.getInputStream(),
+			response, downloadServletInputStream,
 			downloadServletInputStream.getSize());
 	}
 
@@ -523,6 +545,8 @@ public class DownloadServlet extends HttpServlet {
 				continue;
 			}
 
+			InputStream inputStream = null;
+
 			try {
 				String uuid = zipObjectJSONObject.getString("uuid");
 
@@ -532,28 +556,28 @@ public class DownloadServlet extends HttpServlet {
 					long targetVersionId = zipObjectJSONObject.getLong(
 						"targetVersionId", 0);
 
-					DownloadServletInputStream downloadServletInputStream =
-						getPatchDownloadServletInputStream(
-							userId, groupId, uuid, sourceVersionId,
-							targetVersionId);
+					inputStream = getPatchDownloadServletInputStream(
+						userId, groupId, uuid, sourceVersionId,
+						targetVersionId);
 
-					zipWriter.addEntry(
-						zipFileId, downloadServletInputStream.getInputStream());
+					zipWriter.addEntry(zipFileId, inputStream);
 				}
 				else {
-					DownloadServletInputStream downloadServletInputStream =
-						getFileDownloadServletInputStream(
-							userId, groupId, uuid,
-							zipObjectJSONObject.getString("version"),
-							zipObjectJSONObject.getLong("versionId"));
+					inputStream = getFileDownloadServletInputStream(
+						userId, groupId, uuid,
+						zipObjectJSONObject.getString("version"),
+						zipObjectJSONObject.getLong("versionId"));
 
-					zipWriter.addEntry(
-						zipFileId, downloadServletInputStream.getInputStream());
+					zipWriter.addEntry(zipFileId, inputStream);
 				}
 			}
 			catch (Exception e) {
-				processException(
-					zipFileId, e.getClass().getName(), errorsJSONObject);
+				Class clazz = e.getClass();
+
+				processException(zipFileId, clazz.getName(), errorsJSONObject);
+			}
+			finally {
+				StreamUtil.cleanUp(inputStream);
 			}
 		}
 

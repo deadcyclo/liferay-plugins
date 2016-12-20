@@ -53,7 +53,7 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 					strings: showMoreStrings
 				},
 				height: 700,
-				isoTime: <%= isoTimeFormat %>,
+				isoTime: <%= useIsoTimeFormat %>,
 				readOnly: <%= readOnly %>,
 				strings: {
 					allDay: '<liferay-ui:message key="all-day" />'
@@ -70,7 +70,7 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 					strings: showMoreStrings
 				},
 				height: 700,
-				isoTime: <%= isoTimeFormat %>,
+				isoTime: <%= useIsoTimeFormat %>,
 				readOnly: <%= readOnly %>,
 				strings: {
 					allDay: '<liferay-ui:message key="all-day" />'
@@ -83,7 +83,7 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 		window.<portlet:namespace />monthView = new A.SchedulerMonthView(
 			{
 				height: 700,
-				isoTime: <%= isoTimeFormat %>,
+				isoTime: <%= useIsoTimeFormat %>,
 				readOnly: <%= readOnly %>,
 				strings: showMoreStrings
 			}
@@ -93,8 +93,9 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 	<c:if test="<%= !hideAgendaView %>">
 		window.<portlet:namespace />agendaView = new A.SchedulerAgendaView(
 			{
+				daysCount: 31,
 				height: 700,
-				isoTime: <%= isoTimeFormat %>,
+				isoTime: <%= useIsoTimeFormat %>,
 				readOnly: <%= readOnly %>,
 				strings: {
 					noEvents: '<liferay-ui:message key="no-events" />'

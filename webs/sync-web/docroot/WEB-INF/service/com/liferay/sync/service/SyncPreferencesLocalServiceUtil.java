@@ -63,11 +63,17 @@ public class SyncPreferencesLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	public static com.liferay.oauth.model.OAuthApplication enableOAuth(
-		long companyId, com.liferay.portal.service.ServiceContext serviceContext)
+	public static void enableLanSync(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
-		return getService().enableOAuth(companyId, serviceContext);
+		getService().enableLanSync(companyId);
+	}
+
+	public static void enableOAuth(long companyId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().enableOAuth(companyId, serviceContext);
 	}
 
 	public static javax.portlet.PortletPreferences getPortletPreferences(
@@ -75,6 +81,11 @@ public class SyncPreferencesLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService().getPortletPreferences(companyId);
+	}
+
+	public static boolean isOAuthApplicationAvailable(long oAuthApplicationId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().isOAuthApplicationAvailable(oAuthApplicationId);
 	}
 
 	public static void clearService() {

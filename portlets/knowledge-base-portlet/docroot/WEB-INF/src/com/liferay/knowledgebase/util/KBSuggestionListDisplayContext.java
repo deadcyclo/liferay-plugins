@@ -49,6 +49,8 @@ public class KBSuggestionListDisplayContext {
 		_templatePath = templatePath;
 		_kbArticle = kbArticle;
 		_selectedNavItem = selectedNavItem;
+
+		_groupId = kbArticle.getGroupId();
 	}
 
 	public KBSuggestionListDisplayContext(
@@ -167,7 +169,11 @@ public class KBSuggestionListDisplayContext {
 	}
 
 	public boolean isShowKBArticleTitle() {
-		return _kbArticle == null;
+		if (_kbArticle == null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private long _groupId;

@@ -76,7 +76,10 @@ public class URLMetadataScraperProcessor {
 		}
 
 		jsonObject.put(
-			"description", getContent(document, _SELECTORS_DESCRIPTION));
+			"description",
+			StringUtil.shorten(
+				getContent(document, _SELECTORS_DESCRIPTION),
+				_DESCRIPTION_LENGTH_MAXIMUM));
 		jsonObject.put(
 			"imageURLs", getImageURLs(document, protocol, userAgent));
 		jsonObject.put("videoURL", getContent(document, _SELECTORS_VIDEO_URL_));
@@ -108,7 +111,9 @@ public class URLMetadataScraperProcessor {
 			Elements elements = document.select(selector);
 
 			if (selector.equals("title")) {
-				content = elements.html();
+				Element firstElement = elements.first();
+
+				content = firstElement.html();
 			}
 			else {
 				content = elements.attr("content");
@@ -221,6 +226,8 @@ public class URLMetadataScraperProcessor {
 		return false;
 	}
 
+	private static final int _DESCRIPTION_LENGTH_MAXIMUM = 300;
+
 	private static final int _IMAGE_AREA_MINIMUM = 1000;
 
 	private static final int _IMAGE_DIMENSION_MINIMUM = 80;
@@ -228,21 +235,22 @@ public class URLMetadataScraperProcessor {
 	private static final int _IMAGE_URLS_MAXIMUM = 10;
 
 	private static final String[] _SELECTORS_DESCRIPTION = {
-		"meta[name=description]", "meta[property=og:description]"
+		"meta[property=og:description]", "meta[name=og:description]",
+		"meta[name=description]"
 	};
 
 	private static final String[] _SELECTORS_IMAGE = {
-		"meta[property=og:image]"
+		"meta[property=og:image]", "meta[name=og:image]"
 	};
 
 	private static final String[] _SELECTORS_TITLE = {
-		"meta[name=title]", "meta[property=og:site_name]",
-		"meta[property=og:title]", "title"
+		"meta[property=og:title]", "meta[name=og:title]", "meta[name=title]",
+		"title", "meta[property=og:site_name]"
 	};
 
 	private static final String[] _SELECTORS_VIDEO_URL_ = {
-		"meta[name=twitter:player]", "meta[property=og:video:]",
-		"meta[property=og:video:secure_url]", "meta[property=og:video:url]"
+		"meta[property=og:video:]", "meta[property=og:video:url]",
+		"meta[property=og:video:secure_url]", "meta[name=twitter:player]"
 	};
 
 	private static final String _USER_AGENT_DEFAULT =

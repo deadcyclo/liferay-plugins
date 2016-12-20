@@ -2110,7 +2110,7 @@ Please find a solution that does not require portal-impl.jar.
 					for (moduleDir in moduleDirs) {
 						File buildXml = new File(moduleDir + "/build.xml")
 
-						if (buildXml.exists()) {
+						if (buildXml.exists() && (moduleDir != "")) {
 							String buildXmlContent = buildXml.text
 
 							ant."set-module-properties"("module.dir": moduleDir)
@@ -2123,7 +2123,12 @@ Please find a solution that does not require portal-impl.jar.
 							}
 						}
 						else {
-							println "Skipping " + moduleDir + " because it does not have a build.xml file."
+							if (moduleDir == "") {
+								continue
+							}
+							else {
+								println "Skipping " + moduleDir + " because it does not have a build.xml file."
+							}
 						}
 					}
 				]]>
@@ -2720,12 +2725,16 @@ Please find a solution that does not require portal-impl.jar.
 @generated
 --%>
 
-<%@ include file="init.jsp" %>
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+
+<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
 <%@ page import="com.liferay.portal.model.Portlet" %>
 <%@ page import="com.liferay.portal.service.PortletLocalServiceUtil" %>
 
 <%@ page import="java.util.Set" %>
+
+<liferay-theme:defineObjects />
 
 <%
 Portlet portlet = PortletLocalServiceUtil.getPortletById(portletDisplay.getId());

@@ -19,9 +19,18 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ClassResolverUtil;
+import com.liferay.portal.kernel.util.MethodKey;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.PortalClassInvoker;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portlet.dynamicdatalists.model.DDLRecord;
+import com.liferay.portlet.dynamicdatalists.model.DDLRecordSet;
 import com.liferay.portlet.dynamicdatamapping.storage.Field;
 import com.liferay.portlet.dynamicdatamapping.storage.FieldConstants;
 import com.liferay.portlet.dynamicdatamapping.storage.Fields;
@@ -46,6 +55,9 @@ public class ScreensDDLRecordServiceImpl
 		DDLRecord ddlRecord = ddlRecordPersistence.findByPrimaryKey(
 			ddlRecordId);
 
+		checkPermission(
+			getPermissionChecker(), ddlRecord.getRecordSet(), ActionKeys.VIEW);
+
 		Fields fields = ddlRecord.getFields();
 
 		Set<Locale> availableLocales = fields.getAvailableLocales();
@@ -59,28 +71,44 @@ public class ScreensDDLRecordServiceImpl
 
 	@Override
 	public JSONArray getDDLRecords(
-			long ddlRecordSetId, Locale locale, int start, int end)
+			long ddlRecordSetId, Locale locale, int start, int end,
+			OrderByComparator obc)
 		throws PortalException, SystemException {
 
+		checkPermission(
+			getPermissionChecker(), ddlRecordSetId, ActionKeys.VIEW);
+
 		List<DDLRecord> ddlRecords = ddlRecordPersistence.findByRecordSetId(
-			ddlRecordSetId, start, end);
+			ddlRecordSetId, start, end, obc);
 
 		return getDDLRecordsJSONArray(ddlRecords, locale);
 	}
 
 	@Override
 	public JSONArray getDDLRecords(
-			long ddlRecordSetId, long userId, Locale locale, int start, int end)
+			long ddlRecordSetId, long userId, Locale locale, int start, int end,
+			OrderByComparator obc)
 		throws PortalException, SystemException {
 
+		checkPermission(
+			getPermissionChecker(), ddlRecordSetId, ActionKeys.VIEW);
+
 		List<DDLRecord> ddlRecords = ddlRecordPersistence.findByR_U(
-			ddlRecordSetId, userId, start, end);
+			ddlRecordSetId, userId, start, end, obc);
 
 		return getDDLRecordsJSONArray(ddlRecords, locale);
 	}
 
 	@Override
 	public int getDDLRecordsCount(long ddlRecordSetId) throws SystemException {
+		try {
+			checkPermission(
+				getPermissionChecker(), ddlRecordSetId, ActionKeys.VIEW);
+		}
+		catch (PortalException pe) {
+			throw new SystemException(pe);
+		}
+
 		return ddlRecordPersistence.countByRecordSetId(ddlRecordSetId);
 	}
 
@@ -88,7 +116,57 @@ public class ScreensDDLRecordServiceImpl
 	public int getDDLRecordsCount(long ddlRecordSetId, long userId)
 		throws SystemException {
 
+		try {
+			checkPermission(
+				getPermissionChecker(), ddlRecordSetId, ActionKeys.VIEW);
+		}
+		catch (PortalException pe) {
+			throw new SystemException(pe);
+		}
+
 		return ddlRecordPersistence.countByR_U(ddlRecordSetId, userId);
+	}
+
+	protected void checkPermission(
+			PermissionChecker permissionChecker, DDLRecordSet recordSet,
+			String actionId)
+		throws PortalException, SystemException {
+
+		try {
+			PortalClassInvoker.invoke(
+				false, _checkPermissionMethodKey1, permissionChecker, recordSet,
+				actionId);
+		}
+		catch (PortalException pe) {
+			throw pe;
+		}
+		catch (SystemException se) {
+			throw se;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+	}
+
+	protected void checkPermission(
+			PermissionChecker permissionChecker, long recordSetId,
+			String actionId)
+		throws PortalException, SystemException {
+
+		try {
+			PortalClassInvoker.invoke(
+				false, _checkPermissionMethodKey2, permissionChecker,
+				recordSetId, actionId);
+		}
+		catch (PortalException pe) {
+			throw pe;
+		}
+		catch (SystemException se) {
+			throw se;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
 	}
 
 	protected JSONObject getDDLRecordJSONObject(
@@ -118,6 +196,17 @@ public class ScreensDDLRecordServiceImpl
 
 			if (fieldValue != null) {
 				ddlRecordMap.put(field.getName(), fieldValue);
+			}
+			else {
+				for (Locale availableLocale : availableLocales) {
+					fieldValue = getFieldValue(field, availableLocale);
+
+					if (fieldValue != null) {
+						ddlRecordMap.put(field.getName(), fieldValue);
+
+						break;
+					}
+				}
 			}
 		}
 
@@ -203,5 +292,21 @@ public class ScreensDDLRecordServiceImpl
 
 		return fieldValueString;
 	}
+
+	private static final MethodKey _checkPermissionMethodKey1 =
+		new MethodKey(
+			ClassResolverUtil.resolveByPortalClassLoader(
+				"com.liferay.portlet.dynamicdatalists.service.permission." +
+					"DDLRecordSetPermission"),
+			"check", PermissionChecker.class, DDLRecordSet.class, String.class);
+	private static final MethodKey _checkPermissionMethodKey2 =
+		new MethodKey(
+			ClassResolverUtil.resolveByPortalClassLoader(
+				"com.liferay.portlet.dynamicdatalists.service.permission." +
+					"DDLRecordSetPermission"),
+			"check", PermissionChecker.class, long.class, String.class);
+
+	private static Log _log = LogFactoryUtil.getLog(
+		ScreensDDLRecordServiceImpl.class);
 
 }

@@ -185,11 +185,12 @@ public class SyncDLObjectServiceUtil {
 	}
 
 	public static long getLatestModifiedTime()
-		throws com.liferay.portal.kernel.exception.SystemException {
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
 		return getService().getLatestModifiedTime();
 	}
 
-	public static com.liferay.sync.model.SyncContext getSyncContext()
+	public static java.lang.Object getSyncContext()
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService().getSyncContext();
@@ -212,8 +213,8 @@ public class SyncDLObjectServiceUtil {
 			retrieveFromCache);
 	}
 
-	public static com.liferay.sync.model.SyncDLObjectUpdate getSyncDLObjectUpdate(
-		long repositoryId, long parentFolderId, long lastAccessTime)
+	public static java.lang.String getSyncDLObjectUpdate(long repositoryId,
+		long parentFolderId, long lastAccessTime)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService()

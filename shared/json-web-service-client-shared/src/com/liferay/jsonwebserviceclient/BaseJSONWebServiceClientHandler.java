@@ -43,6 +43,27 @@ public abstract class BaseJSONWebServiceClientHandler {
 			ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "class");
 	}
 
+	protected String doDelete(
+		String url, Map<String, String> parameters,
+		Map<String, String> headers) {
+
+		JSONWebServiceClient jsonWebServiceClient = getJSONWebServiceClient();
+
+		return jsonWebServiceClient.doDelete(url, parameters, headers);
+	}
+
+	protected String doDelete(String url, String... parametersArray) {
+		JSONWebServiceClient jsonWebServiceClient = getJSONWebServiceClient();
+
+		Map<String, String> parameters = new HashMap<String, String>();
+
+		for (int i = 0; i < parametersArray.length; i += 2) {
+			parameters.put(parametersArray[i], parametersArray[i + 1]);
+		}
+
+		return jsonWebServiceClient.doDelete(url, parameters);
+	}
+
 	protected String doGet(
 		String url, Map<String, String> parameters,
 		Map<String, String> headers) {
@@ -90,8 +111,8 @@ public abstract class BaseJSONWebServiceClientHandler {
 
 			return objectMapper.readValue(json, javaType);
 		}
-		catch (IOException ie) {
-			throw new JSONWebServiceInvocationException(ie);
+		catch (IOException ioe) {
+			throw new JSONWebServiceInvocationException(ioe);
 		}
 	}
 
@@ -127,8 +148,8 @@ public abstract class BaseJSONWebServiceClientHandler {
 		try {
 			return objectMapper.readValue(json, clazz);
 		}
-		catch (IOException ie) {
-			throw new JSONWebServiceInvocationException(ie);
+		catch (IOException ioe) {
+			throw new JSONWebServiceInvocationException(ioe);
 		}
 	}
 
@@ -164,8 +185,8 @@ public abstract class BaseJSONWebServiceClientHandler {
 
 			return jsonWebServiceClient.doPostAsJSON(url, json);
 		}
-		catch (IOException ie) {
-			throw new JSONWebServiceInvocationException(ie);
+		catch (IOException ioe) {
+			throw new JSONWebServiceInvocationException(ioe);
 		}
 	}
 
@@ -187,9 +208,30 @@ public abstract class BaseJSONWebServiceClientHandler {
 		try {
 			return objectMapper.readValue(json, clazz);
 		}
-		catch (IOException ie) {
-			throw new JSONWebServiceInvocationException(ie);
+		catch (IOException ioe) {
+			throw new JSONWebServiceInvocationException(ioe);
 		}
+	}
+
+	protected String doPut(
+		String url, Map<String, String> parameters,
+		Map<String, String> headers) {
+
+		JSONWebServiceClient jsonWebServiceClient = getJSONWebServiceClient();
+
+		return jsonWebServiceClient.doPut(url, parameters, headers);
+	}
+
+	protected String doPut(String url, String... parametersArray) {
+		JSONWebServiceClient jsonWebServiceClient = getJSONWebServiceClient();
+
+		Map<String, String> parameters = new HashMap<String, String>();
+
+		for (int i = 0; i < parametersArray.length; i += 2) {
+			parameters.put(parametersArray[i], parametersArray[i + 1]);
+		}
+
+		return jsonWebServiceClient.doPut(url, parameters);
 	}
 
 	protected String getExceptionMessage(String json) {
@@ -212,6 +254,6 @@ public abstract class BaseJSONWebServiceClientHandler {
 
 	protected ObjectMapper objectMapper = new ObjectMapper();
 
-	private Pattern _statusPattern = Pattern.compile("status\":(\\d+)");
+	private final Pattern _statusPattern = Pattern.compile("status\":(\\d+)");
 
 }

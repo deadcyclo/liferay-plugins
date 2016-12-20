@@ -39,6 +39,13 @@ public class AssetEntrySetLikeLocalServiceImpl
 			assetEntrySetLikePK);
 	}
 
+	public int getAssetEntrySetLikeCount(long assetEntrySetId)
+		throws SystemException {
+
+		return assetEntrySetLikePersistence.countByAssetEntrySetId(
+			assetEntrySetId);
+	}
+
 	@Override
 	public List<AssetEntrySetLike> getAssetEntrySetLikes(
 			long assetEntrySetId, long classNameId, long classPK, int start,

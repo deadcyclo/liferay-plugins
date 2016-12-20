@@ -37,11 +37,6 @@ public class UpgradeAssetEntrySet extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		updateImageData();
-		updateLinkData();
-	}
-
-	protected void updateImageData() throws Exception {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -121,53 +116,6 @@ public class UpgradeAssetEntrySet extends UpgradeProcess {
 				}
 
 				payloadJSONObject.put("imageData", newImageDataJSONArray);
-
-				ps.setString(1, payloadJSONObject.toString());
-
-				long assetEntrySetId = rs.getLong("assetEntrySetId");
-
-				ps.setLong(2, assetEntrySetId);
-
-				ps.executeUpdate();
-			}
-		}
-		finally {
-			DataAccess.cleanUp(con, ps, rs);
-		}
-	}
-
-	protected void updateLinkData() throws Exception {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-			con = DataAccess.getUpgradeOptimizedConnection();
-
-			ps = con.prepareStatement("select * from AssetEntrySet");
-
-			rs = ps.executeQuery();
-
-			ps = con.prepareStatement(
-				"update AssetEntrySet set payload = ? where assetEntrySetId " +
-					"= ?");
-
-			while (rs.next()) {
-				String payload = rs.getString("payload");
-
-				JSONObject payloadJSONObject = JSONFactoryUtil.createJSONObject(
-					payload);
-
-				String linkData = payloadJSONObject.getString("linkData");
-
-				if (Validator.isNull(linkData)) {
-					continue;
-				}
-
-				JSONObject linkDataJSONObject =
-					JSONFactoryUtil.createJSONObject(linkData);
-
-				payloadJSONObject.put("linkData", linkDataJSONObject);
 
 				ps.setString(1, payloadJSONObject.toString());
 

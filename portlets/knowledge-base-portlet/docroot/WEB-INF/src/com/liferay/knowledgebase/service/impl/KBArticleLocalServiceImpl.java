@@ -62,6 +62,7 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -115,6 +116,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 		User user = userPersistence.findByPrimaryKey(userId);
 		long groupId = serviceContext.getScopeGroupId();
+		urlTitle = normalizeUrlTitle(urlTitle);
 		double priority = getPriority(groupId, parentResourcePrimKey);
 		Date now = new Date();
 
@@ -123,6 +125,8 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 		long kbFolderId = KnowledgeBaseUtil.getKBFolderId(
 			parentResourceClassNameId, parentResourcePrimKey);
+
+		urlTitle = StringUtil.toLowerCase(urlTitle);
 
 		validateUrlTitle(groupId, kbFolderId, urlTitle);
 
@@ -417,7 +421,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		throws SystemException {
 
 		urlTitle = StringUtil.replaceFirst(
-			urlTitle, StringPool.SLASH, StringPool.BLANK);
+			urlTitle, CharPool.SLASH, StringPool.BLANK);
 
 		KBArticle kbArticle = fetchLatestKBArticleByUrlTitle(
 			groupId, kbFolderId, urlTitle, WorkflowConstants.STATUS_APPROVED);
@@ -437,7 +441,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		throws PortalException {
 
 		urlTitle = StringUtil.replaceFirst(
-			urlTitle, StringPool.SLASH, StringPool.BLANK);
+			urlTitle, CharPool.SLASH, StringPool.BLANK);
 
 		List<KBArticle> kbArticles = kbArticleFinder.findByUrlTitle(
 			groupId, kbFolderUrlTitle, urlTitle, _STATUSES, 0, 1);
@@ -468,7 +472,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		throws SystemException {
 
 		urlTitle = StringUtil.replaceFirst(
-			urlTitle, StringPool.SLASH, StringPool.BLANK);
+			urlTitle, CharPool.SLASH, StringPool.BLANK);
 
 		List<KBArticle> kbArticles = null;
 
@@ -604,7 +608,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		throws PortalException, SystemException {
 
 		urlTitle = StringUtil.replaceFirst(
-			urlTitle, StringPool.SLASH, StringPool.BLANK);
+			urlTitle, CharPool.SLASH, StringPool.BLANK);
 
 		// Get the latest KB article that is approved, if none are approved, get
 		// the latest unapproved KB article
@@ -628,7 +632,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		throws PortalException {
 
 		urlTitle = StringUtil.replaceFirst(
-			urlTitle, StringPool.SLASH, StringPool.BLANK);
+			urlTitle, CharPool.SLASH, StringPool.BLANK);
 
 		KBArticle kbArticle = fetchKBArticleByUrlTitle(
 			groupId, kbFolderUrlTitle, urlTitle);
@@ -749,6 +753,13 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 	}
 
 	@Override
+	public List<KBArticle> getKBFolderKBArticles(long groupId, long kbFolderId)
+		throws SystemException {
+
+		return kbArticlePersistence.findByG_KBFI_L(groupId, kbFolderId, true);
+	}
+
+	@Override
 	public int getKBFolderKBArticlesCount(
 			long groupId, long kbFolderId, int status)
 		throws SystemException {
@@ -776,7 +787,7 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		throws PortalException, SystemException {
 
 		urlTitle = StringUtil.replaceFirst(
-			urlTitle, StringPool.SLASH, StringPool.BLANK);
+			urlTitle, CharPool.SLASH, StringPool.BLANK);
 
 		KBArticle latestKBArticle = fetchLatestKBArticleByUrlTitle(
 			groupId, kbFolderId, urlTitle, status);
@@ -1775,6 +1786,18 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		return true;
 	}
 
+	protected String normalizeUrlTitle(String urlTitle) {
+		if (urlTitle == null) {
+			return null;
+		}
+
+		if (StringUtil.startsWith(urlTitle, CharPool.SLASH)) {
+			return urlTitle;
+		}
+
+		return StringPool.SLASH + urlTitle;
+	}
+
 	protected void notifySubscribers(
 			KBArticle kbArticle, ServiceContext serviceContext)
 		throws PortalException, SystemException {
@@ -1946,7 +1969,8 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 	protected void validate(double priority) throws PortalException {
 		if (priority <= 0) {
-			throw new KBArticlePriorityException();
+			throw new KBArticlePriorityException(
+				"Invalid priority " + priority);
 		}
 	}
 
@@ -1954,11 +1978,11 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		throws PortalException {
 
 		if (Validator.isNull(title)) {
-			throw new KBArticleTitleException();
+			throw new KBArticleTitleException("Title is null");
 		}
 
 		if (Validator.isNull(content)) {
-			throw new KBArticleContentException();
+			throw new KBArticleContentException("Content is null");
 		}
 
 		validateSourceURL(sourceURL);

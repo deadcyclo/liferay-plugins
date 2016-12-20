@@ -14,12 +14,16 @@
 
 package com.liferay.jsonwebserviceclient;
 
+import com.liferay.jsonwebserviceclient.jcifs.JCIFSNTLMSchemeFactory;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.io.UnsupportedEncodingException;
 
+import java.net.ProxySelector;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+
+import java.nio.charset.StandardCharsets;
 
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
@@ -42,24 +46,30 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpMessage;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.auth.AuthScheme;
+import org.apache.http.auth.AuthSchemeProvider;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.ChallengeState;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.config.Lookup;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ConnectTimeoutException;
@@ -78,6 +88,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.ProxyAuthenticationStrategy;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
@@ -93,6 +104,8 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 	public void afterPropertiesSet() {
 		HttpClientBuilder httpClientBuilder = HttpClients.custom();
+
+		httpClientBuilder = httpClientBuilder.useSystemProperties();
 
 		HttpClientConnectionManager httpClientConnectionManager =
 			getPoolingHttpClientConnectionManager();
@@ -130,7 +143,31 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		}
 
 		try {
-			setProxyHost(httpClientBuilder);
+			if (_proxySelector != null) {
+				httpClientBuilder.setRoutePlanner(
+					new SystemDefaultRoutePlanner(_proxySelector));
+			}
+			else {
+				setProxyHost(httpClientBuilder);
+			}
+
+			if (!isNull(_proxyAuthType) &&
+				_proxyAuthType.equalsIgnoreCase("ntlm")) {
+
+				RegistryBuilder registerBuilder =
+					RegistryBuilder.<AuthSchemeProvider>create();
+
+				registerBuilder = registerBuilder.register(
+					AuthSchemes.NTLM,
+					new JCIFSNTLMSchemeFactory(
+						_proxyDomain, _proxyWorkstation));
+
+				Lookup<AuthSchemeProvider> authSchemeRegistry =
+					registerBuilder.build();
+
+				httpClientBuilder.setDefaultAuthSchemeRegistry(
+					authSchemeRegistry);
+			}
 
 			_closeableHttpClient = httpClientBuilder.build();
 
@@ -153,13 +190,56 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		try {
 			_closeableHttpClient.close();
 		}
-		catch (IOException e) {
-			_logger.error("Unable to close client", e);
+		catch (IOException ioe) {
+			_logger.error("Unable to close client", ioe);
 		}
 
 		_closeableHttpClient = null;
 
 		_idleConnectionMonitorThread.shutdown();
+	}
+
+	@Override
+	public String doDelete(String url, Map<String, String> parameters)
+		throws JSONWebServiceTransportException {
+
+		return doDelete(
+			url, parameters, Collections.<String, String>emptyMap());
+	}
+
+	@Override
+	public String doDelete(
+			String url, Map<String, String> parameters,
+			Map<String, String> headers)
+		throws JSONWebServiceTransportException {
+
+		if (!isNull(_contextPath)) {
+			url = _contextPath + url;
+		}
+
+		List<NameValuePair> nameValuePairs = toNameValuePairs(parameters);
+
+		if (!nameValuePairs.isEmpty()) {
+			String queryString = URLEncodedUtils.format(
+				nameValuePairs, StandardCharsets.UTF_8);
+
+			url += "?" + queryString;
+		}
+
+		if (_logger.isDebugEnabled()) {
+			_logger.debug(
+				"Sending DELETE request to " + _login + "@" + _hostName + url);
+
+			log("HTTP parameters", parameters);
+
+			log("HTTP headers", headers);
+		}
+
+		HttpDelete httpDelete = new HttpDelete(url);
+
+		addHeaders(httpDelete, headers);
+
+		return execute(httpDelete);
 	}
 
 	@Override
@@ -175,10 +255,15 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 			Map<String, String> headers)
 		throws JSONWebServiceTransportException {
 
+		if (!isNull(_contextPath)) {
+			url = _contextPath + url;
+		}
+
 		List<NameValuePair> nameValuePairs = toNameValuePairs(parameters);
 
 		if (!nameValuePairs.isEmpty()) {
-			String queryString = URLEncodedUtils.format(nameValuePairs, "utf8");
+			String queryString = URLEncodedUtils.format(
+				nameValuePairs, StandardCharsets.UTF_8);
 
 			url += "?" + queryString;
 		}
@@ -186,17 +271,15 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug(
 				"Sending GET request to " + _login + "@" + _hostName + url);
+
+			log("HTTP parameters", parameters);
+
+			log("HTTP headers", headers);
 		}
 
 		HttpGet httpGet = new HttpGet(url);
 
-		for (String key : headers.keySet()) {
-			httpGet.addHeader(key, headers.get(key));
-		}
-
-		for (String key : _headers.keySet()) {
-			httpGet.addHeader(key, _headers.get(key));
-		}
+		addHeaders(httpGet, headers);
 
 		return execute(httpGet);
 	}
@@ -214,35 +297,31 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 			Map<String, String> headers)
 		throws JSONWebServiceTransportException {
 
+		if (!isNull(_contextPath)) {
+			url = _contextPath + url;
+		}
+
 		if (_logger.isDebugEnabled()) {
 			_logger.debug(
 				"Sending POST request to " + _login + "@" + _hostName + url);
+
+			log("HTTP parameters", parameters);
+
+			log("HTTP headers", headers);
 		}
 
-		try {
-			HttpPost httpPost = new HttpPost(url);
+		HttpPost httpPost = new HttpPost(url);
 
-			List<NameValuePair> nameValuePairs = toNameValuePairs(parameters);
+		List<NameValuePair> nameValuePairs = toNameValuePairs(parameters);
 
-			HttpEntity httpEntity = new UrlEncodedFormEntity(
-				nameValuePairs, "utf8");
+		HttpEntity httpEntity = new UrlEncodedFormEntity(
+			nameValuePairs, StandardCharsets.UTF_8);
 
-			for (String key : headers.keySet()) {
-				httpPost.addHeader(key, headers.get(key));
-			}
+		addHeaders(httpPost, headers);
 
-			for (String key : _headers.keySet()) {
-				httpPost.addHeader(key, _headers.get(key));
-			}
+		httpPost.setEntity(httpEntity);
 
-			httpPost.setEntity(httpEntity);
-
-			return execute(httpPost);
-		}
-		catch (UnsupportedEncodingException uee) {
-			throw new JSONWebServiceTransportException.CommunicationFailure(
-				uee);
-		}
+		return execute(httpPost);
 	}
 
 	@Override
@@ -259,15 +338,10 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 		HttpPost httpPost = new HttpPost(url);
 
-		for (String key : headers.keySet()) {
-			httpPost.addHeader(key, headers.get(key));
-		}
+		addHeaders(httpPost, headers);
 
-		for (String key : _headers.keySet()) {
-			httpPost.addHeader(key, _headers.get(key));
-		}
-
-		StringEntity stringEntity = new StringEntity(json.toString(), "utf8");
+		StringEntity stringEntity = new StringEntity(
+			json.toString(), StandardCharsets.UTF_8);
 
 		stringEntity.setContentType("application/json");
 
@@ -276,18 +350,61 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		return execute(httpPost);
 	}
 
+	@Override
+	public String doPut(String url, Map<String, String> parameters)
+		throws JSONWebServiceTransportException {
+
+		return doPut(url, parameters, Collections.<String, String>emptyMap());
+	}
+
+	@Override
+	public String doPut(
+			String url, Map<String, String> parameters,
+			Map<String, String> headers)
+		throws JSONWebServiceTransportException {
+
+		if (!isNull(_contextPath)) {
+			url = _contextPath + url;
+		}
+
+		if (_logger.isDebugEnabled()) {
+			_logger.debug(
+				"Sending PUT request to " + _login + "@" + _hostName + url);
+
+			log("HTTP parameters", parameters);
+
+			log("HTTP headers", headers);
+		}
+
+		HttpPut httpPut = new HttpPut(url);
+
+		List<NameValuePair> nameValuePairs = toNameValuePairs(parameters);
+
+		HttpEntity httpEntity = new UrlEncodedFormEntity(
+			nameValuePairs, StandardCharsets.UTF_8);
+
+		addHeaders(httpPut, headers);
+
+		httpPut.setEntity(httpEntity);
+
+		return execute(httpPut);
+	}
+
 	public Map<String, String> getHeaders() {
 		return _headers;
 	}
 
+	@Override
 	public String getHostName() {
 		return _hostName;
 	}
 
+	@Override
 	public int getHostPort() {
 		return _hostPort;
 	}
 
+	@Override
 	public String getProtocol() {
 		return _protocol;
 	}
@@ -299,14 +416,20 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		afterPropertiesSet();
 	}
 
+	public void setContextPath(String contextPath) {
+		_contextPath = contextPath;
+	}
+
 	public void setHeaders(Map<String, String> headers) {
 		_headers = headers;
 	}
 
+	@Override
 	public void setHostName(String hostName) {
 		_hostName = hostName;
 	}
 
+	@Override
 	public void setHostPort(int hostPort) {
 		_hostPort = hostPort;
 	}
@@ -326,8 +449,17 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		_password = password;
 	}
 
+	@Override
 	public void setProtocol(String protocol) {
 		_protocol = protocol;
+	}
+
+	public void setProxyAuthType(String proxyAuthType) {
+		_proxyAuthType = proxyAuthType;
+	}
+
+	public void setProxyDomain(String proxyDomain) {
+		_proxyDomain = proxyDomain;
 	}
 
 	public void setProxyHostName(String proxyHostName) {
@@ -344,6 +476,26 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 	public void setProxyPassword(String proxyPassword) {
 		_proxyPassword = proxyPassword;
+	}
+
+	public void setProxySelector(ProxySelector proxySelector) {
+		_proxySelector = proxySelector;
+	}
+
+	public void setProxyWorkstation(String proxyWorkstation) {
+		_proxyWorkstation = proxyWorkstation;
+	}
+
+	protected void addHeaders(
+		HttpMessage httpMessage, Map<String, String> headers) {
+
+		for (Map.Entry<String, String> entry : headers.entrySet()) {
+			httpMessage.addHeader(entry.getKey(), entry.getValue());
+		}
+
+		for (Map.Entry<String, String> entry : _headers.entrySet()) {
+			httpMessage.addHeader(entry.getKey(), entry.getValue());
+		}
 	}
 
 	protected String execute(HttpRequestBase httpRequestBase)
@@ -388,27 +540,34 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 			StatusLine statusLine = httpResponse.getStatusLine();
 
-			if (statusLine.getStatusCode() ==
-					HttpServletResponse.SC_UNAUTHORIZED) {
+			int statusCode = statusLine.getStatusCode();
 
+			if ((statusCode == HttpServletResponse.SC_BAD_REQUEST) ||
+				(statusCode == HttpServletResponse.SC_FORBIDDEN) ||
+				(statusCode == HttpServletResponse.SC_NOT_ACCEPTABLE) ||
+				(statusCode == HttpServletResponse.SC_NOT_FOUND)) {
+
+				if (httpResponse.getEntity() != null) {
+					if (_logger.isDebugEnabled()) {
+						_logger.debug("Server returned status " + statusCode);
+					}
+
+					return EntityUtils.toString(
+						httpResponse.getEntity(), StandardCharsets.UTF_8);
+				}
+			}
+			else if (statusCode == HttpServletResponse.SC_OK) {
+				return EntityUtils.toString(
+					httpResponse.getEntity(), StandardCharsets.UTF_8);
+			}
+			else if (statusCode == HttpServletResponse.SC_UNAUTHORIZED) {
 				throw new JSONWebServiceTransportException.
 					AuthenticationFailure(
 						"Not authorized to access JSON web service");
 			}
-			else if (statusLine.getStatusCode() >= 400) {
-				String message = null;
 
-				if (httpResponse.getEntity() != null) {
-					HttpEntity httpEntity = httpResponse.getEntity();
-
-					message = EntityUtils.toString(httpEntity, "utf8");
-				}
-
-				throw new JSONWebServiceTransportException.CommunicationFailure(
-					message, statusLine.getStatusCode());
-			}
-
-			return EntityUtils.toString(httpResponse.getEntity(), "utf8");
+			throw new JSONWebServiceTransportException.CommunicationFailure(
+				"Server returned status " + statusCode, statusCode);
 		}
 		catch (IOException ioe) {
 			throw new JSONWebServiceTransportException.CommunicationFailure(
@@ -444,7 +603,7 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 	protected Registry<ConnectionSocketFactory> getSocketFactoryRegistry() {
 		RegistryBuilder<ConnectionSocketFactory> registryBuilder =
-			RegistryBuilder.<ConnectionSocketFactory> create();
+			RegistryBuilder.<ConnectionSocketFactory>create();
 
 		registryBuilder.register("http", new PlainConnectionSocketFactory());
 		registryBuilder.register("https", getSSLConnectionSocketFactory());
@@ -482,6 +641,34 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		return false;
 	}
 
+	protected void log(String message, Map<String, String> map) {
+		if (!_logger.isDebugEnabled() || map.isEmpty()) {
+			return;
+		}
+
+		StringBuilder sb = new StringBuilder((map.size() * 4) + 2);
+
+		sb.append(message);
+		sb.append(":");
+
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+
+			if (value == null) {
+				key = "-" + key;
+				value = "";
+			}
+
+			sb.append("\n");
+			sb.append(key);
+			sb.append("=");
+			sb.append(value);
+		}
+
+		_logger.debug(sb.toString());
+	}
+
 	protected void setProxyHost(HttpClientBuilder httpClientBuilder) {
 		if ((_proxyHostName == null) || _proxyHostName.equals("")) {
 			return;
@@ -517,10 +704,11 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 		return nameValuePairs;
 	}
 
-	private static Logger _logger = LoggerFactory.getLogger(
+	private static final Logger _logger = LoggerFactory.getLogger(
 		JSONWebServiceClientImpl.class);
 
 	private CloseableHttpClient _closeableHttpClient;
+	private String _contextPath;
 	private Map<String, String> _headers = Collections.emptyMap();
 	private String _hostName;
 	private int _hostPort = 80;
@@ -529,10 +717,14 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 	private String _login;
 	private String _password;
 	private String _protocol = "http";
+	private String _proxyAuthType;
+	private String _proxyDomain;
 	private String _proxyHostName;
 	private int _proxyHostPort;
 	private String _proxyLogin;
 	private String _proxyPassword;
+	private ProxySelector _proxySelector;
+	private String _proxyWorkstation;
 
 	private class HttpRequestRetryHandlerImpl
 		implements HttpRequestRetryHandler {
@@ -621,6 +813,8 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 
 		public X509TrustManagerImpl() {
 			try {
+				X509TrustManager x509TrustManager = null;
+
 				TrustManagerFactory trustManagerFactory =
 					TrustManagerFactory.getInstance(
 						TrustManagerFactory.getDefaultAlgorithm());
@@ -631,11 +825,13 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 						trustManagerFactory.getTrustManagers()) {
 
 					if (trustManager instanceof X509TrustManager) {
-						_x509TrustManager = (X509TrustManager)trustManager;
+						x509TrustManager = (X509TrustManager)trustManager;
 
 						break;
 					}
 				}
+
+				_x509TrustManager = x509TrustManager;
 			}
 			catch (Exception e) {
 				throw new RuntimeException(e);
@@ -669,7 +865,7 @@ public class JSONWebServiceClientImpl implements JSONWebServiceClient {
 			return _x509TrustManager.getAcceptedIssuers();
 		}
 
-		private X509TrustManager _x509TrustManager;
+		private final X509TrustManager _x509TrustManager;
 
 	}
 

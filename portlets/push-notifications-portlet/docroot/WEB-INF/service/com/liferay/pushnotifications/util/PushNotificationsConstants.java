@@ -19,6 +19,8 @@ package com.liferay.pushnotifications.util;
  */
 public class PushNotificationsConstants {
 
+	public static final String KEY_BADGE = "badge";
+
 	public static final String KEY_BODY = "body";
 
 	public static final String KEY_BODY_LOCALIZED = "bodyLocalizedKey";
@@ -29,6 +31,8 @@ public class PushNotificationsConstants {
 	public static final String KEY_FROM = "from";
 
 	public static final String KEY_PAYLOAD = "payload";
+
+	public static final String KEY_SILENT = "silent";
 
 	public static final String KEY_SOUND = "sound";
 

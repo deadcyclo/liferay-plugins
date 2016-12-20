@@ -14,7 +14,6 @@
 
 package com.liferay.sync.servlet;
 
-import com.liferay.oauth.model.OAuthApplication;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -43,13 +42,12 @@ import com.liferay.sync.service.SyncDLObjectLocalServiceUtil;
 import com.liferay.sync.service.SyncPreferencesLocalServiceUtil;
 import com.liferay.sync.util.PortletPropsKeys;
 import com.liferay.sync.util.PortletPropsValues;
+import com.liferay.sync.util.SyncUtil;
 import com.liferay.sync.util.VerifyUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.portlet.PortletPreferences;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -137,6 +135,19 @@ public class SyncServletContextListener
 			List<Company> companies = CompanyLocalServiceUtil.getCompanies();
 
 			for (Company company : companies) {
+				boolean lanEnabled = PrefsPropsUtil.getBoolean(
+					company.getCompanyId(), PortletPropsKeys.SYNC_LAN_ENABLED,
+					PortletPropsValues.SYNC_LAN_ENABLED);
+
+				if (lanEnabled) {
+					try {
+						SyncUtil.enableLanSync(company.getCompanyId());
+					}
+					catch (Exception e) {
+						_log.error(e, e);
+					}
+				}
+
 				boolean oAuthEnabled = PrefsPropsUtil.getBoolean(
 					company.getCompanyId(), PortletPropsKeys.SYNC_OAUTH_ENABLED,
 					PortletPropsValues.SYNC_OAUTH_ENABLED);
@@ -152,24 +163,8 @@ public class SyncServletContextListener
 
 				serviceContext.setUserId(user.getUserId());
 
-				OAuthApplication oAuthApplication =
-					SyncPreferencesLocalServiceUtil.enableOAuth(
-						company.getCompanyId(), serviceContext);
-
-				PortletPreferences portletPreferences =
-					PrefsPropsUtil.getPreferences(company.getCompanyId());
-
-				portletPreferences.setValue(
-					PortletPropsKeys.SYNC_OAUTH_APPLICATION_ID,
-					String.valueOf(oAuthApplication.getOAuthApplicationId()));
-				portletPreferences.setValue(
-					PortletPropsKeys.SYNC_OAUTH_CONSUMER_KEY,
-					oAuthApplication.getConsumerKey());
-				portletPreferences.setValue(
-					PortletPropsKeys.SYNC_OAUTH_CONSUMER_SECRET,
-					oAuthApplication.getConsumerSecret());
-
-				portletPreferences.store();
+				SyncPreferencesLocalServiceUtil.enableOAuth(
+					company.getCompanyId(), serviceContext);
 			}
 		}
 		catch (Exception e) {

@@ -166,7 +166,7 @@ public class FileSystemImporter extends BaseImporter {
 					getMap(name), null,
 					DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
 					StringPool.BLANK, getDDMTemplateLanguage(file.getName()),
-					script, false, false, StringPool.BLANK, null,
+					script, true, false, StringPool.BLANK, null,
 					serviceContext);
 			}
 			else {
@@ -175,8 +175,7 @@ public class FileSystemImporter extends BaseImporter {
 					getMap(name), null,
 					DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY,
 					StringPool.BLANK, getDDMTemplateLanguage(file.getName()),
-					script, false, false, StringPool.BLANK, null,
-					serviceContext);
+					script, ddmTemplate.getCacheable(), serviceContext);
 			}
 		}
 		catch (PortalException e) {
@@ -523,15 +522,16 @@ public class FileSystemImporter extends BaseImporter {
 					userId, templateGroupId,
 					PortalUtil.getClassNameId(DDMStructure.class),
 					ddmStructureId, getKey(fileName), getMap(name), null, type,
-					mode, language, script, false, false, StringPool.BLANK,
-					null, serviceContext);
+					mode, language, script, true, false, StringPool.BLANK, null,
+					serviceContext);
 			}
 			else {
 				DDMTemplateLocalServiceUtil.updateTemplate(
 					ddmTemplate.getTemplateId(),
 					PortalUtil.getClassNameId(DDMStructure.class), getMap(name),
 					null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null,
-					language, script, false, false, null, null, serviceContext);
+					language, script, ddmTemplate.getCacheable(),
+					serviceContext);
 			}
 		}
 		catch (PortalException e) {
@@ -617,7 +617,7 @@ public class FileSystemImporter extends BaseImporter {
 					ddmStructure.getStructureId(), getKey(fileName),
 					getMap(name), null,
 					DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null, language,
-					replaceFileEntryURL(xsl), false, false, null, null,
+					replaceFileEntryURL(xsl), true, false, null, null,
 					serviceContext);
 			}
 			else {
@@ -625,8 +625,8 @@ public class FileSystemImporter extends BaseImporter {
 					ddmTemplate.getTemplateId(),
 					PortalUtil.getClassNameId(DDMStructure.class), getMap(name),
 					null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null,
-					language, replaceFileEntryURL(xsl), false, false, null,
-					null, serviceContext);
+					language, replaceFileEntryURL(xsl),
+					ddmTemplate.getCacheable(), serviceContext);
 			}
 		}
 		catch (PortalException e) {
@@ -975,10 +975,39 @@ public class FileSystemImporter extends BaseImporter {
 					"layoutPrototypeUuid", layoutPrototypeUuid);
 			}
 
-			Layout layout = LayoutLocalServiceUtil.addLayout(
-				userId, groupId, privateLayout, parentLayoutId, nameMap,
-				titleMap, null, null, null, type, typeSettings, hidden,
-				friendlyURLMap, serviceContext);
+			Layout layout = LayoutLocalServiceUtil.fetchLayoutByFriendlyURL(
+				groupId, privateLayout, friendlyURL);
+
+			if (layout != null) {
+				if (!developerModeEnabled) {
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							"Layout with friendly URL " + friendlyURL +
+								" already exists");
+				}
+
+					return;
+				}
+
+				if (!updateModeEnabled) {
+					LayoutLocalServiceUtil.deleteLayout(layout);
+				}
+			}
+
+			if (!updateModeEnabled || (layout == null)) {
+				layout = LayoutLocalServiceUtil.addLayout(
+					userId, groupId, privateLayout, parentLayoutId, nameMap,
+					titleMap, null, null, null, type, typeSettings, hidden,
+					friendlyURLMap, serviceContext);
+			}
+			else {
+				layout = LayoutLocalServiceUtil.updateLayout(
+					groupId, privateLayout, layout.getLayoutId(),
+					parentLayoutId, nameMap, titleMap,
+					layout.getDescriptionMap(), layout.getKeywordsMap(),
+					layout.getRobotsMap(), type, hidden, friendlyURLMap,
+					layout.getIconImage(), null, serviceContext);
+			}
 
 			LayoutTypePortlet layoutTypePortlet =
 				(LayoutTypePortlet)layout.getLayoutType();
@@ -1057,6 +1086,10 @@ public class FileSystemImporter extends BaseImporter {
 
 		String portletId = layoutTypePortlet.addPortletId(
 			userId, rootPortletId, columnId, -1, false);
+
+		if (portletId == null) {
+			return;
+		}
 
 		JSONObject portletPreferencesJSONObject =
 			portletJSONObject.getJSONObject("portletPreferences");

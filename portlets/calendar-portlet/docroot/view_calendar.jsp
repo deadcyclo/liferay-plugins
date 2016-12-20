@@ -38,16 +38,10 @@ List<Calendar> otherCalendars = new ArrayList<Calendar>();
 
 long[] calendarIds = StringUtil.split(SessionClicks.get(request, "calendar-portlet-other-calendars", StringPool.BLANK), 0L);
 
-for (long calendarId : calendarIds) {
-	Calendar calendar = CalendarServiceUtil.fetchCalendar(calendarId);
+CalendarDisplayContext calendarDisplayContext = (CalendarDisplayContext)renderRequest.getAttribute(WebKeys.CALENDAR_DISPLAY_CONTEXT);
 
-	if (calendar != null) {
-		CalendarResource calendarResource = calendar.getCalendarResource();
-
-		if (calendarResource.isActive()) {
-			otherCalendars.add(calendar);
-		}
-	}
+if (calendarDisplayContext != null) {
+	otherCalendars = calendarDisplayContext.getOtherCalendars(calendarIds);
 }
 
 Calendar defaultCalendar = null;
@@ -398,7 +392,7 @@ boolean columnOptionsVisible = GetterUtil.getBoolean(SessionClicks.get(request, 
 	window.<portlet:namespace />refreshVisibleCalendarRenderingRules = function() {
 		var miniCalendarStartDate = DateMath.subtract(DateMath.toMidnight(window.<portlet:namespace />miniCalendar.get('date')), DateMath.WEEK, 1);
 
-		var miniCalendarEndDate = DateMath.add(DateMath.add(miniCalendarStartDate, DateMath.MONTH, 1), DateMath.WEEK, 1);
+		var miniCalendarEndDate = DateMath.add(DateMath.add(window.<portlet:namespace />miniCalendar.get('date'), DateMath.MONTH, 1), DateMath.WEEK, 1);
 
 		miniCalendarEndDate.setHours(23, 59, 59, 999);
 

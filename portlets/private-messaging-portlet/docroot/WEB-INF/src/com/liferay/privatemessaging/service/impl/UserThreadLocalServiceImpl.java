@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
 import com.liferay.portal.kernel.notifications.NotificationEvent;
 import com.liferay.portal.kernel.notifications.NotificationEventFactoryUtil;
@@ -31,6 +33,7 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FastDateFormatConstants;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -39,6 +42,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserNotificationDeliveryConstants;
+import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
@@ -86,6 +90,24 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 		List<User> recipients = null;
 
 		if (mbThreadId != 0) {
+			if (Validator.isNull(fetchUserThread(userId, mbThreadId))) {
+				if (_log.isWarnEnabled()) {
+					StringBundler sb = new StringBundler(5);
+
+					sb.append("User ");
+					sb.append(userId);
+					sb.append(" attempted to add a message to thread ");
+					sb.append(mbThreadId);
+					sb.append(" through the Private Messaging portlet");
+
+					_log.warn(sb.toString());
+				}
+
+				throw new PrincipalException(
+					"User " + userId + " cannot access thread " + mbThreadId +
+						" through the Private Messaging portlet");
+			}
+
 			List<MBMessage> mbMessages =
 				MBMessageLocalServiceUtil.getThreadMessages(
 					mbThreadId, WorkflowConstants.STATUS_ANY);
@@ -446,8 +468,8 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 				mbMessage.getThreadId());
 
 		for (UserThread userThread : userThreads) {
-			if ((userThread.getUserId() == mbMessage.getUserId()) &&
-				UserNotificationManagerUtil.isDeliver(
+			if ((userThread.getUserId() == mbMessage.getUserId()) ||
+				!UserNotificationManagerUtil.isDeliver(
 					userThread.getUserId(), PortletKeys.PRIVATE_MESSAGING,
 					PrivateMessagingConstants.NEW_MESSAGE, 0,
 					UserNotificationDeliveryConstants.TYPE_EMAIL)) {
@@ -502,11 +524,10 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 
 		for (UserThread userThread : userThreads) {
 			if ((userThread.getUserId() == mbMessage.getUserId()) ||
-				((userThread.getUserId() != mbMessage.getUserId()) &&
-				 !UserNotificationManagerUtil.isDeliver(
-					 userThread.getUserId(), PortletKeys.PRIVATE_MESSAGING, 0,
-					 PrivateMessagingConstants.NEW_MESSAGE,
-					 UserNotificationDeliveryConstants.TYPE_WEBSITE))) {
+				!UserNotificationManagerUtil.isDeliver(
+					userThread.getUserId(), PortletKeys.PRIVATE_MESSAGING, 0,
+					PrivateMessagingConstants.NEW_MESSAGE,
+					UserNotificationDeliveryConstants.TYPE_WEBSITE)) {
 
 				continue;
 			}
@@ -522,5 +543,8 @@ public class UserThreadLocalServiceImpl extends UserThreadLocalServiceBaseImpl {
 				userThread.getUserId(), notificationEvent);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserThreadLocalServiceImpl.class);
 
 }
