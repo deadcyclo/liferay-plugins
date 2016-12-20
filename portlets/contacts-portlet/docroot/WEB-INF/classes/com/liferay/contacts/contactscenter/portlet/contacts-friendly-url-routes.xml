@@ -34,10 +34,4 @@
 		<implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
 		<implicit-parameter name="p_p_state">normal</implicit-parameter>
 	</route>
-	<route>
-		<pattern>/viewmembers</pattern>
-		<implicit-parameter name="p_p_id">4_WAR_contactsportlet</implicit-parameter>
-		<implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
-		<implicit-parameter name="p_p_mode">view</implicit-parameter>
-	</route>
 </routes>
