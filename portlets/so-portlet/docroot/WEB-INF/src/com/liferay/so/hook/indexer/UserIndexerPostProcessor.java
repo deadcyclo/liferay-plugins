@@ -119,7 +119,7 @@ public class UserIndexerPostProcessor extends BaseIndexerPostProcessor {
 				UserLocalServiceUtil.getSocialUsers(
 					user.getUserId(),
 					SocialRelationConstants.TYPE_BI_CONNECTION, start, end,
-					new UserFirstNameComparator(true));
+					null);
 
 			for (User socialRelationshipUser : socialRelationshipUsers) {
 				socialRelationshipUserIds.add(
