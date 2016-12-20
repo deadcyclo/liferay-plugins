@@ -1,0 +1,2228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/activities/portlet/ActivitiesPortlet.java" line="90" mnemonic="0" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7b6f596f-55a8-482e-8a25-9c9485adbfa7" name="Default" comment="" />
+    <ignored path="$PROJECT_DIR$/.gradle/" />
+    <ignored path="$PROJECT_DIR$/build/" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <PATH>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ExternalProjectsStructure$RootNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="liferay-plugins" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.ProjectNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="Tasks" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.TasksNode" />
+              </PATH_ELEMENT>
+              <PATH_ELEMENT>
+                <option name="myItemId" value="other" />
+                <option name="myItemType" value="com.intellij.openapi.externalSystem.view.TasksNode$1" />
+              </PATH_ELEMENT>
+            </PATH>
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="liferay-plugins" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/css/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.107279696">
+              <caret line="286" column="0" selection-start-line="286" selection-start-column="0" selection-end-line="286" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="6.2.x" />
+      </map>
+    </option>
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="availableProjects">
+      <map>
+        <entry>
+          <key>
+            <ExternalProjectPojo>
+              <option name="name" value="liferay-plugins" />
+              <option name="path" value="$PROJECT_DIR$" />
+            </ExternalProjectPojo>
+          </key>
+          <value>
+            <list>
+              <ExternalProjectPojo>
+                <option name="name" value="liferay-plugins" />
+                <option name="path" value="$PROJECT_DIR$" />
+              </ExternalProjectPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="availableTasks">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <list>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by root project 'liferay-plugins'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in root project 'liferay-plugins'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the insight into a specific dependency in root project 'liferay-plugins'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays a help message." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="help" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Initializes a new Gradle build. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="init" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the configuration model of root project 'liferay-plugins'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="model" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the sub-projects of root project 'liferay-plugins'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="projects" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the properties of root project 'liferay-plugins'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="properties" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the tasks runnable from root project 'liferay-plugins'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="tasks" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Gradle wrapper files. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="wrapper" />
+              </ExternalTaskPojo>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="modificationStamps">
+      <map>
+        <entry key="$USER_HOME$/projects/blade/gradle" value="28920411717008" />
+        <entry key="$USER_HOME$/projects/minecraftstuff-lr7" value="7232747602304" />
+        <entry key="$PROJECT_DIR$" value="347606862857725" />
+        <entry key="$PROJECT_DIR$/../../../liferay/test7/blade/gradle" value="28856530699388" />
+      </map>
+    </option>
+    <option name="projectBuildClasspath">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <ExternalProjectBuildClasspathPojo>
+              <option name="modulesBuildClasspath">
+                <map>
+                  <entry key="$PROJECT_DIR$">
+                    <value>
+                      <ExternalModuleBuildClasspathPojo>
+                        <option name="path" value="$PROJECT_DIR$" />
+                      </ExternalModuleBuildClasspathPojo>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="name" value="liferay-plugins" />
+              <option name="projectBuildClasspath">
+                <list>
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/java" />
+                  <option value="$PROJECT_DIR$/buildSrc/src/main/groovy" />
+                </list>
+              </option>
+            </ExternalProjectBuildClasspathPojo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/notifications/InviteMembersUserNotificationHandler.java" />
+        <option value="$PROJECT_DIR$/portlets/notifications-portlet/docroot/dockbar_notifications/view.jsp" />
+        <option value="$PROJECT_DIR$/shared/notifications-shared/src/com/liferay/notifications/util/PortletKeys.java" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/contacts_center/css/main.css" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/portlet/InviteMembersPortlet.java" />
+        <option value="$PROJECT_DIR$/hooks/rtl-hook/docroot/META-INF/custom_jsps/html/portlet/layouts_admin/css/main.css" />
+        <option value="$PROJECT_DIR$/hooks/so-activities-hook/docroot/WEB-INF/src/com/liferay/so/activities/hook/social/MicroblogsActivityInterpreter.java" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/init.jsp" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/WEB-INF/src/content/Language.properties" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/WEB-INF/src/content/Language_nb.properties" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/META-INF/custom_jsps/html/portlet/dockbar/view.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/dependencies/subject.tmpl" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/dependencies/existing_user_body.tmpl" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/invite_members/js/main.js" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/util/InviteMembersUtil.java" />
+        <option value="$PROJECT_DIR$/portlets/notifications-portlet/docroot/WEB-INF/classes/content/Language.properties" />
+        <option value="$PROJECT_DIR$/portlets/notifications-portlet/docroot/WEB-INF/classes/content/Language_nb.properties" />
+        <option value="$PROJECT_DIR$/portlets/notifications-portlet/docroot/notifications/js/main.js" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/contacts_center/js/main.js" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/WEB-INF/src/com/liferay/contacts/contactscenter/portlet/ContactsCenterPortlet.java" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/invite_members/view_invite.jsp" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/WEB-INF/classes/com/liferay/contacts/contactscenter/portlet/contacts-friendly-url-routes.xml" />
+        <option value="$PROJECT_DIR$/hooks/so-activities-hook/docroot/WEB-INF/src/com/liferay/so/activities/hook/events/StartupAction.java" />
+        <option value="$PROJECT_DIR$/hooks/so-activities-hook/docroot/WEB-INF/src/com/liferay/so/activities/hook/social/WikiActivityInterpreter.java" />
+        <option value="$PROJECT_DIR$/hooks/so-activities-hook/docroot/WEB-INF/src/com/liferay/so/activities/hook/social/SOSocialActivityInterpreter.java" />
+        <option value="$PROJECT_DIR$/portlets/contacts-portlet/docroot/contacts_center/view.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/service.xml" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/service/impl/MemberRequestLocalServiceImpl.java" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/init.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/invite_members/view.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/init.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-announcements-portlet/docroot/edit_entry.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/liferay-portlet.xml" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_7" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/alloy-editor-all.js" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_activity_sets.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/assets/alloy-editor-ocean-min.css" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/activities/portlet/ActivitiesPortlet.java" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/content/Language_nb.properties" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/content/Language.properties" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_activity_sets_feed.jspf" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/main.js" />
+        <option value="$PROJECT_DIR$/portlets/notifications-portlet/docroot/notifications/view.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/wdt-emoji-bundle/wdt-emoji-bundle.js" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/config.js" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/tribute.js" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/classes/content/Language.properties" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/classes/content/Language_nb.properties" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_comments.jspf" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view.jsp" />
+        <option value="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/css/main.css" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsBuildToolPackageJson" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Bundled (Maven 3)" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1600" />
+    <option name="height" value="1181" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource ProjectPane="false" />
+      <autoscrollFromSource ProjectPane="true" />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="so-portlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="so-portlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docroot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="so-portlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docroot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="so-portlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docroot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="classes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="so-portlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docroot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="WEB-INF" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="classes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="content" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Resource Bundle 'Language'" />
+              <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="so-portlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docroot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="activities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="liferay-plugins" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portlets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="so-portlet" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="docroot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="activities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="js-jscs-nodeInterpreter" value="/usr/bin/node" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../ddm/stage/application_display_template/asset_publisher/templates/Bokmerker.ftl" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="169" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="188" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="192" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="962" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="184" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="192" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="198" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="937" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="CSS" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor" />
+      <recent name="$PROJECT_DIR$/portlets/so-portlet/docroot/activities" />
+      <recent name="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/wdt-emoji-bundle" />
+      <recent name="$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
+      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
+      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
+      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
+      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
+      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
+      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="SELECTED_CLOUD_DEVICE_CONFIGURATION_ID" value="0" />
+      <option name="SELECTED_CLOUD_DEVICE_PROJECT_ID" value="" />
+      <option name="IS_VALID_CLOUD_MATRIX_SELECTION" value="false" />
+      <option name="INVALID_CLOUD_MATRIX_SELECTION_ERROR" value="" />
+      <option name="IS_VALID_CLOUD_DEVICE_SELECTION" value="false" />
+      <option name="INVALID_CLOUD_DEVICE_SELECTION_ERROR" value="" />
+      <option name="CLOUD_DEVICE_SERIAL_NUMBER" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AntRunConfiguration" factoryName="Ant Target">
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+      <option name="BCName" value="" />
+      <option name="IOSSimulatorSdkPath" value="" />
+      <option name="adlOptions" value="" />
+      <option name="airProgramParameters" value="" />
+      <option name="appDescriptorForEmulator" value="Android" />
+      <option name="debugTransport" value="USB" />
+      <option name="debuggerSdkRaw" value="BC SDK" />
+      <option name="emulator" value="NexusOne" />
+      <option name="emulatorAdlOptions" value="" />
+      <option name="fastPackaging" value="true" />
+      <option name="fullScreenHeight" value="0" />
+      <option name="fullScreenWidth" value="0" />
+      <option name="launchUrl" value="false" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="/usr/bin/flashplayerdebugger" />
+        </LauncherParameters>
+      </option>
+      <option name="mobileRunTarget" value="Emulator" />
+      <option name="moduleName" value="" />
+      <option name="overriddenMainClass" value="" />
+      <option name="overriddenOutputFileName" value="" />
+      <option name="overrideMainClass" value="false" />
+      <option name="runTrusted" value="true" />
+      <option name="screenDpi" value="0" />
+      <option name="screenHeight" value="0" />
+      <option name="screenWidth" value="0" />
+      <option name="url" value="http://" />
+      <option name="usbDebugPort" value="7936" />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="/usr/bin/flashplayerdebugger" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <module name="" />
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="depsClasspath" value="false" />
+      <setting name="passParentEnv" value="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <setting name="launchBrowser" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnitTestDiscovery" factoryName="JUnit Test Discovery" changeList="All">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="Java Scratch" factoryName="Java Scratch">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="SCRATCH_FILE_ID" value="0" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="liferay-plugins" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNGTestDiscovery" factoryName="TestNG Test Discovery" changeList="All">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-options />
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <envs />
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Attests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="liferay-plugins" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="" />
+      <option name="keywords" value="" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="false" />
+      <method />
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7b6f596f-55a8-482e-8a25-9c9485adbfa7" name="Default" comment="" />
+      <created>1452078447775</created>
+      <option name="number" value="Default" />
+      <updated>1452078447775</updated>
+      <workItem from="1452078448983" duration="3221000" />
+      <workItem from="1452086761241" duration="3280000" />
+      <workItem from="1452091402076" duration="17630000" />
+      <workItem from="1452184644021" duration="54466000" />
+      <workItem from="1452697605137" duration="9121000" />
+      <workItem from="1452768108007" duration="38070000" />
+      <workItem from="1452868758428" duration="46928000" />
+      <workItem from="1453295398878" duration="37083000" />
+      <workItem from="1453466143024" duration="9543000" />
+      <workItem from="1453476022538" duration="9066000" />
+      <workItem from="1453727595850" duration="111000" />
+      <workItem from="1453736479503" duration="3339000" />
+      <workItem from="1453741048672" duration="26398000" />
+      <workItem from="1453904904244" duration="51590000" />
+      <workItem from="1454587653768" duration="16433000" />
+      <workItem from="1454682804686" duration="7503000" />
+      <workItem from="1454921337521" duration="64455000" />
+      <workItem from="1455201167419" duration="15204000" />
+      <workItem from="1455543194060" duration="15646000" />
+      <workItem from="1455699730934" duration="26795000" />
+      <workItem from="1456220186448" duration="37039000" />
+      <workItem from="1456479809537" duration="3104000" />
+      <workItem from="1456823984238" duration="18000" />
+      <workItem from="1456826531246" duration="9000" />
+      <workItem from="1460447585366" duration="17000" />
+      <workItem from="1460456370706" duration="1782000" />
+      <workItem from="1461047964742" duration="8555000" />
+      <workItem from="1461309410741" duration="5992000" />
+      <workItem from="1461767123295" duration="607000" />
+      <workItem from="1461850475243" duration="862000" />
+      <workItem from="1462173448429" duration="4877000" />
+      <workItem from="1462188337608" duration="4367000" />
+      <workItem from="1462273295057" duration="4038000" />
+      <workItem from="1462277906203" duration="4922000" />
+      <workItem from="1462283693710" duration="16077000" />
+      <workItem from="1462536213397" duration="7288000" />
+      <workItem from="1462871883873" duration="12345000" />
+      <workItem from="1463053264143" duration="3780000" />
+      <workItem from="1463554042160" duration="21678000" />
+      <workItem from="1463993050338" duration="928000" />
+      <workItem from="1464090913714" duration="38000" />
+      <workItem from="1464693074028" duration="3042000" />
+      <workItem from="1465546229993" duration="190000" />
+      <workItem from="1465819678748" duration="3543000" />
+      <workItem from="1465895172842" duration="9666000" />
+      <workItem from="1466069881770" duration="2079000" />
+      <workItem from="1466085731232" duration="18503000" />
+      <workItem from="1466777258695" duration="2748000" />
+      <workItem from="1467103033378" duration="8817000" />
+      <workItem from="1467715597745" duration="198000" />
+      <workItem from="1467715818727" duration="1875000" />
+      <workItem from="1467726208929" duration="8766000" />
+      <workItem from="1470830224454" duration="33102000" />
+      <workItem from="1471522021568" duration="2134000" />
+      <workItem from="1471593081442" duration="29303000" />
+      <workItem from="1472033392460" duration="14540000" />
+      <workItem from="1472470883390" duration="5123000" />
+      <workItem from="1472807352401" duration="599000" />
+      <workItem from="1473168884516" duration="597000" />
+      <workItem from="1473928304827" duration="598000" />
+      <workItem from="1474362238025" duration="256000" />
+      <workItem from="1474362748358" duration="7418000" />
+      <workItem from="1474962616980" duration="124000" />
+      <workItem from="1475236891595" duration="38000" />
+      <workItem from="1477920494044" duration="628000" />
+      <workItem from="1478257831249" duration="13092000" />
+      <workItem from="1478530652879" duration="979000" />
+      <workItem from="1478601691830" duration="717000" />
+      <workItem from="1478615467278" duration="44122000" />
+      <workItem from="1480414238764" duration="15096000" />
+      <workItem from="1481032644282" duration="26615000" />
+      <workItem from="1481204279995" duration="17849000" />
+      <workItem from="1481722739631" duration="16187000" />
+      <workItem from="1481808016019" duration="718000" />
+      <workItem from="1481809402551" duration="6896000" />
+    </task>
+    <task id="LOCAL-00038" summary="Rolle -&gt; Rettighet">
+      <created>1455884137294</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1455884137294</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Rolle -&gt; Rettighet">
+      <created>1455884325176</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1455884325176</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Language">
+      <created>1455889050433</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1455889050433</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Fix stackoverflow issue">
+      <created>1456142363761</created>
+      <option name="number" value="00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1456142363761</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Email templates">
+      <created>1456151023597</created>
+      <option name="number" value="00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1456151023597</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Remove stuff">
+      <created>1456404275764</created>
+      <option name="number" value="00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1456404275764</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Added title to stream on front-page">
+      <created>1461049239584</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1461049239584</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added title to stream on front-page">
+      <created>1461049380324</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1461049380324</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Fixed some form typos">
+      <created>1461054984148</created>
+      <option name="number" value="00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1461054984148</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Fixed not showing komments link in feed when no comments and no post permission">
+      <created>1461056446723</created>
+      <option name="number" value="00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1461056446723</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Tekstendringer so-portlet">
+      <created>1461056889609</created>
+      <option name="number" value="00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1461056889609</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Tekstendringer so-portlet">
+      <created>1461057057470</created>
+      <option name="number" value="00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1461057057470</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Ny rolle med kommentarrettigheter">
+      <created>1461656846722</created>
+      <option name="number" value="00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1461656846722</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Bytte roller på brukergruppegruppemedlemmer">
+      <created>1461851888787</created>
+      <option name="number" value="00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1461851888787</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Vis rett antall inviterte i invite portlet">
+      <created>1462173938249</created>
+      <option name="number" value="00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1462173938249</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Ikke vis deaktiverte brukere i invite">
+      <created>1462185147273</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1462185147273</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Ta hensyn til deaktiverte brukere i medlemstelling">
+      <created>1462199836987</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1462199836987</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Endre rettigheter i medlemssøk">
+      <created>1462201425238</created>
+      <option name="number" value="00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1462201425238</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Adaptions notifications portlet">
+      <created>1462276137983</created>
+      <option name="number" value="00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1462276137984</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Adaptions contacts portlet">
+      <created>1462286549248</created>
+      <option name="number" value="00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1462286549248</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Adaptions contacts portlet">
+      <created>1462288346796</created>
+      <option name="number" value="00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1462288346797</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Show correct number of members on group overview">
+      <created>1462355488502</created>
+      <option name="number" value="00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1462355488502</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Fixed owner permissions, added ordering of group membership roles">
+      <created>1462519598851</created>
+      <option name="number" value="00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1462519598851</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Added friendly url for view membership">
+      <created>1462872327750</created>
+      <option name="number" value="00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1462872327750</updated>
+    </task>
+    <task id="LOCAL-00062" summary="User url in feed to hioa.no/tilsatt">
+      <created>1462954334742</created>
+      <option name="number" value="00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1462954334742</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Wrappers in feed">
+      <created>1463556688009</created>
+      <option name="number" value="00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1463556688009</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Wrappers in feed">
+      <created>1463556856834</created>
+      <option name="number" value="00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1463556856834</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Wrappers in feed">
+      <created>1463557743739</created>
+      <option name="number" value="00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1463557743739</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Remove lazyload on stream">
+      <created>1464693275211</created>
+      <option name="number" value="00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1464693275211</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Omniadmin allowed to delete contents">
+      <created>1465546288364</created>
+      <option name="number" value="00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1465546288364</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Pinning hioaactivities in feed">
+      <created>1465899493856</created>
+      <option name="number" value="00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1465899493856</updated>
+    </task>
+    <task id="LOCAL-00069" summary="fix word wrap">
+      <created>1466152399017</created>
+      <option name="number" value="00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1466152399017</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Forbedringer i stream">
+      <created>1466691058627</created>
+      <option name="number" value="00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1466691058627</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Feilfiks stream pinned elements">
+      <created>1466766682739</created>
+      <option name="number" value="00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1466766682739</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Stream siteimprove event">
+      <created>1467814292599</created>
+      <option name="number" value="00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1467814292599</updated>
+    </task>
+    <task id="LOCAL-00073" summary="View more working again in contacts portlet">
+      <created>1470916421497</created>
+      <option name="number" value="00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1470916421497</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Lenkeforhåndsvisning i feed">
+      <created>1471250782767</created>
+      <option name="number" value="00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1471250782767</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Tillat linjeskift i kommentarer">
+      <created>1471348816392</created>
+      <option name="number" value="00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1471348816392</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Invite history in groups">
+      <created>1471597694299</created>
+      <option name="number" value="00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1471597694299</updated>
+    </task>
+    <task id="LOCAL-00077" summary="@mention">
+      <created>1472459206147</created>
+      <option name="number" value="00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1472459206147</updated>
+    </task>
+    <task id="LOCAL-00078" summary="@mention - autocomplete off on alert field">
+      <created>1472463016137</created>
+      <option name="number" value="00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1472463016137</updated>
+    </task>
+    <task id="LOCAL-00079" summary="@mention - minor fixes">
+      <created>1472464452281</created>
+      <option name="number" value="00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1472464452281</updated>
+    </task>
+    <task id="LOCAL-00080" summary="LIF-334 Basic WYSIWYG ready">
+      <created>1479815453741</created>
+      <option name="number" value="00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1479815453741</updated>
+    </task>
+    <task id="LOCAL-00081" summary="LIF-334 Alloy editor updated to v 1.3.0">
+      <created>1481033067097</created>
+      <option name="number" value="00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1481033067098</updated>
+    </task>
+    <task id="LOCAL-00082" summary="LIF-338 Like for comments and posts">
+      <created>1481195644347</created>
+      <option name="number" value="00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1481195644347</updated>
+    </task>
+    <task id="LOCAL-00083" summary="LIF-338 Emojis">
+      <created>1481709507335</created>
+      <option name="number" value="00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1481709507335</updated>
+    </task>
+    <task id="LOCAL-00084" summary="LIF-338 Emojis - removed console.log">
+      <created>1481719009749</created>
+      <option name="number" value="00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1481719009749</updated>
+    </task>
+    <task id="LOCAL-00085" summary="LIF-334 Ckeditor dtd for div">
+      <created>1481719865456</created>
+      <option name="number" value="00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1481719865456</updated>
+    </task>
+    <task id="LOCAL-00086" summary="LIF-334 Enforce mentions in additional alert fields, avoid additional linebreaks when mentioning in normal fields, multiple css fixes">
+      <created>1481817009004</created>
+      <option name="number" value="00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1481817009004</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="890363000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1600" height="1181" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32834426" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="IvyIDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33783785" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29653883" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="false" />
+    <MESSAGE value="Fixed owner permissions, added ordering of group membership roles" />
+    <MESSAGE value="Added friendly url for view membership" />
+    <MESSAGE value="User url in feed to hioa.no/tilsatt" />
+    <MESSAGE value="Wrappers in feed" />
+    <MESSAGE value="Remove lazyload on stream" />
+    <MESSAGE value="Omniadmin allowed to delete contents" />
+    <MESSAGE value="Pinning hioaactivities in feed" />
+    <MESSAGE value="fix word wrap" />
+    <MESSAGE value="Forbedringer i stream" />
+    <MESSAGE value="Feilfiks stream pinned elements" />
+    <MESSAGE value="Stream siteimprove event" />
+    <MESSAGE value="View more working again in contacts portlet" />
+    <MESSAGE value="Lenkeforhåndsvisning i feed" />
+    <MESSAGE value="Tillat linjeskift i kommentarer" />
+    <MESSAGE value="Invite history in groups" />
+    <MESSAGE value="@mention" />
+    <MESSAGE value="@mention - autocomplete off on alert field" />
+    <MESSAGE value="@mention - minor fixes" />
+    <MESSAGE value="LIF-334 Basic WYSIWYG ready" />
+    <MESSAGE value="LIF-334 Alloy editor updated to v 1.3.0" />
+    <MESSAGE value="LIF-338 Like for comments and posts" />
+    <MESSAGE value="LIF-338 Emojis" />
+    <MESSAGE value="LIF-338 Emojis - removed console.log" />
+    <MESSAGE value="LIF-334 Ckeditor dtd for div" />
+    <MESSAGE value="LIF-334 Enforce mentions in additional alert fields, avoid additional linebreaks when mentioning in normal fields, multiple css fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="LIF-334 Enforce mentions in additional alert fields, avoid additional linebreaks when mentioning in normal fields, multiple css fixes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+    <buildFile url="file://$PROJECT_DIR$/hooks/so-activities-hook/build.xml">
+      <targetFilters>
+        <filter targetName="all" isVisible="false" />
+        <filter targetName="build-client" isVisible="false" />
+        <filter targetName="build-lang" isVisible="false" />
+        <filter targetName="build-lang-cmd" isVisible="false" />
+        <filter targetName="build-service" isVisible="false" />
+        <filter targetName="build-wsdd" isVisible="false" />
+        <filter targetName="compile-import-shared" isVisible="false" />
+        <filter targetName="compile-jsp" isVisible="false" />
+        <filter targetName="compile-test" isVisible="false" />
+        <filter targetName="compile-test-integration" isVisible="false" />
+        <filter targetName="compile-test-unit" isVisible="false" />
+        <filter targetName="format-wsdl" isVisible="false" />
+        <filter targetName="format-xsd" isVisible="false" />
+        <filter targetName="install" isVisible="false" />
+        <filter targetName="jar-javadoc" isVisible="false" />
+        <filter targetName="jar-source" isVisible="false" />
+        <filter targetName="javadoc" isVisible="false" />
+        <filter targetName="merge" isVisible="false" />
+        <filter targetName="merge-unzip" isVisible="false" />
+        <filter targetName="patch" isVisible="false" />
+        <filter targetName="shrink-zip-cmd" isVisible="false" />
+        <filter targetName="test-class" isVisible="false" />
+        <filter targetName="test-class-group" isVisible="false" />
+        <filter targetName="test-package" isVisible="false" />
+        <filter targetName="build-css" isVisible="false" />
+        <filter targetName="build-db" isVisible="false" />
+        <filter targetName="build-upgrade-table" isVisible="false" />
+        <filter targetName="build-wsdl" isVisible="false" />
+        <filter targetName="build-xsd" isVisible="false" />
+        <filter targetName="clean" isVisible="false" />
+        <filter targetName="compile" isVisible="false" />
+        <filter targetName="create" isVisible="false" />
+        <filter targetName="deploy" isVisible="false" />
+        <filter targetName="direct-deploy" isVisible="false" />
+        <filter targetName="direct-deploy-ext-cmd" isVisible="false" />
+        <filter targetName="direct-deploy-hook-cmd" isVisible="false" />
+        <filter targetName="direct-deploy-layouttpl-cmd" isVisible="false" />
+        <filter targetName="direct-deploy-portlet-cmd" isVisible="false" />
+        <filter targetName="direct-deploy-theme-cmd" isVisible="false" />
+        <filter targetName="direct-deploy-web-cmd" isVisible="false" />
+        <filter targetName="format-javadoc" isVisible="false" />
+        <filter targetName="format-source" isVisible="false" />
+        <filter targetName="jar" isVisible="false" />
+        <filter targetName="prepare-upgrade-table" isVisible="false" />
+        <filter targetName="print-current-time" isVisible="false" />
+        <filter targetName="print-stale-snapshot" isVisible="false" />
+        <filter targetName="publish-local-m2-release" isVisible="false" />
+        <filter targetName="publish-local-m2-snapshot" isVisible="false" />
+        <filter targetName="publish-remote-m2-release" isVisible="false" />
+        <filter targetName="publish-remote-m2-snapshot" isVisible="false" />
+        <filter targetName="release" isVisible="false" />
+        <filter targetName="run-cpd" isVisible="false" />
+        <filter targetName="run-pmd" isVisible="false" />
+        <filter targetName="setup-arquillian" isVisible="false" />
+        <filter targetName="setup-eclipse" isVisible="false" />
+        <filter targetName="setup-jrebel" isVisible="false" />
+        <filter targetName="sort-xml-attributes" isVisible="false" />
+        <filter targetName="test" isVisible="false" />
+        <filter targetName="test-integration" isVisible="false" />
+        <filter targetName="test-unit" isVisible="false" />
+        <filter targetName="war" isVisible="false" />
+        <filter targetName="watch" isVisible="false" />
+        <filter targetName="publish" isVisible="false" />
+      </targetFilters>
+      <expanded value="false" />
+    </buildFile>
+  </component>
+  <component name="atlassian-ide-plugin-workspace-issues">
+    <option name="view">
+      <JiraViewConfigurationBean>
+        <option name="viewFilterId" value="" />
+      </JiraViewConfigurationBean>
+    </option>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/portlets/contacts-portlet/docroot/contacts_center/view.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29310346">
+          <caret line="534" column="92" selection-start-line="534" selection-start-column="92" selection-end-line="534" selection-end-column="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/private-messaging-portlet/docroot/new_message.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.184765">
+          <caret line="161" column="59" selection-start-line="161" selection-start-column="51" selection-end-line="161" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/sql/tables.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0619469">
+          <caret line="32" column="20" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/hook/events/LoginPostAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7619048">
+          <caret line="53" column="12" selection-start-line="53" selection-start-column="12" selection-end-line="53" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/hook/listeners/UserModelListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.73214287">
+          <caret line="68" column="56" selection-start-line="68" selection-start-column="56" selection-end-line="68" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/portlet/InviteMembersPortlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8046219">
+          <caret line="172" column="64" selection-start-line="172" selection-start-column="58" selection-end-line="172" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/util/InviteMembersConstants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37974682">
+          <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/invitemembers/notifications/InviteMembersUserNotificationHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.8955696">
+          <caret line="36" column="30" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/service/persistence/MemberRequestPersistenceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3326087">
+          <caret line="1666" column="43" selection-start-line="1666" selection-start-column="31" selection-end-line="1666" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/invite_members/view_invite.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67320263">
+          <caret line="212" column="114" selection-start-line="212" selection-start-column="40" selection-end-line="212" selection-end-column="119" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/contacts/projects.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6875">
+          <caret line="37" column="27" selection-start-line="37" selection-start-column="27" selection-end-line="37" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/service/impl/MemberRequestLocalServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6603774">
+          <caret line="98" column="41" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/init.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7075163">
+          <caret line="71" column="96" selection-start-line="71" selection-start-column="96" selection-end-line="71" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/invite_members/view.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5681818">
+          <caret line="35" column="102" selection-start-line="35" selection-start-column="102" selection-end-line="35" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/init.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6813725">
+          <caret line="53" column="65" selection-start-line="53" selection-start-column="65" selection-end-line="53" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/notifications-portlet/docroot/notifications/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6226415">
+          <caret line="260" column="0" selection-start-line="260" selection-start-column="0" selection-end-line="260" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hooks/so-activities-hook/docroot/WEB-INF/src/com/liferay/so/activities/hook/social/MBActivityInterpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="150" column="8" selection-start-line="150" selection-start-column="8" selection-end-line="150" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-announcements-portlet/docroot/edit_entry.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.51797384">
+          <caret line="201" column="50" selection-start-line="201" selection-start-column="50" selection-end-line="201" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/liferay-portlet.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20632738">
+          <caret line="10" column="45" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_7">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.020632736">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hooks/so-activities-hook/docroot/WEB-INF/src/com/liferay/so/activities/hook/social/WikiActivityInterpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3511236">
+          <caret line="298" column="30" selection-start-line="298" selection-start-column="23" selection-end-line="298" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hooks/so-activities-hook/docroot/WEB-INF/src/com/liferay/so/activities/hook/social/SOSocialActivityInterpreter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.50187266">
+          <caret line="134" column="27" selection-start-line="134" selection-start-column="27" selection-end-line="134" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/assets/alloy-editor-ocean-min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.5742128">
+          <caret line="704" column="15" selection-start-line="704" selection-start-column="15" selection-end-line="704" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/activities/util/ActivitiesUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21970706">
+          <caret line="27" column="27" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/service.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10316369">
+          <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/com/liferay/so/activities/portlet/ActivitiesPortlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.014044944">
+          <caret line="176" column="9" selection-start-line="176" selection-start-column="9" selection-end-line="176" selection-end-column="9" />
+          <folding>
+            <marker date="1478872946444" expanded="true" signature="0:815" placeholder="/**...*/" />
+            <marker date="1478872946444" expanded="true" signature="867:3108" placeholder="..." />
+            <marker date="1478872946444" expanded="true" signature="3110:3141" placeholder="/**...*/" />
+            <marker date="1478872946444" expanded="true" signature="3347:4659" placeholder="{...}" />
+            <marker date="1478872946444" expanded="true" signature="4821:5827" placeholder="{...}" />
+            <marker date="1478872946444" expanded="true" signature="5970:6587" placeholder="{...}" />
+            <marker date="1478872946444" expanded="true" signature="6707:7423" placeholder="{...}" />
+            <marker date="1478872946444" expanded="true" signature="7561:8372" placeholder="{...}" />
+            <marker date="1478872946444" expanded="true" signature="8486:10718" placeholder="{...}" />
+            <marker date="1478872946444" expanded="true" signature="10840:12772" placeholder="{...}" />
+            <marker date="1478872946444" expanded="true" signature="12962:13988" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/content/Language_en.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.91354465">
+          <caret line="124" column="25" selection-start-line="124" selection-start-column="25" selection-end-line="124" selection-end-column="25" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/content/Language_nb.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9711816">
+          <caret line="144" column="22" selection-start-line="144" selection-start-column="22" selection-end-line="144" selection-end-column="22" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/src/content/Language.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9279539">
+          <caret line="144" column="25" selection-start-line="144" selection-start-column="25" selection-end-line="144" selection-end-column="25" />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hooks/so-hook/docroot/META-INF/custom_jsps/html/taglib/ui/discussion/page.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35249043">
+          <caret line="802" column="20" selection-start-line="802" selection-start-column="20" selection-end-line="802" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/alloy-editor-all-min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44">
+          <caret line="97" column="34" selection-start-line="97" selection-start-column="34" selection-end-line="97" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3195739">
+          <caret line="235" column="12" selection-start-line="235" selection-start-column="12" selection-end-line="235" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/wdt-emoji-bundle/emoji.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/wdt-emoji-bundle/wdt-emoji-bundle.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33288947">
+          <caret line="1544" column="0" selection-start-line="1544" selection-start-column="0" selection-end-line="1544" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/notifications-portlet/docroot/notifications/view.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3713163">
+          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/notifications-portlet/docroot/notifications/configuration.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/wdt-emoji-bundle/wdt-emoji-bundle.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3522073">
+          <caret line="484" column="16" selection-start-line="484" selection-start-column="8" selection-end-line="484" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/contents.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26685393">
+          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_activity_sets.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37195995">
+          <caret line="56" column="21" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
+          <folding>
+            <marker date="1478777167222" expanded="true" signature="4:821" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="874:1775" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="1781:2324" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="2392:4987" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5053:5410" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5481:5510" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5525:5583" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5624:5900" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5653:5892" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5666:5884" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5703:5773" placeholder="..." />
+            <marker date="1478777167222" expanded="true" signature="5790:5870" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_activities_feed.jspf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1452078478302" expanded="true" signature="4:821" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="829:1356" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="1409:1737" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="1416:1671" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="1776:2513" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="1783:1919" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="1951:2207" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="1976:2101" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="2125:2198" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="2239:2287" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="2319:2505" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="2350:2496" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="2374:2446" placeholder="..." />
+            <marker date="1452078478302" expanded="true" signature="2518:2531" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_activities.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14442916">
+          <caret line="7" column="15" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="15" />
+          <folding>
+            <marker date="1452091434635" expanded="true" signature="4:821" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="873:2672" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="2740:2766" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="2781:2839" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="2881:3157" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="2910:3149" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="2923:3141" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="2960:3030" placeholder="..." />
+            <marker date="1452091434635" expanded="true" signature="3047:3127" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/tribute.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6191744">
+          <caret line="763" column="30" selection-start-line="763" selection-start-column="30" selection-end-line="763" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_activity_sets_feed.jspf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33425033">
+          <caret line="207" column="33" selection-start-line="207" selection-start-column="26" selection-end-line="207" selection-end-column="33" />
+          <folding>
+            <marker date="1481127157945" expanded="true" signature="4:821" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="829:1683" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="1951:5377" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="1957:2478" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="2510:2700" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="2535:2691" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="2588:2680" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="2771:5369" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="2844:5360" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="2942:5350" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="2985:5279" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="3061:3145" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="3156:3799" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="3927:4388" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="3939:4051" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="4194:4374" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="4231:4359" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="4431:4814" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="4855:5087" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="4960:5073" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="5121:5267" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="5480:9938" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="7443:8185" placeholder="..." />
+            <marker date="1481127157945" expanded="true" signature="9943:9956" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/js/alloy-editor/alloy-editor-all.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4394141">
+          <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/classes/content/Language.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.84149855">
+          <caret line="139" column="47" selection-start-line="139" selection-start-column="47" selection-end-line="139" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/WEB-INF/classes/content/Language_nb.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36599424">
+          <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view_comments.jspf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35265225">
+          <caret line="235" column="5" selection-start-line="235" selection-start-column="3" selection-end-line="235" selection-end-column="5" />
+          <folding>
+            <marker date="1481813486667" expanded="true" signature="4:821" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="829:1148" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="1183:3406" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="1567:3392" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="2043:3379" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="2067:3155" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="2099:2332" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="2125:2321" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="2191:2309" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="2372:2595" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="3178:3311" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="7541:7687" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="7573:7670" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="11156:15628" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="11646:12268" placeholder="..." />
+            <marker date="1481813486667" expanded="true" signature="12927:13277" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/view.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37524557">
+          <caret line="404" column="74" selection-start-line="404" selection-start-column="74" selection-end-line="404" selection-end-column="74" />
+          <folding>
+            <marker date="1481815471271" expanded="true" signature="4:821" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="873:1080" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="1788:3032" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="1891:3025" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="1926:2408" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="2449:2731" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="2484:2722" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="2761:3017" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="2793:3008" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="2876:2998" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="3097:3364" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="3147:3211" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="3268:3356" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="3500:3516" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="3608:24867" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="4238:4792" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="4254:4589" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="4359:4455" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="4474:4572" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="5521:5649" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="8074:8661" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="18665:21776" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="19340:19883" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="21223:21518" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="21803:21965" placeholder="..." />
+            <marker date="1481815471271" expanded="true" signature="21839:21944" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portlets/so-portlet/docroot/activities/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.107279696">
+          <caret line="286" column="0" selection-start-line="286" selection-start-column="0" selection-end-line="286" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
