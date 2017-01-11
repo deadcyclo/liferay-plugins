@@ -497,15 +497,21 @@
 							tabIndex: 1
 						}
 					};
+					var extraPlugins = "ae_uicore,ae_selectionregion,ae_selectionkeystrokes,ae_dragresize,ae_imagealignment,ae_addimages,ae_placeholder,ae_tabletools,ae_tableresize,ae_autolink,ae_autolist";
+					var removePlugins = "contextmenu,toolbar,elementspath,resize,liststyle,link,ae_embed";
 					var editor = AlloyEditor.editable('<portlet:namespace />commentinput'+mbMessageIdOrMicroblogsEntryId, {
-						toolbars: toolbars
+						toolbars: toolbars,
+						extraPlugins: extraPlugins,
+						removePlugins: removePlugins
 					});
 					if (typeof Liferay.SO.aeditors == 'undefined') {
 						Liferay.SO.aeditors = [];
 					}
 					Liferay.SO.aeditors['commentinput'+mbMessageIdOrMicroblogsEntryId] = editor;
 					var alertEditor = AlloyEditor.editable('<portlet:namespace />commentalert'+mbMessageIdOrMicroblogsEntryId, {
-						toolbars: noToolbars
+						toolbars: noToolbars,
+						extraPlugins: extraPlugins,
+						removePlugins: removePlugins
 					});
 
 					editor.get('nativeEditor').on('key', function (e) {

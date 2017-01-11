@@ -148,11 +148,17 @@ var noToolbars = {
 		tabIndex: 1
 	}
 };
+var extraPlugins = "ae_uicore,ae_selectionregion,ae_selectionkeystrokes,ae_dragresize,ae_imagealignment,ae_addimages,ae_placeholder,ae_tabletools,ae_tableresize,ae_autolink,ae_autolist";
+var removePlugins = "contextmenu,toolbar,elementspath,resize,liststyle,link,ae_embed";
 var editor = AlloyEditor.editable('<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>', {
-	toolbars: toolbars
+	toolbars: toolbars,
+	extraPlugins: extraPlugins,
+	removePlugins: removePlugins
 });
 var alertEditor = AlloyEditor.editable('<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>', {
-	toolbars: noToolbars
+	toolbars: noToolbars,
+	extraPlugins: extraPlugins,
+	removePlugins: removePlugins
 });
 	alertEditor.get('nativeEditor').on('instanceReady', function (ev) {
 		ev.editor.setKeystroke(13, null);
