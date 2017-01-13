@@ -38,6 +38,8 @@ CKEDITOR.editorConfig = function( config ) {
 		div: 1,
 		span: 1,
 		a: 1,
-		img: 1
+		img: 1,
+		canvas: 1
 	};
+	CKEDITOR.dtd.a.div = 1;
 };
