@@ -39,7 +39,10 @@ CKEDITOR.editorConfig = function( config ) {
 		span: 1,
 		a: 1,
 		img: 1,
-		canvas: 1
+		canvas: 1,
+		strong: 1,
+		em: 1,
+		u: 1
 	};
 	CKEDITOR.dtd.a.div = 1;
 };
