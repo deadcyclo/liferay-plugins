@@ -336,8 +336,9 @@ if (form) {
 
 				var data = editor.get('nativeEditor').getData();
 	            var alertsdata = alertEditor.get('nativeEditor').getData();
-
+console.log(data);
 	            var tempData = A.Node.create(data);
+	console.log(tempData);
 	            tempData.all('div.ff-container').each(function (node) {
 	                var img = node.one('.freezeframe');
 	                if (img) {
@@ -348,16 +349,15 @@ if (form) {
 	                node.replace(img);
 	            });
 
-	            data = tempData.getHTML();
-	if (!data) {
-	data = tempData.get('data');
-	}
+	            data = tempData.outerHTML();
 
 				var cards = A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').getHTML();
 				form.one('#<portlet:namespace />body').set('value', data.replace(/<p>\s<\/p>/g, "") + cards);
 	            form.one('#<portlet:namespace />alerts').set('value', alertsdata);
 
-				A.io.request(
+	console.log(data.replace(/<p>\s<\/p>/g, ""));
+
+	A.io.request(
 						form.attr('action'),
 						{
 							after: {
