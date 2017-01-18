@@ -349,7 +349,9 @@ if (form) {
 	            });
 
 	            data = tempData.getHTML();
-	console.log(data);
+	if (!data) {
+	data = tempData.get('data');
+	}
 
 				var cards = A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').getHTML();
 				form.one('#<portlet:namespace />body').set('value', data.replace(/<p>\s<\/p>/g, "") + cards);
