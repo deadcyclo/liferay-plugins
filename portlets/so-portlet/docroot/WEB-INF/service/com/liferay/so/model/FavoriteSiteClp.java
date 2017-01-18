@@ -325,6 +325,10 @@ public class FavoriteSiteClp extends BaseModelImpl<FavoriteSite>
 		}
 	}
 
+	public Class<?> getClpSerializerClass() {
+		return _clpSerializerClass;
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
@@ -383,4 +387,5 @@ public class FavoriteSiteClp extends BaseModelImpl<FavoriteSite>
 	private long _userId;
 	private String _userUuid;
 	private BaseModel<?> _favoriteSiteRemoteModel;
+	private Class<?> _clpSerializerClass = com.liferay.so.service.ClpSerializer.class;
 }

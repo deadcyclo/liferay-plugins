@@ -1,4 +1,6 @@
-<%--
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
+<%@ page import="java.util.ArrayList" %><%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -31,11 +33,9 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 
 <div id="<portlet:namespace />inviteMembersContainer">
 	<div class="user-search-wrapper">
-		<h2>
-			<liferay-ui:message key="find-members" />
-		</h2>
+		<label for="<portlet:namespace />inviteUserSearch"><liferay-ui:message key="choose-invitees" /></label>
 
-		<input class="invite-user-search" id="<portlet:namespace />inviteUserSearch" name="<portlet:namespace />userName" type="text" />
+		<input class="invite-user-search" id="<portlet:namespace />inviteUserSearch" name="<portlet:namespace />userName" type="text"/>
 
 		<div class="search">
 			<div class="list"></div>
@@ -51,55 +51,47 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 
 	<div class="invited-users-wrapper">
 		<div class="user-invited">
-			<h2>
-				<liferay-ui:message key="members-to-invite" />
-
-				<span>
-					<liferay-ui:message key="to-add,-click-members-on-the-left" />
-				</span>
-			</h2>
+			<p class="fake-label">
+				<liferay-ui:message key="invitees" />
+			</p>
 
 			<div class="list">
 			</div>
-		</div>
-
-		<div class="email-invited">
-			<h2>
-				<liferay-ui:message key="invite-by-email" />
-			</h2>
-
-			<div class="list">
-			</div>
-
-			<div class="controls">
-				<input id="new-member-email-address" name="<portlet:namespace />emailAddress" size="50" type="text" />
-
-				<input id="so-add-email-address" type="button" value="<liferay-ui:message key="add-email-address" />" />
-			</div>
+			<p><span id="selected-users">0</span> <liferay-ui:message key="invited-counter" /></p>
 		</div>
 
 		<%
 		List<Role> roles = RoleLocalServiceUtil.search(layout.getCompanyId(), null, null, new Integer[] {RoleConstants.TYPE_SITE}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new RoleNameComparator(false));
+
+			roles = new ArrayList<Role>(roles);
+
+			Collections.sort(roles, new Comparator<Role>() {
+				@Override
+				public int compare(Role role1, Role role2) {
+					return new CompareToBuilder().
+							append(GetterUtil.getLong(role1.getExpandoBridge().getAttribute("order"), 0),
+									GetterUtil.getLong(role2.getExpandoBridge().getAttribute("order"), 0)).
+							toComparison();
+				}
+			});
 
 		roles = UsersAdminUtil.filterGroupRoles(permissionChecker, group.getGroupId(), roles);
 		%>
 
 		<c:if test="<%= !roles.isEmpty() && GroupPermissionUtil.contains(permissionChecker, group.getGroupId(), ActionKeys.ASSIGN_USER_ROLES) %>">
 			<div class="invite-to">
-				<h2>
-					<liferay-ui:message key="invite-to-role" />
-				</h2>
+				<label for="<portlet:namespace />roleId"><liferay-ui:message key="invite-choose-permissions" /></label>
 
-				<select name="<portlet:namespace />roleId">
-					<option selected value="0"></option>
-
+				<select name="<portlet:namespace />roleId" id="<portlet:namespace />roleId">
 					<%
 					for (Role role : roles) {
+						if (GetterUtil.getBoolean(role.getExpandoBridge().getAttribute("forgroups"),false)) {
 					%>
 
 						<option value="<%= role.getRoleId() %>"><%= HtmlUtil.escape(role.getTitle(locale)) %></option>
 
 					<%
+							}
 					}
 					%>
 
@@ -113,11 +105,10 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 
 		<c:if test="<%= !teams.isEmpty() && GroupPermissionUtil.contains(permissionChecker, group.getGroupId(), ActionKeys.MANAGE_TEAMS) %>">
 			<div class="invite-to">
-				<h2>
-					<liferay-ui:message key="invite-to-team" />
-				</h2>
 
-				<select name="<portlet:namespace />teamId">
+
+
+				<select name="<portlet:namespace />teamId" id="<portlet:namespace />teamId">
 					<option selected value="0"></option>
 
 					<%
@@ -131,25 +122,21 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 					%>
 
 				</select>
-			</div>
+			</div>o
 		</c:if>
 
 		<div class="invite-actions">
 			<portlet:actionURL name="sendInvites" var="sentIvitesURL" />
 
-			<portlet:renderURL var="redirectURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-				<portlet:param name="mvcPath" value="/invite_members/view_invite.jsp" />
-			</portlet:renderURL>
-
-			<aui:form action="<%= sentIvitesURL %>" id="<portlet:namespace />fm" method="post" name="<portlet:namespace />fm">
-				<aui:input name="redirect" type="hidden" value="<%= redirectURL %>" />
+			<aui:form action="<%= sentIvitesURL %>" id="fm" method="post" name="fm">
 				<aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
 				<aui:input name="receiverUserIds" type="hidden" value="" />
 				<aui:input name="receiverEmailAddresses" type="hidden" value="" />
 				<aui:input name="invitedRoleId" type="hidden" value="" />
 				<aui:input name="invitedTeamId" type="hidden" value="" />
 
-				<aui:button id="submit" type="submit" value="send-invitations" />
+				<aui:button id="submitBtn" value="send-invitations" />
+				<aui:button id="cancel" value="cancel" />
 			</aui:form>
 		</div>
 	</div>
@@ -161,7 +148,7 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 	var invitedMembersList = inviteMembersContainer.one('.user-invited .list');
 	var searchList = inviteMembersContainer.one('.search .list');
 
-	var pageDelta = 50;
+	var pageDelta = 400;
 
 	var createDataSource = function(url) {
 		return new A.DataSource.IO(

@@ -32,25 +32,36 @@ AUI.add(
 
 					instance._findMembersList = instance._inviteMembersContainer.one('.search .list');
 					instance._emailInput = instance._inviteMembersContainer.one('#new-member-email-address');
-					instance._invitedEmailList = instance._inviteMembersContainer.one('.email-invited .list');
 					instance._invitedMembersList = instance._inviteMembersContainer.one('.user-invited .list');
+					instance._memberCounter = instance._inviteMembersContainer.one('.user-invited #selected-users');
 
 					var form = instance._inviteMembersContainer.one('form');
 
-					form.on(
+					var cancelButton = form.one('#cancel');
+					cancelButton.on('click', function(event) {
+						instance._removeAll();
+						event.halt();
+					});
+					form.one('#submitBtn').on('click', function(event) {
+						var frm = instance._inviteMembersContainer.one('form');
+						instance._syncFields(frm);
+						frm.submit();
+					});
+
+
+					/*form.on(
 						'submit',
 						function(event) {
-							instance._syncFields(form);
-
-							var dialog = instance.get('dialog');
+							instance._syncFields(form);*/
+							/*var dialog = instance.get('dialog');
 
 							if (!dialog && !dialog.io) {
 								return;
 							}
 
-							event.halt();
+							event.halt();*/
 
-							dialog.io.set(
+							/*dialog.io.set(
 								'form',
 								{
 									id: form.getDOM()
@@ -59,9 +70,11 @@ AUI.add(
 
 							dialog.io.set('uri', form.getAttribute('action'));
 
-							dialog.io.start();
-						}
-					);
+							dialog.io.start();*/
+							//console.log('got here');
+							//instance._inviteMembersContainer.one('form').submit();
+						/*}
+					);*/
 
 					instance._inviteMembersContainer.delegate(
 						'click',
@@ -107,30 +120,24 @@ AUI.add(
 					);
 				},
 
-				_addMemberEmail: function() {
-					var instance = this;
-
-					var emailAddress = A.Lang.trim(instance._emailInput.val());
-
-					if (emailAddress) {
-						var html = '<div class="user" data-emailAddress="' + emailAddress + '"><span class="email">' + emailAddress + '</span></div>';
-
-						instance._invitedEmailList.append(html);
-					}
-
-					instance._emailInput.val('');
-				},
-
 				_addMemberInvite: function(user) {
 					var instance = this;
 
 					user.addClass('invited').cloneNode(true).appendTo(instance._invitedMembersList);
+					instance._updateCounter();
 				},
 
 				_removeEmailInvite: function(user) {
 					user.remove();
 				},
-
+				_removeAll: function() {
+					var instance = this;
+					instance._findMembersList.all('.invited').each(function (node) {
+						instance._removeMemberInvite(null, node.getAttribute('data-userId'));
+					});
+					instance._updateCounter();
+				}
+				,
 				_removeMemberInvite: function(user, userId) {
 					var instance = this;
 
@@ -138,11 +145,17 @@ AUI.add(
 
 					var user = instance._findMembersList.one('[data-userId="' + userId + '"]');
 					var invitedUser = instance._invitedMembersList.one('[data-userId="' + userId + '"]');
-
-					user.removeClass('invited');
+					if (user !== null) {
+						user.removeClass('invited');
+					}
 					invitedUser.remove();
+					instance._updateCounter();
 				},
 
+				_updateCounter: function() {
+					var instance = this;
+					instance._memberCounter.setContent(instance._invitedMembersList.all('.invited').size());
+				},
 				_syncFields: function(form) {
 					var instance = this;
 
@@ -155,19 +168,14 @@ AUI.add(
 						}
 					);
 
-					instance._invitedEmailList.all('.user').each(
-						function(item, index) {
-							emailAddresses.push(item.attr('data-emailAddress'));
-						}
-					);
-
 					var role = instance._inviteMembersContainer.one('select[name=' + instance.get('portletNamespace') + 'roleId]');
-					var team = instance._inviteMembersContainer.one('select[name=' + instance.get('portletNamespace') + 'teamId]');
+					//var team = instance._inviteMembersContainer.one('select[name=' + instance.get('portletNamespace') + 'teamId]');
 
 					form.one('input[name="' + instance.get('portletNamespace') + 'receiverUserIds"]').val(userIds.join());
 					form.one('input[name="' + instance.get('portletNamespace') + 'receiverEmailAddresses"]').val(emailAddresses.join());
 					form.one('input[name="' + instance.get('portletNamespace') + 'invitedRoleId"]').val(role ? role.val() : 0);
-					form.one('input[name="' + instance.get('portletNamespace') + 'invitedTeamId"]').val(team ? team.val() : 0);
+					//form.one('input[name="' + instance.get('portletNamespace') + 'invitedTeamId"]').val(team ? team.val() : 0);
+					form.one('input[name="' + instance.get('portletNamespace') + 'invitedTeamId"]').val(0);
 				}
 			}
 		);
@@ -178,7 +186,7 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-base', 'aui-io-deprecated', 'liferay-util-window']
+		requires: ['aui-base', /*'aui-io-deprecated',*/ 'liferay-util-window']
 	}
 );
 

@@ -19,6 +19,26 @@
 
 <%@ include file="/activities/init.jsp" %>
 
+<%!
+	public boolean isOwner(User user, long groupId, long companyId) throws SystemException, PortalException {
+		Role ownerRole = RoleLocalServiceUtil.getRole(companyId, RoleConstants.SITE_OWNER);
+		Role writeRole = RoleLocalServiceUtil.getRole(companyId, "Skrivetilgang Gruppe");
+		Role commentRole = RoleLocalServiceUtil.getRole(companyId, "Lese og kommentere");
+		List<UserGroupRole> ugr = UserGroupRoleLocalServiceUtil.getUserGroupRoles(user.getUserId(), groupId);
+		for (UserGroupRole userGroupRole : ugr) {
+			if (userGroupRole.getRole().equals(ownerRole) || userGroupRole.getRole().equals(writeRole)
+					|| userGroupRole.getRole().equals(commentRole)) {
+				return true;
+			}
+		}
+		List<Role> rl =  RoleLocalServiceUtil.getUserGroupGroupRoles(user.getUserId(), groupId);
+		if (rl.contains(ownerRole) || rl.contains(writeRole) || rl.contains(commentRole)) {
+			return true;
+		}
+		return false;
+	}
+%>
+
 <%
 Group group = themeDisplay.getScopeGroup();
 
@@ -30,39 +50,82 @@ int total = 0;
 int start = ParamUtil.getInteger(request, "start");
 int end = start + _DELTA;
 
+	ServiceContext scontext = ServiceContextFactory.getInstance(request);
+
+	long single = ParamUtil.getLong(request, "showSingle");
+
+	if (single > 0) {
+		results = new ArrayList<SocialActivitySet>();
+		results.add(SocialActivitySetLocalServiceUtil.getSocialActivitySet(single));
+		total = 1;
+		scontext = ServiceContextFactory.getInstance(request);
+%>
+<%@ include file="/activities/view_activity_sets_feed.jspf" %>
+<%
+} else {
+
+
 while ((count < _DELTA) && ((results == null) || !results.isEmpty())) {
-	if (group.isUser()) {
-		if (layout.isPrivateLayout()) {
-			if (tabs1.equals("connections")) {
-				results = SocialActivitySetLocalServiceUtil.getRelationActivitySets(group.getClassPK(), SocialRelationConstants.TYPE_BI_CONNECTION, start, end);
-				total = SocialActivitySetLocalServiceUtil.getRelationActivitySetsCount(group.getClassPK(), SocialRelationConstants.TYPE_BI_CONNECTION);
+
+		if (group.isUser()) {
+			if (layout.isPrivateLayout()) {
+				if (tabs1.equals("connections")) {
+					results = SocialActivitySetLocalServiceUtil.getRelationActivitySets(group.getClassPK(), SocialRelationConstants.TYPE_BI_CONNECTION, start, end);
+					total = SocialActivitySetLocalServiceUtil.getRelationActivitySetsCount(group.getClassPK(), SocialRelationConstants.TYPE_BI_CONNECTION);
+				}
+				else if (tabs1.equals("following")) {
+					results = SocialActivitySetLocalServiceUtil.getRelationActivitySets(group.getClassPK(), SocialRelationConstants.TYPE_UNI_FOLLOWER, start, end);
+					total = SocialActivitySetLocalServiceUtil.getRelationActivitySetsCount(group.getClassPK(), SocialRelationConstants.TYPE_UNI_FOLLOWER);
+				}
+				else if (tabs1.equals("me")) {
+					results = SocialActivitySetLocalServiceUtil.getUserActivitySets(group.getClassPK(), start, end);
+					total = SocialActivitySetLocalServiceUtil.getUserActivitySetsCount(group.getClassPK());
+				}
+				else if (tabs1.equals("my-sites")) {
+					results = SocialActivitySetLocalServiceUtil.getUserGroupsActivitySets(group.getClassPK(), start, end);
+					total = SocialActivitySetLocalServiceUtil.getUserGroupsActivitySetsCount(group.getClassPK());
+				}
+				else {
+					results = SocialActivitySetLocalServiceUtil.getUserViewableActivitySets(group.getClassPK(), start, end);
+					total = SocialActivitySetLocalServiceUtil.getUserViewableActivitySetsCount(group.getClassPK());
+				}
 			}
-			else if (tabs1.equals("following")) {
-				results = SocialActivitySetLocalServiceUtil.getRelationActivitySets(group.getClassPK(), SocialRelationConstants.TYPE_UNI_FOLLOWER, start, end);
-				total = SocialActivitySetLocalServiceUtil.getRelationActivitySetsCount(group.getClassPK(), SocialRelationConstants.TYPE_UNI_FOLLOWER);
-			}
-			else if (tabs1.equals("me")) {
+			else {
 				results = SocialActivitySetLocalServiceUtil.getUserActivitySets(group.getClassPK(), start, end);
 				total = SocialActivitySetLocalServiceUtil.getUserActivitySetsCount(group.getClassPK());
 			}
-			else if (tabs1.equals("my-sites")) {
-				results = SocialActivitySetLocalServiceUtil.getUserGroupsActivitySets(group.getClassPK(), start, end);
-				total = SocialActivitySetLocalServiceUtil.getUserGroupsActivitySetsCount(group.getClassPK());
-			}
-			else {
-				results = SocialActivitySetLocalServiceUtil.getUserViewableActivitySets(group.getClassPK(), start, end);
-				total = SocialActivitySetLocalServiceUtil.getUserViewableActivitySetsCount(group.getClassPK());
-			}
 		}
 		else {
-			results = SocialActivitySetLocalServiceUtil.getUserActivitySets(group.getClassPK(), start, end);
-			total = SocialActivitySetLocalServiceUtil.getUserActivitySetsCount(group.getClassPK());
+			if (count < 1 && start <1) {
+				int origcount = count;
+				int origstart = start;
+				int origtotal = total;
+				int origend = end;
+				results = SocialActivitySetLocalServiceUtil.getGroupActivitySets(group.getGroupId(), -1, -1);
+				List<SocialActivitySet> hioaresults = new ArrayList<SocialActivitySet>();
+				scontext.setAttribute("showPinned", true);
+				for (SocialActivitySet activitySet : results) {
+					SocialActivityFeedEntry activityFeedEntry = SocialActivityInterpreterLocalServiceUtil.interpret("SO", activitySet, scontext);
+					if (activityFeedEntry == null) {
+						continue;
+					}
+					if (activityFeedEntry.getPortletId().equals("socialactivitymessageportlet_WAR_socialactivitymessageportlet")) {
+						hioaresults.add(activitySet);
+					}
+				}
+				if (hioaresults.size() > 0) {
+				results = hioaresults;
+				%><%@ include file="/activities/view_activity_sets_feed.jspf" %><%
+					count = origcount;
+					start = origstart;
+					total = origtotal;
+					end = origend;
+				}
+			}
+			results = SocialActivitySetLocalServiceUtil.getGroupActivitySets(group.getGroupId(), start, end);
+			total = SocialActivitySetLocalServiceUtil.getGroupActivitySetsCount(group.getGroupId());
 		}
-	}
-	else {
-		results = SocialActivitySetLocalServiceUtil.getGroupActivitySets(group.getGroupId(), start, end);
-		total = SocialActivitySetLocalServiceUtil.getGroupActivitySetsCount(group.getGroupId());
-	}
+	scontext = ServiceContextFactory.getInstance(request);
 %>
 
 	<%@ include file="/activities/view_activity_sets_feed.jspf" %>
@@ -70,12 +133,12 @@ while ((count < _DELTA) && ((results == null) || !results.isEmpty())) {
 <%
 	end = start + _DELTA;
 }
+	}
 %>
 
 <aui:script>
 	<portlet:namespace />start = <%= start %>;
 </aui:script>
-
 <c:if test="<%= (results.isEmpty()) %>">
 	<div class="no-activities">
 		<c:choose>

@@ -16,7 +16,7 @@
  */
 
 package com.liferay.so.activities.portlet;
-
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.compat.portal.kernel.util.Time;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.model.MicroblogsEntryConstants;
@@ -390,9 +390,9 @@ public class ActivitiesPortlet extends MVCPortlet {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("body", HtmlUtil.escape(body));
+		jsonObject.put("body", body);
 
-		if ((userId <= 0) || (userId != themeDisplay.getUserId())) {
+		if ((userId <= 0) || ((userId != themeDisplay.getUserId() && !PortalUtil.isOmniadmin(themeDisplay.getUserId()) ))) {
 			jsonObject.put("commentControlsClass", "hide");
 		}
 
@@ -413,7 +413,7 @@ public class ActivitiesPortlet extends MVCPortlet {
 		User user = UserLocalServiceUtil.fetchUser(userId);
 
 		if (user != null) {
-			jsonObject.put("userDisplayURL", user.getDisplayURL(themeDisplay));
+			jsonObject.put("userDisplayURL", "https://hioa.no/tilsatt/"+user.getScreenName());
 			jsonObject.put(
 				"userPortraitURL",
 				HtmlUtil.escape(user.getPortraitURL(themeDisplay)));

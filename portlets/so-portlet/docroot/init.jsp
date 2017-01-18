@@ -78,6 +78,8 @@ page import="com.liferay.so.sites.util.SitesUtil" %><%@
 page import="com.liferay.so.util.GroupConstants" %><%@
 page import="com.liferay.so.util.PortletKeys" %><%@
 page import="com.liferay.so.util.RoleConstants" %>
+<%@ page import="com.liferay.so.model.MemberRequest" %>
+<%@ page import="com.liferay.so.service.MemberRequestLocalServiceUtil" %>
 
 <%@ page import="java.text.DateFormat" %><%@
 page import="java.text.Format" %>
@@ -91,6 +93,8 @@ page import="java.util.List" %>
 page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
 
+
+<%@page import="org.apache.commons.lang3.builder.CompareToBuilder" %>
 <portlet:defineObjects />
 
 <liferay-theme:defineObjects />

@@ -20,7 +20,12 @@
 <%@ include file="/init.jsp" %>
 
 <%
-Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
+	Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
+	String theState = "collapsed";
+	//if (renderRequest.getWindowState.equals(WindowState.MAXIMIZED)) {
+	if ("true".equals(renderRequest.getParameter("displayImmediately"))) {
+		theState = "open";
+	}
 %>
 
 <c:choose>
@@ -32,56 +37,99 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 			<portlet:param name="mvcPath" value="/invite_members/view_invite.jsp" />
 		</portlet:renderURL>
 
-		<a class="invite-members" href="javascript:;" onClick="<portlet:namespace />openInviteMembers('<%= inviteURL %>');"><liferay-ui:message key="invite-members-to-this-site" /></a>
 
-		<aui:script position="inline" use="aui-base,aui-io-plugin-deprecated,liferay-so-invite-members,liferay-util-window">
-			Liferay.provide(
-				window,
-				'<portlet:namespace />openInviteMembers',
-				function(url) {
-					var title = '';
-					var titleNode = A.one('.so-portlet-invite-members .portlet-title-default');
 
-					if (titleNode) {
-						title = titleNode.get('innerHTML');
-					}
+		<liferay-ui:panel-container accordion="true" extended="false" cssClass="member-invite">
+		<liferay-ui:panel title="invite-members-to-this-site" defaultState="<%=theState%>">
+		<liferay-util:include page="/invite_members/view_invite.jsp" servletContext="<%= application %>" />
 
-					var dialog = Liferay.Util.Window.getWindow(
-						{
-							dialog: {
-								align: {
-									node: null,
-									points: ['tc', 'tc']
-								},
-								cssClass: 'so-portlet-invite-members',
-								destroyOnClose: true,
-								modal: true,
-								resizable: false,
-								width: 700
-							},
-							title: title
-						}
-					).plug(
-						A.Plugin.IO,
-						{
-							after: {
-								success: function() {
+
+		<aui:script position="inline" use="aui-base,liferay-so-invite-members,liferay-util-window">
+			AUI().ready('aui-base', 'aui-io-plugin-deprecated', 'liferay-so-invite-members', 'liferay-util-window', function(A) {
 									new Liferay.SO.InviteMembers(
 										{
-											dialog: dialog,
 											portletNamespace: '<portlet:namespace />'
 										}
 									);
-								}
-							},
-							method: 'GET',
-							uri: url
-						}
-					).render();
-				},
-				['aui-base', 'aui-io-plugin-deprecated', 'liferay-so-invite-members', 'liferay-util-window']
-			);
+			});
 		</aui:script>
+		</liferay-ui:panel>
+			<div class="clearfix"></div>
+		</liferay-ui:panel-container>
+
+		<liferay-ui:panel-container accordion="true" extended="false" cssClass="previous-invites">
+		<liferay-ui:panel title="previous-invites" defaultState="<%=theState%>">
+			<table class="table table-bordered table-hover table-striped">
+				<thead class="table-columns">
+				<tr>
+					<th class="table-first-header">
+						<liferay-ui:message key="name-of-invitee" />
+					</th>
+					<th>
+						<liferay-ui:message key="name-of-inviter" />
+					</th>
+					<th>
+						<liferay-ui:message key="invite-role" />
+					</th>
+					<th>
+						<liferay-ui:message key="invite-date" />
+					</th>
+					<th>
+						<liferay-ui:message key="invite-status" />
+					</th>
+				</tr>
+				</thead>
+				<tbody>
+				<%
+					for (MemberRequest req : MemberRequestLocalServiceUtil.getRequests(group.getGroupId())) {
+				%>
+				<tr>
+					<td class="table-cell first">
+						<%
+							long uid = req.getReceiverUserId();
+							User rec = UserLocalServiceUtil.getUser(uid);
+						%>
+						<%=rec.getFullName()%><br>
+					</td>
+					<td class="table-cell">
+						<%=req.getUserName()%><br>
+					</td>
+					<td class="table-cell">
+						<%
+							long rid = req.getInvitedRoleId();
+							Role rer = RoleLocalServiceUtil.getRole(rid);
+						%>
+						<%=rer.getTitle(themeDisplay.getLocale())%><br>
+					</td>
+					<td class="table-cell">
+						<%=dateFormatDate.format(req.getCreateDate())%><br>
+					</td>
+					<td class="table-cell">
+						<span class="taglib-workflow-status">
+							<span class="workflow-status">
+								<c:choose>
+									<c:when test="<%=req.getStatus()==1%>">
+										<strong class="label workflow-status-approved label-success workflow-value"><liferay-ui:message key="invite-status-accepted" /></strong>
+									</c:when>
+									<c:when test="<%=req.getStatus()==2%>">
+										<strong class="label workflow-status-approved label-important workflow-value"><liferay-ui:message key="invite-status-ignored" /></strong>
+									</c:when>
+									<c:otherwise>
+										<strong class="label workflow-status-approved label-warning workflow-value"><liferay-ui:message key="invite-status-pending" /></strong>
+									</c:otherwise>
+								</c:choose>
+							</span>
+						</span>
+					</td>
+				</tr>
+				<%
+					}
+				%>
+				</tbody>
+			</table>
+		</liferay-ui:panel>
+			<div class="clearfix"></div>
+		</liferay-ui:panel-container>
 	</c:when>
 	<c:otherwise>
 		<aui:script use="aui-base">

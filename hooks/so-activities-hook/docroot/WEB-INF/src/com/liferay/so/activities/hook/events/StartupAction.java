@@ -47,6 +47,7 @@ public class StartupAction extends SimpleAction {
 	}
 
 	protected void doRun() throws Exception {
+		System.out.println("Running so-activitis-hook starupt action");
 		initSocialActivityInterpreters();
 	}
 
@@ -63,6 +64,8 @@ public class StartupAction extends SimpleAction {
 
 			String activityInterpreterClassName = PortletProps.get(
 				PortletPropsKeys.SOCIAL_ACTIVITY_INTERPRETER, filter);
+
+			System.out.println("Adding Social Activity Interpreter "+activityInterpreterClassName);
 
 			try {
 				SocialActivityInterpreter activityInterpreter =

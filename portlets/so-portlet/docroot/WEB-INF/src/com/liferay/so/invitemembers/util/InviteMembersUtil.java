@@ -18,10 +18,15 @@
 package com.liferay.so.invitemembers.util;
 
 import com.liferay.portal.kernel.dao.orm.CustomSQLParam;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.Junction;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.comparator.UserFirstNameComparator;
+//import com.liferay.portal.util.comparator.;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.LinkedHashMap;
@@ -35,39 +40,32 @@ public class InviteMembersUtil {
 	public static List<User> getAvailableUsers(
 			long companyId, long groupId, String keywords, int start, int end)
 		throws Exception {
-
-		LinkedHashMap usersParams = new LinkedHashMap();
-
-		usersParams.put(
-			"usersInvited",
-			new CustomSQLParam(
-				CustomSQLUtil.get(
-					"com.liferay.portal.service.persistence.UserFinder." +
-						"filterByUsersGroupsGroupId"),
-				groupId));
-
-		return UserLocalServiceUtil.search(
-			companyId, keywords, WorkflowConstants.STATUS_APPROVED, usersParams,
-			start, end, new UserFirstNameComparator(true));
+		String[] bits = keywords.split(" ");
+		String lastName = bits[bits.length-1];
+		DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
+		Junction junction = RestrictionsFactoryUtil.disjunction();
+		junction.add(RestrictionsFactoryUtil.ilike("firstName", "%" + keywords + "%"));
+		junction.add(RestrictionsFactoryUtil.ilike("lastName", lastName + "%"));
+		query.add(junction);
+		query.add(PropertyFactoryUtil.forName("status").eq(WorkflowConstants.STATUS_APPROVED));
+		
+		return UserLocalServiceUtil.dynamicQuery(query,start,end);
 	}
 
 	public static int getAvailableUsersCount(
 			long companyId, long groupId, String keywords)
 		throws Exception {
 
-		LinkedHashMap usersParams = new LinkedHashMap();
+		String[] bits = keywords.split(" ");
+		String lastName = bits[bits.length-1];
+		DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
+		Junction junction = RestrictionsFactoryUtil.disjunction();
+		junction.add(RestrictionsFactoryUtil.ilike("firstName", "%" + keywords + "%"));
+		junction.add(RestrictionsFactoryUtil.ilike("lastName", lastName + "%"));
+		query.add(junction);
+		query.add(PropertyFactoryUtil.forName("status").eq(WorkflowConstants.STATUS_APPROVED));
 
-		usersParams.put(
-			"usersInvited",
-			new CustomSQLParam(
-				CustomSQLUtil.get(
-					"com.liferay.portal.service.persistence.UserFinder." +
-						"filterByUsersGroupsGroupId"),
-				groupId));
-
-		return UserLocalServiceUtil.searchCount(
-			companyId, keywords, WorkflowConstants.STATUS_APPROVED,
-			usersParams);
+		return (int)UserLocalServiceUtil.dynamicQueryCount(query);
 	}
 
 }

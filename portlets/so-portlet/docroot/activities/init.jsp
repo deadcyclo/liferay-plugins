@@ -34,8 +34,24 @@ page import="com.liferay.portlet.social.service.SocialActivityLocalServiceUtil" 
 page import="com.liferay.portlet.social.service.SocialActivitySetLocalServiceUtil" %><%@
 page import="com.liferay.so.activities.util.ActivitiesUtil" %>
 
+<%@	page import="com.liferay.portal.model.Role" %>
+<%@	page import="com.liferay.portal.service.RoleLocalServiceUtil" %>
+<%@	page import="com.liferay.portal.service.UserGroupRoleLocalServiceUtil" %>
+<%@page import="com.liferay.portal.model.UserGroupRole" %>
+<%@page import="com.liferay.portal.theme.ThemeDisplay" %>
+<%@page import="com.liferay.portal.kernel.exception.SystemException" %>
+<%@page import="com.liferay.portal.kernel.exception.PortalException" %>
+<%@page import="com.liferay.portal.kernel.portlet.LiferayPortletURL" %>
+<%@page import="javax.portlet.PortletModeException" %>
+<%@page import="javax.portlet.WindowStateException" %>
+<%@page import="javax.portlet.PortletMode"%>
+<%@page import="javax.servlet.http.HttpServletRequest"%>
+<%@page import="com.liferay.portal.service.ServiceContext"%>
+<%@page import="com.liferay.portlet.PortletURLFactoryUtil"%>
+<%@page import="javax.portlet.PortletRequest"%>
+
 <%
-String tabs1 = ParamUtil.getString(request, "tabs1", "all");
+String tabs1 = ParamUtil.getString(request, "tabs1", "my-sites");
 
 Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 %>

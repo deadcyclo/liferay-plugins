@@ -63,6 +63,7 @@ import com.liferay.portal.kernel.util.ServiceBeanMethodInvocationFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.AttachedModel;
@@ -71,6 +72,7 @@ import com.liferay.portal.model.BaseModel;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.GroupedModel;
 import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.ModelHintsUtil;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.User;
@@ -178,6 +180,34 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 
 		setAuditedModel(
 			baseModel, CompanyLocalServiceUtil.getCompany(companyId), user);
+	}
+
+	public static void setLocalizedProperties(
+			BaseModel<?> baseModel, HttpServletRequest request, Locale locale)
+		throws Exception {
+
+		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
+
+		for (String propertyName : modelAttributes.keySet()) {
+			boolean localized = ModelHintsUtil.isLocalized(
+				baseModel.getModelClassName(), propertyName);
+
+			if (!localized) {
+				continue;
+			}
+
+			Class<?> baseModelClass = baseModel.getModelClass();
+
+			String setMethodName =
+				"set" + TextFormatter.format(propertyName, TextFormatter.G);
+
+			Method setMethod = baseModelClass.getMethod(
+				setMethodName, new Class<?>[] {String.class, Locale.class});
+
+			String value = ParamUtil.getString(request, propertyName);
+
+			setMethod.invoke(baseModel, value, locale);
+		}
 	}
 
 	@Override
@@ -338,6 +368,8 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		throws Exception {
 
 		BeanPropertiesUtil.setProperties(baseModel, request);
+
+		setLocalizedProperties(baseModel);
 
 		updateModelIgnoreRequest(baseModel, properties);
 	}
@@ -505,6 +537,7 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 			}
 		}
 		catch (Exception e) {
+			Object[] arguments = null;
 			String message = "an-unexpected-system-error-occurred";
 
 			Throwable rootCause = getRootCause(e);
@@ -516,13 +549,18 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 					log.error(rootCause, rootCause);
 				}
 
+				if (ArrayUtil.isNotEmpty(ae.arguments)) {
+					arguments = ae.arguments;
+				}
+
 				message = rootCause.getMessage();
 			}
 			else {
 				log.error(e, e);
 			}
 
-			renderError(HttpServletResponse.SC_BAD_REQUEST, e, message);
+			renderError(
+				HttpServletResponse.SC_BAD_REQUEST, e, message, arguments);
 		}
 		finally {
 			if (isRespondingTo()) {
@@ -1363,6 +1401,18 @@ public abstract class BaseAlloyControllerImpl implements AlloyController {
 		GroupedModel groupedModel = (GroupedModel)baseModel;
 
 		groupedModel.setGroupId(themeDisplay.getScopeGroupId());
+	}
+
+	protected void setLocalizedProperties(BaseModel<?> baseModel)
+		throws Exception {
+
+		setLocalizedProperties(baseModel, request, request.getLocale());
+	}
+
+	protected void setLocalizedProperties(BaseModel<?> baseModel, Locale locale)
+		throws Exception {
+
+		setLocalizedProperties(baseModel, request, locale);
 	}
 
 	protected void setOpenerSuccessMessage() {

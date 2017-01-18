@@ -184,8 +184,11 @@ AUI().use(
 	'aui-base',
 	'liferay-node',
 	'transition',
+	'handlebars',
+	'aui-dialog',
+	'aui-overlay-manager',
 	function(A) {
-		var TPL_COMMENT_ENTRY = '<div class="comment-entry">' +
+		var TPL_COMMENT_ENTRY = '<div class="comment-entry" id="comment-entry-{mbMessageIdOrMicroblogsEntryId}">' +
 			'<div class="user-portrait">' +
 				'<span class="avatar">' +
 					'<a href={userDisplayURL}>' +
@@ -194,7 +197,8 @@ AUI().use(
 				'</span>' +
 			'</div>' +
 			'<div class="comment-body">' +
-				'<span class="user-name"><a href={userDisplayURL}>{userName}</a></span>' +
+				'<span class="user-name"><a href={userDisplayURL}>{userName}</a></span><p></p>' +
+				'<div style="display:none;" class="original-message">{original}</div>' +
 				'<span class="message">{body}</span>' +
 			'</div>' +
 			'<div class="comment-info">' +
@@ -206,13 +210,90 @@ AUI().use(
 					'<a data-mbMessageIdOrMicroblogsEntryId={mbMessageIdOrMicroblogsEntryId} href="javascript:;">' + Liferay.Language.get('delete') + '</a>' +
 				'</span>' +
 			'</div>' +
+			'<div class="likes-holder">' +
+				'<div class="likes"></div>' +
+				'<div class="like"><a href="javascript:;"><span class="icon icon-thumbs-up"></span></a></div>' +
+			'</div>' +
 		'</div>';
 
-		var Activities = {
-			addNewComment: function(commentsList, responseData) {
-				responseData.userDisplayURL = responseData.userDisplayURL || '';
+		A.Handlebars.registerHelper("sub", function(number) {
+			return number-1;
+		});
+		A.Handlebars.registerHelper("json", function(input) {
+			return JSON.stringify(input);
+		});
 
-				commentsList.append(A.Lang.sub(TPL_COMMENT_ENTRY, responseData));
+		var TPL_LIKES_NONE = Liferay.Language.get('be-the-first');
+		var TPL_LIKES_SINGLE = '<a target="_blank" href="https://hioa.no/tilsatt/{{likes.0.userName}}">{{likes.0.userFullName}}</a> '+Liferay.Language.get('likes-this');
+		var TPL_LIKES_MANY = '<a target="_blank" href="https://hioa.no/tilsatt/{{random.userName}}">{{random.userFullName}}</a> '+Liferay.Language.get('and')+' <a href="#" class="other-likes" data-likes="{{json likes}}">{{sub count}} '+Liferay.Language.get('others')+'</a> '+Liferay.Language.get('like-this');
+		var TPL_LIKES = '<div class="all-likes">{{#each this}}<div class="mention-card"><div class="user-portrait"><span class="avatar"><img alt="{{userFullName}}" src="{{portrait}}"></span></div>{{userFullName}}<div class="job-title">{{title}}</div><a target="_blank" href="https://hioa.no/tilsatt/{{userName}}"><span class="link-spanner"></span></a></a></div>{{/each}}</div>';
+		var template_none = A.Handlebars.compile(TPL_LIKES_NONE);
+		var template_single = A.Handlebars.compile(TPL_LIKES_SINGLE);
+		var template_many = A.Handlebars.compile(TPL_LIKES_MANY);
+		var template_likes = A.Handlebars.compile(TPL_LIKES);
+
+		var Activities = {
+			addNewComment: function(commentsList, responseData, likeUrl, getLikesUrl) {
+				responseData.userDisplayURL = responseData.userDisplayURL || '';
+				var entry = commentsList.append(A.Lang.sub(TPL_COMMENT_ENTRY, responseData)).one('#comment-entry-'+responseData.mbMessageIdOrMicroblogsEntryId);
+				var likeLink = entry.one('.likes-holder .like a');
+
+				handleResponse = function (responseData, entry) {
+					var likeContent = entry.one('.likes-holder .likes');
+					if (responseData.count == 0) {
+						likeContent.setHTML(template_none(responseData));
+					} else if (responseData.count == 1) {
+						likeContent.setHTML(template_single(responseData));
+					} else {
+						likeContent.setHTML(template_many(responseData));
+						likeContent.one('.other-likes').on('click', function(event) {
+							event.preventDefault();
+							event.stopPropagation();
+							event.stopImmediatePropagation();
+							var likes = JSON.parse(event.currentTarget.getAttribute('data-likes'));
+							new A.Modal({
+								centered: true,
+								modal: false,
+								bodyContent: template_likes(likes),
+								zIndex: 1000,
+								render: '#aui_popup_content',
+							}).render();
+							return false;
+						});
+					}
+				};
+
+				A.io.request(getLikesUrl, {
+					dataType: 'json',
+					cache: false,
+					autoLoad: true,
+					on: {
+						success: function (obj) {
+							var responseData = this.get('responseData');
+							handleResponse(responseData, entry);
+						},
+						error: function() {
+							console.log('Error getting likes');
+						}
+					}
+				});
+
+				likeLink.on('click', function(event) {
+					A.io.request(likeUrl, {
+						dataType: 'json',
+						cache: false,
+						autoLoad: true,
+						on: {
+							success: function (obj) {
+								var responseData = this.get('responseData');
+								handleResponse(responseData, entry);
+							},
+							error: function() {
+								console.log('Error getting likes');
+							}
+						}
+					});
+				});
 			},
 
 			toggleEntry: function(event, portletNamespace) {

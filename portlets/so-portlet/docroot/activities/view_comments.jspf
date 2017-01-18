@@ -17,12 +17,18 @@
  */
 --%>
 
+<%
+	PortletURL membersURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+	membersURL.setParameter("p_p_resource_id", "members");
+	membersURL.setParameter("siteid", String.valueOf(activitySet.getGroupId()));
+%>
+
 <div class="comments-container">
 	<div class="comments-list"></div>
 
+	<%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId()) || PortalUtil.isOmniadmin(themeDisplay.getUserId())) {%>
 	<portlet:actionURL name="updateComment" var="updateCommentURL" />
-
-	<aui:form action="<%= updateCommentURL %>" method="post" name='<%= "fm" + activitySet.getActivitySetId() %>'>
+	<aui:form action="<%= updateCommentURL %>" method="post" name='<%= "fm" + activitySet.getActivitySetId() %>' autocomplete="off">
 		<aui:input name="mvcPath" type="hidden" value="/activities/view.jsp" />
 		<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(currentURL) %>" />
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.ADD %>" />
@@ -31,30 +37,292 @@
 		<aui:input name="mbMessageIdOrMicroblogsEntryId" type="hidden" value="" />
 
 		<div>
-			<div class="user-portrait">
+			<div class="span10">
+				<div class="user-portrait">
 				<span class="avatar">
-					<a href="<%= user.getDisplayURL(themeDisplay) %>">
-						<img alt="<%= HtmlUtil.escape(user.getFullName()) %>" src="<%= user.getPortraitURL(themeDisplay) %>" />
+					<a href="https://hioa.no/tilsatt/<%=user.getScreenName()%>">
+						<img alt="<%= HtmlUtil.escape(user.getFullName()) %>" src="<%=user.getPortraitURL(themeDisplay)%>" />
 					</a>
 				</span>
+				</div>
+				<div class="comment-input-wrapper">
+					<div id="<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>" class="comment-form wdt-emoji-bundle-enabled" data-placeholder="<%= LanguageUtil.get(pageContext, "leave-a-comment") %>"></div>
+				</div>
+				<aui:input type="hidden" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
+				<div class="comment-cards" id="<portlet:namespace />cards<%=activitySet.getActivitySetId()%>"></div>
+				<div class="hide comment-alerts" id="<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>" data-placeholder="<%= LanguageUtil.get(pageContext, "alerts-placeholder") %>"></div>
+				<aui:input type="hidden" label="" name="alerts" placeholder='<%= LanguageUtil.get(pageContext, "alerts-placeholder") %>'/>
 			</div>
-
-			<aui:input cssClass="comment-form" label="" name="body" placeholder='<%= LanguageUtil.get(pageContext, "leave-a-comment") %>'/>
+			<div class="span2">
+				<aui:input type="submit" cssClass="btn btn-primary" name="post" value='<%= LanguageUtil.get(pageContext, "post") %>'/>
+			</div>
 
 			<aui:input name="submit" type="hidden" value="post" />
 		</div>
 	</aui:form>
+	<%}%>
 </div>
 
-<aui:script use="aui-base">
-	var form = A.one('#<portlet:namespace />fm<%= activitySet.getActivitySetId() %>');
+<%	if(isOwner(themeDisplay.getUser(), activitySet.getGroupId(), themeDisplay.getCompanyId())) {%>
 
-	if (form) {
-		form.on(
+<aui:script use="aui-base">
+Liferay['<portlet:namespace />-wysiwyg-skip<%=activitySet.getActivitySetId()%>'] = [];
+function getServiceSync() {
+	var xhr = null;
+	var args = parent.Liferay.Service.parseInvokeArgs(arguments);
+
+	var syncIOConfig = {
+		sync: true,
+		on: {
+			success: function(event, id, obj){
+				xhr = obj;
+			}
+		}
+	};
+
+	args[1] = parent.AUI().merge(args[1], syncIOConfig);
+
+	parent.Liferay.Service.invoke.apply(Liferay.Service, args);
+
+	if(xhr){
+		return eval('(' + xhr.responseText + ')');
+	}
+};
+var updateCommentCards = function (editor) {
+	var data = editor.getData();
+	Liferay.Service(
+			'/socialactivitymessage-portlet.hioasocialactivity/add-direct-cards',
+			{
+				body: data,
+				ignore: JSON.stringify(Liferay['<portlet:namespace />-wysiwyg-skip<%=activitySet.getActivitySetId()%>'])
+			},
+			function(obj) {
+				A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').setHTML(obj);
+				A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').all('.remove-all').each(function (node) {
+					node.on('click', function (event) {
+						var card = event.currentTarget.ancestor('.card-rich');
+						var url = card.one('.url a');
+						Liferay['<portlet:namespace />-wysiwyg-skip<%=activitySet.getActivitySetId()%>'].push(url.getAttribute('href'));
+						card.remove(true);
+						card.destroy();
+						updateCommentCards(editor, true);
+					});
+				});
+			}
+	);
+};
+
+	function strEndsWith(str, suffix) {
+	return str.match(suffix+"$")==suffix;
+	}
+
+	var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
+
+var handleCommentLinkInsert = function (event) {
+	if ('autolinkAdd' === event.name || 'linkEdit' === event.data.constructor.key) {
+		if ('autolinkAdd' === event.name) {
+			if (strEndsWith(event.data.getAttribute('href'), ".gif")) {
+				/* Kind of hacky, need to wait until carret is repositioned */
+				setTimeout(function () {
+				A.one(event.data.$).addClass('hide-external');
+				event.data.setHtml('<img class="freezeframe freezeframe-responsive" src="/socialactivitymessage-portlet/feedimage/'+Base64.encode(event.data.getAttribute('href'))+'.gif">');
+					ff = new freezeframe().freeze();
+				}, 100);
+			}
+		}
+		updateCommentCards(event.editor);
+	}
+};
+var form = A.one('#<portlet:namespace />fm<%= activitySet.getActivitySetId() %>');
+selections = [{
+	name: 'link',
+	buttons: ['linkEdit'],
+	test: AlloyEditor.SelectionTest.link
+} , {
+	name: 'text',
+	buttons: ['removeFormat', 'bold', 'italic', 'underline', 'link'],
+	test: AlloyEditor.SelectionTest.text
+}];
+var toolbars = {
+	styles: {
+		selections: selections,
+		tabIndex: 1
+	},
+	add: {
+		buttons: ['link'],
+		tabIndex: 2
+	}
+};
+noselections = [{
+	name: 'text',
+	buttons: [],
+	test: AlloyEditor.SelectionTest.text
+}];
+var noToolbars = {
+	styles: {
+		selections: noselections,
+		tabIndex: 1
+	}
+};
+var extraPlugins = "ae_uicore,ae_selectionregion,ae_selectionkeystrokes,ae_dragresize,ae_imagealignment,ae_addimages,ae_placeholder,ae_tabletools,ae_tableresize,ae_autolink,ae_autolist";
+var removePlugins = "contextmenu,toolbar,elementspath,resize,liststyle,link,ae_embed";
+var editor = AlloyEditor.editable('<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>', {
+	toolbars: toolbars,
+	extraPlugins: extraPlugins,
+	removePlugins: removePlugins
+});
+var alertEditor = AlloyEditor.editable('<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>', {
+	toolbars: noToolbars,
+	extraPlugins: extraPlugins,
+	removePlugins: removePlugins
+});
+	alertEditor.get('nativeEditor').on('instanceReady', function (ev) {
+		ev.editor.setKeystroke(13, null);
+		ev.editor.setKeystroke(CKEDITOR.SHIFT + 13, null);
+	});
+
+	editor.get('nativeEditor').on('key', function (e) {
+		if (e.data.keyCode === 13) {
+			if (Liferay['comment-tribute-<%=activitySet.getActivitySetId()%>'] && Liferay['comment-tribute-<%=activitySet.getActivitySetId()%>'].isActive) {
+			    e.cancel();
+			}
+		}
+	});
+
+	/* Hack to allow preventDefault on ckeditors wonky event implementation that doesn't provide charCode */
+	A.one('#<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>').on('keypress', function(e) {
+		var content = window.getSelection().anchorNode.nodeValue;
+		if (content !== null && !/^\s*$/.test(content)) {
+			if (e.charCode == 64 || e.charCode == 8 || e.charCode > 222) {
+				return;
+			}
+			if (e.charCode > 64 && e.charCode < 91) {
+				return;
+			}
+			if (e.charCode > 96 && e.charCode < 123) {
+				return;
+			}
+			if (e.charCode > 127) {
+				return;
+			}
+			e.preventDefault();
+		} else {
+			if (e.charCode !== 64 && e.charCode !== 8) {
+				e.preventDefault();
+			}
+		}
+	});
+
+editor.get('nativeEditor').on('autolinkAdd', function (event) { handleCommentLinkInsert(event); });
+editor.get('nativeEditor').on('actionPerformed', function (event) { handleCommentLinkInsert(event); });
+A.io.request('<%=membersURL%>', {
+	dataType: 'json',
+	cache: true,
+	autoLoad: true,
+	on: {
+		success: function () {
+			var members = this.get('responseData');
+			members.menuItemTemplate = function (item) {
+				return '<div class="user-portrait">' +
+						'<span class="avatar">' +
+						'<img alt="'+item.original.key+'" src="'+item.original.portrait + '">' +
+						'</span>' +
+						'</div>' +
+						item.string.split('#')[0] +
+						'<div class="job-title">'+item.original.title+'</div>';
+			};
+			members.selectTemplate = function (item) {
+				return getServiceSync(
+						'/socialactivitymessage-portlet.hioasocialactivity/get-mention',
+						{
+							username: item.original.value
+						}
+				);
+			};
+			members.lookup = function(person) {
+				return person.key + '#' + person.value;
+			};
+			var tribute = new Tribute(members);
+	        Liferay['comment-tribute-<%=activitySet.getActivitySetId()%>']
+			tribute.attach(form.one('#<portlet:namespace />commentinput<%=activitySet.getActivitySetId()%>').getDOMNode());
+			tribute.attach(form.one('#<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>').getDOMNode());
+		},
+		error: function() {
+			console.log('Error loading @mentions members')
+		}
+	}
+});
+
+var sp2 = form.one('.span2');
+var al = form.one('#<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>');
+editor.get('nativeEditor').on('focus', function() {
+	editor.get('srcNode').classList.add('in-use');
+	if (sp2) {
+		sp2.addClass('in-use');
+	}
+	if (al) {
+		al.removeClass('hide');
+	}
+});
+
+	var pasteHtml = function(html, startPos, endPos) {
+		var range = void 0,
+		sel = void 0;
+		sel = window.getSelection();
+		range = document.createRange();
+		range.setStart(sel.anchorNode, startPos);
+		range.setEnd(sel.anchorNode, endPos);
+		range.deleteContents();
+
+		var el = document.createElement('div');
+		el.innerHTML = html;
+		var frag = document.createDocumentFragment(),
+		node = void 0,
+		lastNode = void 0;
+		while (node = el.firstChild) {
+		   lastNode = frag.appendChild(node);
+		}
+		range.insertNode(frag);
+
+		// Preserve the selection
+		if (lastNode) {
+			range = range.cloneRange();
+			range.setStartAfter(lastNode);
+			range.collapse(true);
+			sel.removeAllRanges();
+			sel.addRange(range);
+		}
+	};
+
+	editor.get('nativeEditor').on('contentDom', function () {
+		editor.get('nativeEditor').document.on("input", function(event) {
+			var content = window.getSelection().anchorNode.nodeValue;
+			if (content !== null) {
+				var found = content.match(/:([a-zA-Z-_]+):/);
+				if (found !== null) {
+					var cnt = found[0];
+					var start = found.index;
+					var end = found.index + cnt.length;
+					pasteHtml(wdtEmojiBundle.render(cnt), start, end);
+				}
+			}
+		});
+	});
+
+	wdtEmojiBundle.defaults.emojiSheets = {
+	'apple': '<%=request.getContextPath()%>/activities/img/sheet_apple_64.png',
+	'google': '<%=request.getContextPath()%>/activities/img/sheet_google_64.png',
+	'twitter': '<%=request.getContextPath()%>/activities/img/sheet_twitter_64.png',
+	'emojione': '<%=request.getContextPath()%>/activities/img/sheet_emojione_64.png'
+	};
+
+	wdtEmojiBundle.init('.wdt-emoji-bundle-enabled');
+
+if (form) {
+	form.on(
 			'submit',
 			function(event) {
 				event.halt();
-
 				var currentTarget = event.currentTarget;
 
 				var activityFooter = currentTarget.ancestor('.activity-footer');
@@ -66,48 +334,128 @@
 
 				cmdNode.val('<%= Constants.ADD %>');
 
+				var data = editor.get('nativeEditor').getData();
+	            var alertsdata = alertEditor.get('nativeEditor').getData();
+
+	            var tempData = A.Node.create(data);
+	            tempData.all('div.ff-container').each(function (node) {
+	                var img = node.one('.freezeframe');
+	                if (img) {
+	                    img.removeClass("ff-setup");
+	                    img.removeClass("ff-image");
+	                    img.removeClass("ff-image-ready");
+	                }
+	                node.replace(img);
+	            });
+
+	            data = tempData.getHTML();
+	console.log(data);
+
+				var cards = A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').getHTML();
+				form.one('#<portlet:namespace />body').set('value', data.replace(/<p>\s<\/p>/g, "") + cards);
+	            form.one('#<portlet:namespace />alerts').set('value', alertsdata);
+
 				A.io.request(
-					form.attr('action'),
-					{
-						after: {
-							success: function(event, id, obj) {
-								var responseData = this.get('responseData');
+						form.attr('action'),
+						{
+							after: {
+								success: function(event, id, obj) {
+									var responseData = this.get('responseData');
+									if (responseData.success) {
+										var commentsList = commentsContainer.one('.comments-list');
+										commentsList.removeClass('hide');
+										responseData.original = responseData.body;
+										<%
+											PortletURL likeURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+											likeURL.setParameter("p_p_resource_id", "like");
+											likeURL.setParameter("type", "2");
 
-								if (responseData.success) {
-									var commentsList = commentsContainer.one('.comments-list');
+											PortletURL getLikesURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+											getLikesURL.setParameter("p_p_resource_id", "getLikes");
+											getLikesURL.setParameter("type", "2");
+										%>
 
-									commentsList.removeClass('hide');
+										likesUrl = '<%=likeURL.toString()%>'+ "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_contentId="+encodeURIComponent(responseData.mbMessageIdOrMicroblogsEntryId);
+										likesUrl += "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_activityId="+encodeURIComponent(<%=activitySet.getActivitySetId()%>);
+										getLikesUrl = '<%=getLikesURL.toString()%>'+ "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_contentId="+encodeURIComponent(responseData.mbMessageIdOrMicroblogsEntryId);
 
-									Liferay.SO.Activities.addNewComment(commentsList, responseData);
+										Liferay.SO.Activities.addNewComment(commentsList, responseData, likesUrl, getLikesUrl);
+										<%
+											PortletURL notificationURL = PortletURLFactoryUtil.create(request, "socialactivitymessageportlet_WAR_socialactivitymessageportlet", themeDisplay.getPlid(), PortletRequest.RESOURCE_PHASE);
+											notificationURL.setParameter("p_p_resource_id", "sendNotifications");
+											notificationURL.setParameter("type", "create");
+										%>
+										var activity = currentTarget.ancestor('.activity-item');
+										var activity_id = activity.get('id').split(/_/).pop();
 
-									var viewComments = activityFooter.one('.view-comments a');
+										var notUri = '<%=notificationURL%>&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_showSingle='+activity_id+'&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_messageId='+responseData.mbMessageIdOrMicroblogsEntryId;
+										var al = form.one('#<portlet:namespace />alerts');
+										if (al) {
+											notUri = notUri + "&_socialactivitymessageportlet_WAR_socialactivitymessageportlet_alerts="+encodeURIComponent(al.get('value'));
+										}
 
-									var viewCommentsHtml = viewComments.get('innerHTML');
+										A.io.request(notUri, {
+											dataType: 'json',
+											cache: true,
+											autoLoad: true,
+											on: {
+												success: function () {
+												},
+												error: function() {
+													console.log('Error sending notifications')
+												}
+											}
+										});
 
-									var messagesCount = parseInt(viewCommentsHtml) + 1;
+										var viewComments = activityFooter.one('.view-comments a');
 
-									if (isNaN(messagesCount)) {
-										messagesCount = 1;
+										var viewCommentsHtml = viewComments.get('innerHTML');
+
+										var messagesCount = parseInt(viewCommentsHtml) + 1;
+
+										if (isNaN(messagesCount)) {
+											messagesCount = 1;
+										}
+
+										viewComments.html(
+												messagesCount +
+												(messagesCount > 1 ? ' <%= UnicodeLanguageUtil.get(pageContext, "comments") %>' : ' <%= UnicodeLanguageUtil.get(pageContext, "comment") %>')
+										);
+
+	ff = new freezeframe().freeze();
+
+	                                    editor.get('nativeEditor').setData('');
+	                                    editor.get('srcNode').classList.remove('in-use');
+										var sp2 = form.one('.span2');
+										if (sp2) {
+											sp2.removeClass('in-use');
+										}
+	                                    var al = form.one('#<portlet:namespace />commentalert<%=activitySet.getActivitySetId()%>');
+										if (al) {
+											al.addClass('hide');
+										}
+	                                    A.one('#<portlet:namespace />cards<%=activitySet.getActivitySetId()%>').setHTML(obj);
+	editor.get('nativeEditor').on('focus', function() {
+	editor.get('srcNode').classList.add('in-use');
+	if (sp2) {
+	sp2.addClass('in-use');
+	}
+	if (al) {
+	al.removeClass('hide');
+	}
+	});
 									}
-
-									viewComments.html(
-										messagesCount +
-										(messagesCount > 1 ? ' <%= UnicodeLanguageUtil.get(pageContext, "comments") %>' : ' <%= UnicodeLanguageUtil.get(pageContext, "comment") %>')
-									);
-
-									var textInput = commentsContainer.one('.comment-form');
-
-									textInput.attr('value', '');
 								}
+							},
+							dataType: 'json',
+							form: {
+								id: form
 							}
-						},
-						dataType: 'json',
-						form: {
-							id: form
 						}
-					}
 				);
 			}
-		);
-	}
+	);
+}
 </aui:script>
+
+<%}%>

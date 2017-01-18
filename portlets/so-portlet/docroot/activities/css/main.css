@@ -87,7 +87,11 @@ $default-border-color: #E7E7E7;
 	.activity-body, .grouped-activity-body-container {
 		border: 1px solid $default-border-color;
 
-		@include hyphenation;
+		-ms-word-break: break-word;
+		word-break: break-word;
+		-webkit-hyphens: manual;
+		-moz-hyphens: manual;
+		hyphens: manual;
 
 		span {
 			line-height: 1em;
@@ -280,7 +284,6 @@ $default-border-color: #E7E7E7;
 
 	.comments-container, .microblogs-portlet-activity .activity-body {
 		.user-portrait {
-			height: 32px;
 			left: 0;
 			position: relative;
 			top: 0;

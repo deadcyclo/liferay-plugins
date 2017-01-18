@@ -50,6 +50,8 @@ import com.liferay.portlet.social.service.SocialActivitySetLocalServiceUtil;
 import com.liferay.portlet.trash.util.TrashUtil;
 import com.liferay.portlet.wiki.model.WikiPageResource;
 import com.liferay.so.activities.util.PortletPropsValues;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.model.User;
 
 import java.text.DateFormat;
 import java.text.Format;
@@ -285,7 +287,9 @@ public abstract class SOSocialActivityInterpreter
 		sb.append("<div class=\"activity-header\">");
 		sb.append("<div class=\"activity-user-name\">");
 
-		String userName = getUserName(userId, serviceContext);
+		/*String userName = getUserName(userId, serviceContext);*/
+		User user = UserLocalServiceUtil.getUserById(userId);
+		String userName = user.getFullName();
 
 		int otherUsersCount = 0;
 
@@ -369,7 +373,13 @@ public abstract class SOSocialActivityInterpreter
 		Object[] titleArguments = getTitleArguments(
 			null, activity, null, null, serviceContext);
 
-		sb.append(serviceContext.translate(titlePattern, titleArguments));
+		String title = serviceContext.translate(titlePattern, titleArguments);
+		Group group = GroupLocalServiceUtil.fetchGroup(
+				activity.getGroupId());
+
+		title = title.replaceAll("Main", group.getName());
+
+		sb.append(title);
 
 		sb.append("</div>");
 
@@ -398,7 +408,13 @@ public abstract class SOSocialActivityInterpreter
 		Object[] titleArguments = getTitleArguments(
 			null, activitySet, null, null, serviceContext);
 
-		sb.append(serviceContext.translate(titlePattern, titleArguments));
+		String title = serviceContext.translate(titlePattern, titleArguments);
+		Group group = GroupLocalServiceUtil.fetchGroup(
+				activitySet.getGroupId());
+
+		title = title.replaceAll("Main", group.getName());
+
+		sb.append(title);
 
 		sb.append("</div>");
 
