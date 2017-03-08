@@ -61,7 +61,9 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 		</div>
 
 		<%
-		List<Role> roles = RoleLocalServiceUtil.search(layout.getCompanyId(), null, null, new Integer[] {RoleConstants.TYPE_SITE}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new RoleNameComparator(false));
+		//List<Role> roles = RoleLocalServiceUtil.search(layout.getCompanyId(), null, null, new Integer[] {RoleConstants.TYPE_SITE}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new RoleNameComparator(false));
+
+			List<Role> roles = RoleLocalServiceUtil.getRoles(layout.getCompanyId());
 
 			roles = new ArrayList<Role>(roles);
 
@@ -74,7 +76,6 @@ Group group = GroupLocalServiceUtil.getGroup(scopeGroupId);
 							toComparison();
 				}
 			});
-
 		roles = UsersAdminUtil.filterGroupRoles(permissionChecker, group.getGroupId(), roles);
 		%>
 
