@@ -89,7 +89,7 @@ boolean showSimulatorControls = !group.isLayoutPrototype() && !group.isLayoutSet
 		}
 		%>
 
-		<c:if test="<%= controlPanelCategory.startsWith(PortletCategoryKeys.CURRENT_SITE) || !controlPanelCategory.equals(PortletCategoryKeys.MY) %>">
+		<c:if test="<%= controlPanelCategory.startsWith(PortletCategoryKeys.CURRENT_SITE) || !(controlPanelCategory.equals(PortletCategoryKeys.MY) && PropsValues.DOCKBAR_ADMINISTRATIVE_LINKS_SHOW_IN_POP_UP) %>">
 			<div class="brand">
 				<a class="control-panel-back-link" href="<%= backURL %>" title="<liferay-ui:message key="back" />">
 					<i class="control-panel-back-icon icon-chevron-sign-left"></i>
@@ -109,6 +109,11 @@ boolean showSimulatorControls = !group.isLayoutPrototype() && !group.isLayoutSet
 							<span class="site-administration-title">
 								<liferay-ui:message key="site-administration" />
 							</span>
+						</c:when>
+						<c:when test="<%= controlPanelCategory.equals(PortletCategoryKeys.MY) %>">
+							<a href="<%= themeDisplay.getURLMyAccount() %>">
+								<liferay-ui:message key="my-account" />
+							</a>
 						</c:when>
 						<c:otherwise>
 							<a href="<%= themeDisplay.getURLControlPanel() %>">
@@ -169,7 +174,11 @@ boolean showSimulatorControls = !group.isLayoutPrototype() && !group.isLayoutSet
 	</c:if>
 
 	<%
-	boolean userSetupComplete = user.isSetupComplete();
+	boolean userSetupComplete = false;
+
+	if (user.isSetupComplete() || themeDisplay.isImpersonated()) {
+		userSetupComplete = true;
+	}
 
 	boolean portalMessageUseAnimation = GetterUtil.getBoolean(PortalMessages.get(request, PortalMessages.KEY_ANIMATION), true);
 
@@ -188,7 +197,7 @@ boolean showSimulatorControls = !group.isLayoutPrototype() && !group.isLayoutSet
 	boolean showToggleControls = (!group.hasStagingGroup() || group.isStagingGroup()) && (hasLayoutUpdatePermission || (layoutTypePortlet.isCustomizable() && layoutTypePortlet.isCustomizedView() && hasLayoutCustomizePermission) || PortletPermissionUtil.hasConfigurationPermission(permissionChecker, themeDisplay.getSiteGroupId(), layout, ActionKeys.CONFIGURATION));
 	%>
 
-	<c:if test="<%= !group.isControlPanel() && userSetupComplete && (showAddControls || showPreviewControls || showEditControls || showSimulatorControls || showToggleControls) %>">
+	<c:if test="<%= !group.isControlPanel() && userSetupComplete && (showAddControls || showPreviewControls || showEditControls || showToggleControls) %>">
 		<aui:nav ariaLabel='<%= LanguageUtil.get(pageContext, "layout-controls") %>' collapsible="<%= true %>" cssClass='<%= portalMessageUseAnimation ? "nav-add-controls" : "nav-add-controls nav-add-controls-notice" %>' icon="pencil" id="navAddControls">
 			<c:if test="<%= showAddControls %>">
 				<portlet:renderURL var="addURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
