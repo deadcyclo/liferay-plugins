@@ -1,16 +1,16 @@
 <%--
 /**
- * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 --%>
 
@@ -206,7 +206,7 @@ boolean showSimulatorControls = !group.isLayoutPrototype() && !group.isLayoutSet
 					<portlet:param name="viewEntries" value="<%= Boolean.TRUE.toString() %>" />
 				</portlet:renderURL>
 
-				<aui:nav-item anchorId="addPanel" cssClass="site-add-controls" data-panelURL="<%= addURL %>" href="javascript:;" iconCssClass="icon-plus" label="add" />
+				<aui:nav-item anchorId="addPanel" cssClass="site-add-controls" data-panelURL="<%= HtmlUtil.escapeAttribute(addURL) %>" href="javascript:;" iconCssClass="icon-plus" label="add" />
 			</c:if>
 
 			<c:if test="<%= showPreviewControls %>">
@@ -214,7 +214,7 @@ boolean showSimulatorControls = !group.isLayoutPrototype() && !group.isLayoutSet
 					<portlet:param name="struts_action" value="/dockbar/preview_panel" />
 				</portlet:renderURL>
 
-				<aui:nav-item anchorId="previewPanel" cssClass="page-preview-controls" data-panelURL="<%= previewContentURL %>" href="javascript:;" iconCssClass="icon-desktop" label="preview" />
+				<aui:nav-item anchorId="previewPanel" cssClass="page-preview-controls" data-panelURL="<%= HtmlUtil.escapeAttribute(previewContentURL) %>" href="javascript:;" iconCssClass="icon-desktop" label="preview" />
 			</c:if>
 
 			<c:if test="<%= showEditControls %>">
@@ -224,7 +224,7 @@ boolean showSimulatorControls = !group.isLayoutPrototype() && !group.isLayoutSet
 					<portlet:param name="selPlid" value="<%= String.valueOf(plid) %>" />
 				</portlet:renderURL>
 
-				<aui:nav-item anchorId="editLayoutPanel" cssClass="page-edit-controls" data-panelURL="<%= editLayoutURL %>" href="javascript:;" iconCssClass="icon-edit" label="edit" />
+				<aui:nav-item anchorId="editLayoutPanel" cssClass="page-edit-controls" data-panelURL="<%= HtmlUtil.escapeAttribute(editLayoutURL) %>" href="javascript:;" iconCssClass="icon-edit" label="edit" />
 			</c:if>
 
 			<c:if test="<%= showSimulatorControls %>">
